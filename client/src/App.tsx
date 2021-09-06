@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Address, Bee, PostageBatch } from '@ethersphere/bee-js';
+import { Bee, PostageBatch } from '@ethersphere/bee-js';
 import './App.css';
 
-const beeUrl = "http://localhost:1633"
 const APP_TITLE = 'Social Archive'
 const POSTAGE_STAMPS_AMOUNT = BigInt(10000)
 const POSTAGE_STAMPS_DEPTH = 20
+
+const beeUrl = "http://localhost:1633"
 const bee = new Bee(beeUrl);
 
 function App() {
@@ -15,7 +16,6 @@ function App() {
   const [ error, setError ] = useState<Error | null>(null)
 
   const [ postageStamps, setPostageStamps ] = useState<PostageBatch[]>([])
-  // const [ selectedPostageStamp, setSelectedPostageStamp ] = useState<Address | null>(null)
   const [ loadingStamps, setLoadingStamps ] = useState<boolean>(false)
   const [ creatingStamp, setCreatingStamp ] = useState<boolean>(false)
   const [ stampError, setStampError ] = useState<Error | null>(null)
@@ -109,63 +109,3 @@ function App() {
 }
 
 export default App;
-
-
-
-// import { useState }  from 'react';
-// import './App.css';
-// import { Bee } from "@ethersphere/bee-js"
-// // import {LoginComponent} from "fairdrive-protocol";
-// const bee = new Bee('http://localhost:1633')
-
-// function App() {
-//   // const [password, setUserPassword] = useState('');
-
-//   // instantiate Buzz class with Swarm node provider
-//   const [hash, setHash] = useState('')
-//   const [output, setOutput] = useState('')
-
-//   // bee.uploadFile(postageBatchId, "Bee is awesome!", "textfile.txt")
-
-//   const upload = () => {
-//     bee.createPostageBatch("100", 17)
-//       .then((postageBatchId: any) => {
-//         console.log('batchId: ' + postageBatchId)
-//         bee.uploadData(postageBatchId, "Bee is awesome!")
-//           .then(newHash => {
-//             console.log('hash: ' + newHash)
-//             setHash(newHash)
-//           })
-//       })
-//   }
-
-//   const download = (h: string) => {
-//     bee.downloadData(h)
-//       .then(data => {
-//         console.log('output: ' + data)
-//         setOutput(data.text())
-//       })
-
-//   }
-
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         Social Archive
-//       </header>
-//       <div className="example-form">
-//         <button onClick={upload}>
-//           Upload to Swarm
-//         </button>
-//         { output }
-//         <button onClick={() => download(hash)}>
-//           Download from Swarm
-//         </button>
-//       </div>
-//       {/* <LoginComponent password={password} setUserPassword={setUserPassword}
-//         podName="Fairdrive"/> */}
-//     </div>
-//   );
-// }
-
-// export default App;
