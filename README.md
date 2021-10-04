@@ -50,7 +50,7 @@ Quick start guide to running bee-factory:
 `./scripts/bee-docker-build.sh`
 `./scripts/blockchain-docker-build.sh`
 
-8. Runnign your Docker images generated above:
+8. Running your Docker images generated above:
 
 `./scripts/environment.sh start`
 

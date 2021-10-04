@@ -1,109 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { Bee, PostageBatch } from '@ethersphere/bee-js';
+import React from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import Upload from './components/upload/upload';
 import './App.css';
 
 const APP_TITLE = 'Social Archive'
-const POSTAGE_STAMPS_AMOUNT = BigInt(10000)
-const POSTAGE_STAMPS_DEPTH = 20
-
-const beeUrl = "http://localhost:1633"
-const bee = new Bee(beeUrl);
 
 function App() {
-  const [ file, setFile ] = useState<File | null>(null)
-  const [ link, setLink ] = useState<string | null>(null)
-  const [ uploading, setUploading ] = useState(false)
-  const [ error, setError ] = useState<Error | null>(null)
-
-  const [ postageStamps, setPostageStamps ] = useState<PostageBatch[]>([])
-  const [ loadingStamps, setLoadingStamps ] = useState<boolean>(false)
-  const [ creatingStamp, setCreatingStamp ] = useState<boolean>(false)
-  const [ stampError, setStampError ] = useState<Error | null>(null)
-
-  useEffect(() => {
-    // Set Title
-    document.title = APP_TITLE
-    // Prepare Stamps
-    setLoadingStamps(true)
-    bee.getAllPostageBatch()
-      .then((ps: PostageBatch[]) => setPostageStamps(ps))
-      .catch(setStampError)
-      .finally(() => setLoadingStamps(false))
-  }, [])
-
-  const createPostageStamp = async () => {
-    try {
-      setCreatingStamp(true)
-      await bee.createPostageBatch(POSTAGE_STAMPS_AMOUNT.toString(), POSTAGE_STAMPS_DEPTH)
-      setCreatingStamp(false)
-
-      setLoadingStamps(true)
-      const ps = await bee.getAllPostageBatch()
-      setPostageStamps(ps)
-      setLoadingStamps(false)
-    }
-    catch(e) {
-      setStampError(e)
-    }
-  }
-
-  const getRandomStamp = () => {
-    const i = Math.floor(Math.random() * postageStamps.length)
-    return postageStamps[i]['batchID']
-  }
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (postageStamps.length <= 0) {
-      await createPostageStamp();
-    }
-    const selectedPostageStamp = getRandomStamp()
-    if (file) {
-      try {
-        setUploading(true)
-        setLink(null)
-
-        const hash = await bee.uploadFile(selectedPostageStamp, file)
-        setLink(`${beeUrl}/bzz/${hash}`)
-      } catch (e) {
-        setError(e)
-      }
-      finally {
-        setUploading(false)
-      }
-    }
-  }
-
-  const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const f = event.target && event.target.files && event.target.files[0]
-
-    setFile(f)
-    setError(null)
-    setLink(null)
-  }
-
   return (
-    <div className="App">
+    <div className="wrapper">
       <header className="App-header">
         {APP_TITLE}
       </header>
-      <div className="example-form">
-        <code>
-          { (loadingStamps || creatingStamp) && <span>Loading...</span> }
-          { stampError && <span>{stampError.message}</span> }
-        </code>
-        <h1>Upload history to Swarm</h1>
-        <form onSubmit={handleSubmit}>
-          <input type="file" name="file" onChange={onFileChange} />
-          <input type="submit" disabled={!file} />
-        </form>
-        <br />
-        <code>
-          { uploading && <span>Uploading...</span> }
-          { link && <a href={link} target="blank" >{link}</a> }
-          { error && <span>{error.message}</span> }
-        </code>
-      </div>
+      <BrowserRouter>
+        <Switch>
+          <Route path="/">
+            <Upload />
+          </Route>
+        </Switch>
+      </BrowserRouter>
     </div>
   );
 }
