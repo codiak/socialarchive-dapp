@@ -3,6 +3,8 @@
 # dependencies
 /node_modules
 /fairdrive-protocol/node_modules
+/client/node_modules
+/client/package-lock.json
 /.pnp
 .pnp.js
 
