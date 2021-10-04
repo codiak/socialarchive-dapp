@@ -41,3 +41,10 @@
     transform: rotate(360deg);
   }
 }
+
+.menu-link {
+  display: inline-block;
+  color: white;
+  font-size: 12px;
+  margin-right: 1em;
+}

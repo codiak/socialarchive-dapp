@@ -12,28 +12,28 @@ function Upload() {
   const [ link, setLink ] = useState<string | null>(null)
   const [ uploading, setUploading ] = useState(false)
   const [ error, setError ] = useState<Error | null>(null)
-  const [ data, setData ] = useState<Object | null>(null)
+  // const [ data, setData ] = useState<Object | null>(null)
 
   const [ postageStamps, setPostageStamps ] = useState<PostageBatch[]>([])
   const [ loadingStamps, setLoadingStamps ] = useState<boolean>(false)
   const [ creatingStamp, setCreatingStamp ] = useState<boolean>(false)
   const [ stampError, setStampError ] = useState<Error | null>(null)
 
-  const pkgJson = `0de4f93d963e2e90090531ce36b8f5a77874fb37f9f410c5dfc0045cad629c8d`
-  // ${beeUrl}/bzz/
+  // const pkgJson = `0de4f93d963e2e90090531ce36b8f5a77874fb37f9f410c5dfc0045cad629c8d`
+  // // ${beeUrl}/bzz/
 
-  if (!data) {
-    try {
-      bee.downloadReadableFile(pkgJson)
-        .then(d => {
-          console.log("Bee download data?")
-          console.log(d)
-          setData(d)
-        })
-    } catch (e) {
-      console.log('Error downloading', e)
-    }
-  }
+  // if (!data) {
+  //   try {
+  //     bee.downloadReadableFile(pkgJson)
+  //       .then(d => {
+  //         console.log("Bee download data?")
+  //         console.log(d)
+  //         setData(d)
+  //       })
+  //   } catch (e) {
+  //     console.log('Error downloading', e)
+  //   }
+  // }
 
   useEffect(() => {
     // Set Title
