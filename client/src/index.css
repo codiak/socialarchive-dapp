@@ -11,3 +11,39 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.container {
+  display: flex;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1em;
+}
+
+.rounded-btn {
+  display: inline-block;
+  font-weight: bold;
+  color: #14171a;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 20px;
+  border-radius: 1.5em;
+  padding: 0.5em 0.75em;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.rounded-btn:hover, .rounded-btn.active {
+  color: #1b95e0;
+}
+
+.rounded-btn:hover {
+  background: rgba(29, 161, 242, 0.1);
+}
+
+.btn-stack {
+  margin: 0.5em 0;
+  overflow: visible;
+}
+
+.btn-stack .btn {
+  margin-bottom: 0.25em;
+}

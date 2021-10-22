@@ -84,8 +84,17 @@
 --feather-font-weight-bold: 700;
 }
 
-.tweet-block {
-    padding: 1em;
-    font-family: Helvetica, Arial;
+.left-col {
+    height: 100%;
+    width: 400px;
+    color: #14171a;
 }
 
+.feed-col {
+    flex-grow: 1;
+}
+
+.metadata-col {
+    height: 100%;
+    width: 300px;
+}

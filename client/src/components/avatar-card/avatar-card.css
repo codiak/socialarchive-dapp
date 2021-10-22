@@ -1,0 +1,24 @@
+.avatar-img {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    float: left;
+    margin-right: 0.5em;
+}
+
+.account-name {
+    display: inline-block;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 1.25em;
+    margin-top: 0.75em;
+}
+
+.account-handle {
+    display: inline-block;
+    font-size: 12px;
+    overflow: hidden;
+    line-height: 1.25em;
+    margin-bottom: 0.75em;
+}

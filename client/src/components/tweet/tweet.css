@@ -1,0 +1,31 @@
+
+.tweet-card {
+    padding: 1em 2em;
+    font-family: Helvetica, Arial;
+    border: 1px solid rgb(204, 214, 221);
+    border-top: none;
+    margin: 0 auto;
+    max-width: 500px;
+}
+
+.tweet-card .avatar-img {
+    width: 40px;
+    height: 40px;
+}
+
+.tweet-card .account-name,
+.tweet-card .account-handle {
+    margin: 0.5em 0.5em 0 0;
+    line-height: 12px;
+}
+
+.tweet-text {
+    padding: 0 0.5em;
+    font-size: 14px;
+    margin-left: 42px;
+}
+
+.tweet-date {
+    font-size: 12px;
+    float: right;
+}
