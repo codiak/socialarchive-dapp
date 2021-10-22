@@ -78,8 +78,8 @@ function Upload() {
         setUploading(true)
         setLink(null)
 
-        const hash = await bee.uploadFile(selectedPostageStamp, file)
-        setLink(`${beeUrl}/bzz/${hash}`)
+        const {reference, tagUid} = await bee.uploadFile(selectedPostageStamp, file);
+        setLink(`${beeUrl}/bzz/${reference}`)
       } catch (e) {
         setError(e)
       }
