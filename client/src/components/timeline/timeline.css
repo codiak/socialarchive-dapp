@@ -92,9 +92,23 @@
 
 .feed-col {
     flex-grow: 1;
+    min-width: 500px;
+    margin-top: -1em;
 }
 
 .metadata-col {
     height: 100%;
     width: 300px;
+}
+
+.account-info .row {
+    border: 1px solid rgb(204, 214, 221);
+    border-top: none;
+    padding: 1em;
+    font-size: 13px;
+}
+
+.account-info h3 {
+    margin-top: 0px;
+    margin-bottom: 0.5em;
 }

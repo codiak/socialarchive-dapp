@@ -11,21 +11,71 @@
 .tweet-card .avatar-img {
     width: 40px;
     height: 40px;
+    float: left;
 }
 
 .tweet-card .account-name,
 .tweet-card .account-handle {
-    margin: 0.5em 0.5em 0 0;
+    margin: 0 0 0 0.25em;
     line-height: 12px;
+}
+
+.tweet-card .account-handle {
+    display: inline-block;
+    margin-top: 0;
+    margin-left: 0.5em;
+    vertical-align: bottom;
+}
+
+.tweet-card img {
+    max-width: 300px;
+    height: auto;
 }
 
 .tweet-text {
     padding: 0 0.5em;
-    font-size: 14px;
-    margin-left: 42px;
+    font-size: 13.5px;
+    line-height: 1.2em;
+    margin-top: 0.25em;
+    margin-left: 45px;
 }
 
 .tweet-date {
     font-size: 12px;
     float: right;
+    font-weight: normal;
+    color: #565656;
+}
+
+.tweet-date a:hover {
+    color: #1b95e0;
+}
+
+.tweet-date a, .tweet-date a:active {
+    text-decoration: none;
+    color: #565656;
+}
+
+.tweet-icons {
+    margin-left: 51px;
+}
+
+.tweet-icon {
+    color: #565656;
+    height: 14px;
+    width: 14px;
+    margin-right: 1em;
+    display: inline-block;
+    transform: translateY(2px);
+}
+
+.tweet-retweets,
+.tweet-faves {
+    color: #454545;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 14px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-right: 2em;
 }

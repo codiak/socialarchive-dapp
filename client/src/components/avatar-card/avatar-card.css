@@ -3,8 +3,9 @@
     width: 50px;
     border-radius: 50%;
     overflow: hidden;
-    float: left;
     margin-right: 0.5em;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .account-name {
@@ -12,13 +13,21 @@
     font-weight: bold;
     font-size: 12px;
     line-height: 1.25em;
-    margin-top: 0.75em;
+    margin-top: 0px;
+    margin-right: 0.5em;
+    vertical-align: middle;
 }
 
 .account-handle {
-    display: inline-block;
+    display: block;
     font-size: 12px;
     overflow: hidden;
     line-height: 1.25em;
-    margin-bottom: 0.75em;
+    vertical-align: middle;
+    font-weight: normal;
+    color: #565656;
+}
+
+.account-bio {
+    padding: 1em;
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Upload from './components/upload/upload';
 import Timeline from './components/timeline/timeline';
 import './App.css';
@@ -17,14 +17,14 @@ function App() {
         </div>
       </header>
       <BrowserRouter>
-        <Switch>
-          <Route path="/timeline">
-            <Timeline />
+        <Routes>
+          <Route path="/timeline" element={<Timeline />}>
+            <Route path=":section" element={<Timeline />} />
           </Route>
           <Route path="/">
             <Upload />
           </Route>
-        </Switch>
+        </Routes>
       </BrowserRouter>
     </div>
   );

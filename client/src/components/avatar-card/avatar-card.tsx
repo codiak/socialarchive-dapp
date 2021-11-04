@@ -4,7 +4,7 @@ import { ACCOUNT } from "../../data/cody/account";
 import { PROFILE } from "../../data/cody/profile";
 
 export default function AvatarCard(props: any) {
-  const { hideBio } = props;
+  const { hideBio, date, tweetId } = props;
   const { username, accountDisplayName } = ACCOUNT.account;
   const { avatarMediaUrl, description } = PROFILE.profile;
   const bio = description.bio;
@@ -13,10 +13,17 @@ export default function AvatarCard(props: any) {
     <>
       <div className="card">
         <img alt="User Icon" className="avatar-img" src={avatarMediaUrl} />
-        <div className="account-name">{accountDisplayName}</div>
-        <div className="account-handle">@{username}</div>
+        <div className="account-name">
+          {accountDisplayName}
+          <div className="account-handle">@{username}</div>
+          {  date && (<div className="tweet-date">
+            &nbsp;• <a href={'https://twitter.com/' + username + '/status/' + tweetId} target="_blank">
+              {date}
+            </a>
+          </div>) }
+        </div>
       </div>
-      {!hideBio && <p>{bio}</p>}
+      {!hideBio && <p className="account-bio">{bio}</p>}
     </>
   );
 }

@@ -19,7 +19,20 @@ code {
   padding: 1em;
 }
 
-.rounded-btn {
+.btn {
+  background: transparent;
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
+  overflow: visible;
+  text-transform: none;
+  -webkit-appearance: button;
+  border: none;
+  text-decoration: none;
+}
+
+button.rounded-btn, .rounded-btn {
   display: inline-block;
   font-weight: bold;
   color: #14171a;
