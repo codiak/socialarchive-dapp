@@ -39,9 +39,7 @@ function App() {
           <Route path="/timeline" element={<Timeline />}>
             <Route path=":user/:section" element={<Timeline />} />
           </Route>
-          <Route path="/">
-            <Upload />
-          </Route>
+          <Route path="/" element={<Upload />} />
         </Routes>
       </BrowserRouter>
     </div>
