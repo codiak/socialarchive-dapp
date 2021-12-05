@@ -33,11 +33,11 @@ export default function Timeline() {
             Home
           </a> */}
           <br />
-          <a href="/timeline/account" className={btnClasses + (page === 'account' ? 'active' : '')}>
+          <a href={"/timeline/"+username+"/account"} className={btnClasses + (page === 'account' ? 'active' : '')}>
             Account
           </a>
           <br />
-          <a href="/timeline/tweets" className={btnClasses + (page === 'tweets' ? 'active' : '')}>
+          <a href={"/timeline/"+username+"/tweets"} className={btnClasses + (page === 'tweets' ? 'active' : '')}>
             Tweets
           </a>
           <br />
