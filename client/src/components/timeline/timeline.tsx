@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
+import Helmet from 'react-helmet';
+
 import "./timeline.css";
 import AvatarCard from "../avatar-card/avatar-card";
 import TweetCard, { Tweet } from "../tweet/tweet";
@@ -14,12 +16,15 @@ export default function Timeline() {
   const page = section || 'account';
   const btnClasses = "btn rounded-btn ";
   const { username, accountDisplayName } = ACCOUNT.account;
-  const { avatarMediaUrl, description } = PROFILE.profile;
+  const { description } = PROFILE.profile;
   const followingCount = FOLLOWING.length;
   const followersCount = FOLLOWERS.length;
 
   return (
     <div className="container">
+      <Helmet>
+        <title>@{username} - Social Archive</title>
+      </Helmet>
       <div className="left-col">
         <AvatarCard />
         {/* Date generated·March 4, 2021 at 4:03:52 PM GMT-8·Estimated size·62 MB */}

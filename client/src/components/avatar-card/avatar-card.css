@@ -31,3 +31,20 @@
 .account-bio {
     padding: 1em;
 }
+
+.card-user-row .account-name {
+    vertical-align: top;
+}
+
+.card-user-row + .account-bio {
+    font-size: 12px;
+    margin-left: 45px;
+    padding-top: 0px;
+    margin-top: -1.5em;
+}
+
+a .card-user-row,
+a .account-bio {
+    text-decoration: none !important;
+    color: #000;
+}

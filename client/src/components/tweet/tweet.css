@@ -1,3 +1,6 @@
+:root {
+    --tweet-indent: 45px;
+}
 
 .tweet-card {
     padding: 1em 2em;
@@ -27,9 +30,41 @@
     vertical-align: bottom;
 }
 
-.tweet-card img {
+/* .tweet-card img {
     max-width: 300px;
     height: auto;
+} */
+
+/* ReactIntense img viewer */
+.tweet-card .media-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    margin-left: var(--tweet-indent);
+    margin-bottom: 10px;
+}
+.tweet-card .ri-wrapper {
+    margin: 0 -1px 0 0;
+    border: 1px solid #cdcdcd;
+    overflow: hidden;
+    flex: 1;
+    cursor: pointer !important;
+}
+.tweet-card .ri-wrapper:hover {
+    border-color: #88bcdd;
+    z-index: 1;
+}
+.tweet-card .ri-wrapper .ri-trigger {
+    margin-bottom: -6px;
+    width: 100%;
+}
+.tweet-card .ri-wrapper:first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+.tweet-card .ri-wrapper:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .tweet-text {
@@ -37,7 +72,7 @@
     font-size: 13.5px;
     line-height: 1.2em;
     margin-top: 0.25em;
-    margin-left: 45px;
+    margin-left: var(--tweet-indent);
 }
 
 .tweet-date {

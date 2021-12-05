@@ -99,7 +99,7 @@ function Upload() {
 
   return (
     <div className="App">
-      <div className="example-form">
+      <div className="upload-form">
         <code>
           { (loadingStamps || creatingStamp) && <span>Loading...</span> }
           { stampError && <span>{stampError.message}</span> }
