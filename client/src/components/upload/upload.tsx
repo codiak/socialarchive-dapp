@@ -78,9 +78,9 @@ function Upload() {
         setUploading(true)
         setLink(null)
 
-        const {reference, tagUid} = await bee.uploadFile(selectedPostageStamp, file);
+        const {reference} = await bee.uploadFile(selectedPostageStamp, file);
         setLink(`${beeUrl}/bzz/${reference}`)
-      } catch (e) {
+      } catch (e: any) {
         setError(e)
       }
       finally {
@@ -99,23 +99,46 @@ function Upload() {
 
   return (
     <div className="App">
-      <div className="upload-form">
-        <code>
-          { (loadingStamps || creatingStamp) && <span>Loading...</span> }
-          { stampError && <span>{stampError.message}</span> }
-        </code>
-        <h1>Upload history to Swarm</h1>
-        <form onSubmit={handleSubmit}>
-          <input type="file" name="file" onChange={onFileChange} />
-          <input type="submit" disabled={!file} />
-        </form>
-        <br />
-        <code>
-          { uploading && <span>Uploading...</span> }
-          { link && <a href={link} target="blank" >{link}</a> }
-          { error && <span>{error.message}</span> }
-        </code>
+      <div className="col">
+        <div className="upload-form">
+          <code>
+            { (loadingStamps || creatingStamp) && <span>Loading...</span> }
+            { stampError && <span>{stampError.message}</span> }
+          </code>
+          <h1>Upload history to Swarm</h1>
+          <form onSubmit={handleSubmit}>
+            <input type="file" name="file" onChange={onFileChange} />
+            <input type="submit" disabled={!file} />
+          </form>
+          <br />
+          <code>
+            { uploading && <span>Uploading...</span> }
+            { link && <a href={link} target="blank" >{link}</a> }
+            { error && <span>{error.message}</span> }
+          </code>
+        </div>
       </div>
+      {/* <div className="col">
+        <h2 className="col-header">How to Export</h2>
+        <b>Step 1</b>
+        <p>Go to your Account settings by clicking on the more  icon in
+        the navigation bar, and selecting Your account from the menu.</p>
+
+
+        Step 2
+
+        Click on Download an archive of your data.
+
+
+        Step 3
+
+        Once you receive the email, click the Download button while
+        logged in to your Twitter account and download a .zip file of
+        your Twitter archive.
+
+
+        Return to SocialArchive to upload your bundled archive.
+      </div> */}
     </div>
   );
 }
