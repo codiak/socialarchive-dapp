@@ -4,7 +4,6 @@ export class Zip {
   unzippedFiles: any;
 
   constructor(file: any) {
-    // limit to one file for now
     this.file = file;
   }
 
@@ -16,7 +15,7 @@ export class Zip {
 
   async extract(zip: JSZip) {
     let unzippedFiles: { name: string; type: string; data: {} }[] = [];
-    console.log("extracting files...");
+    console.log("Extracting files...");
 
     /* typcial twitter backup zip file structure
     twitter_backup.zip
@@ -26,41 +25,53 @@ export class Zip {
     */
     // iterate over zip contents and add to unzippedFiles array
     for (var key in zip.files) {
-      console.log("name: ", key);
       let file = zip.files[key];
 
       // if entry is a directory skip it (for now)
       if (!file.dir) {
         // only process files that are under the data folder
         if (key.includes("data")) {
-          console.log("file: ", file);
+          // console.log("Name: ", key);
+          // console.log("file: ", file);
+
           // all js files are json :)
           if (file.name.includes(".js")) {
-            let extractedJson = new Promise<{ name: string; type: string; data: {} }>((resolve, reject) => {
+            let extractedJson = new Promise<any>((resolve, reject) => {
               file.async("string").then((content: string) => {
                 let proccessedFile = {
-                  name: file.name,
+                  name: file.name.replace("data/", ""), // strip out folder name
                   type: "json",
-                  data: {},
+                  data: undefined,
                 };
-                // remove var
-                let c = content.substring(content.indexOf("=") + 1, content.length).trim();
-                // console.log("zip entry c: ", c);
                 try {
-                  proccessedFile.data = JSON.parse(c);
-                  resolve(proccessedFile);
+                  // remove var
+                  let c = content.substring(content.indexOf("=") + 1, content.length).trim();
+                  // don't need to parse or resolve if substring contains only 3 characters -> empty array;
+                  if (c.length > 3) {
+                    proccessedFile.data = JSON.parse(c);
+                    console.log("Add: ", proccessedFile);
+                    resolve(proccessedFile);
+                  } else {
+                    reject(proccessedFile);
+                  }
                 } catch (e) {
                   console.log("Error parsing json : ", e);
                   reject(proccessedFile);
-                  throw e;
                 }
               });
             });
-            unzippedFiles.push(await extractedJson);
+            try {
+              unzippedFiles.push(await extractedJson);
+            } catch (e) {
+              console.log("Skip: no data: ", e);
+              // console.error("Rejected file, no data : ", e);
+            }
+          } else {
+            console.log("Skip: ", file.name);
           }
         }
       } else {
-        console.log("skipped directory");
+        console.log("Skip: Entry === directory name: ", key);
       }
     }
     return unzippedFiles;
@@ -68,8 +79,8 @@ export class Zip {
 
   async internalUnzip() {
     return JSZip.loadAsync(this.file).then(async (zip: JSZip) => {
-      console.log("zipped file contents: ", zip);
-      console.log("total entries: ", Object.keys(zip.files).length);
+      console.log("Zipped file contents: ", zip);
+      console.log("Total entries: ", Object.keys(zip.files).length);
       this.unzippedFiles = this.extract(zip);
     });
   }

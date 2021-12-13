@@ -6,50 +6,47 @@ import { Zip } from "../../process/Zip";
 function Upload() {
   const [selectedFile, setSelectedFile] = useState<any>(undefined);
   const [unZippedFiles, setUnZippedFiles] = useState<any>([]);
-  const [currentFile] = useState<any>(undefined);
-  const [progress] = useState<any>(0);
-  const [message] = useState<any>("");
+  const [extracting, setExtracting] = useState<any>(false);
+  const ZIP_MIME_TYPE = "application/zip";
 
-  const onDrop = async (files: any) => {
+  const onDrop = async (files: any[]) => {
     if (files.length > 0) {
-      // we only support one file at the moment
       let file = files[0];
-      console.log("file on drop: ", file);
+      console.log("File on drop: ", file);
       setSelectedFile(file);
-      if (file.type === "application/zip") {
+      if (file.type === ZIP_MIME_TYPE) {
+        setExtracting(true); // TODO use this to add spinner when loading huge files
         let unzippedFiles = await Zip.unzip(file);
-        console.log("unzipped files: ", unzippedFiles);
+        setExtracting(false);
+        console.log("Unzipped files: ", unzippedFiles);
         setUnZippedFiles(unzippedFiles);
       }
     }
   };
 
+  // group data by file type
+  const groupBy = (xs: any, key: any) => {
+    return xs.reduce((rv: any, x: any) => {
+      (rv[x[key]] = rv[x[key]] || []).push(x);
+      return rv;
+    }, {});
+  };
+
+  // options for dropzone, disable mutliple files and accept only zip files
   const { getRootProps, getInputProps } = useDropzone({
-    multiple: false, // we only support one file at the moment
-    accept: "application/zip",
+    multiple: false,
+    accept: ZIP_MIME_TYPE,
     onDrop: onDrop,
   });
 
   return (
     <div>
-      {currentFile && (
-        <div className="progress mb-3">
-          <>
-            <div className="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100} style={{ width: progress + "%" }}>
-              {progress}%
-            </div>
-          </>
-        </div>
-      )}
       <section>
         <div {...getRootProps({ className: "dropzone" })}>
           <input {...getInputProps()} />
           {selectedFile && selectedFile.name ? "Drag and drop or select another file" : "Drag and drop or select a file"}
         </div>
       </section>
-      <div className="alert alert-light" role="alert">
-        {message}
-      </div>
       {unZippedFiles.length > 0 ? (
         <>
           Filename: {selectedFile.name}
@@ -78,7 +75,7 @@ function Upload() {
             <br />
             Size: {convertBytesToString(selectedFile.size)}
             <br />
-            This is not a valid twitter backup file, please select a valid zip file{" "}
+            {!extracting && "This is not a valid twitter backup file, please select a valid zip file"}
           </>
         )
       )}
