@@ -1,144 +1,86 @@
-import React, { useState, useEffect } from 'react';
-import { Bee, PostageBatch } from '@ethersphere/bee-js';
-
-const POSTAGE_STAMPS_AMOUNT = BigInt(10000)
-const POSTAGE_STAMPS_DEPTH = 20
-
-const beeUrl = "http://localhost:1633"
-const bee = new Bee(beeUrl);
+import React, { useState } from "react";
+import Dropzone from "react-dropzone";
+import { convertBytesToString } from "../../util";
+import { Zip } from "../../process/Zip";
 
 function Upload() {
-  const [ file, setFile ] = useState<File | null>(null)
-  const [ link, setLink ] = useState<string | null>(null)
-  const [ uploading, setUploading ] = useState(false)
-  const [ error, setError ] = useState<Error | null>(null)
-  // const [ data, setData ] = useState<Object | null>(null)
+  const [selectedFile, setSelectedFile] = useState<any>(undefined);
+  const [unZippedFiles, setUnZippedFiles] = useState<any>([]);
 
-  const [ postageStamps, setPostageStamps ] = useState<PostageBatch[]>([])
-  const [ loadingStamps, setLoadingStamps ] = useState<boolean>(false)
-  const [ creatingStamp, setCreatingStamp ] = useState<boolean>(false)
-  const [ stampError, setStampError ] = useState<Error | null>(null)
+  const [currentFile] = useState<any>(undefined);
+  const [progress] = useState<any>(0);
+  const [message] = useState<any>("");
 
-  // const pkgJson = `0de4f93d963e2e90090531ce36b8f5a77874fb37f9f410c5dfc0045cad629c8d`
-  // // ${beeUrl}/bzz/
-
-  // if (!data) {
-  //   try {
-  //     bee.downloadReadableFile(pkgJson)
-  //       .then(d => {
-  //         console.log("Bee download data?")
-  //         console.log(d)
-  //         setData(d)
-  //       })
-  //   } catch (e) {
-  //     console.log('Error downloading', e)
-  //   }
-  // }
-
-  useEffect(() => {
-    // Set Title
-    document.title = 'Social Archive'
-    // Prepare Stamps
-    setLoadingStamps(true)
-    bee.getAllPostageBatch()
-      .then((ps: PostageBatch[]) => setPostageStamps(ps))
-      .catch(setStampError)
-      .finally(() => setLoadingStamps(false))
-  }, [])
-
-  const createPostageStamp = async () => {
-    try {
-      setCreatingStamp(true)
-      await bee.createPostageBatch(POSTAGE_STAMPS_AMOUNT.toString(), POSTAGE_STAMPS_DEPTH)
-      setCreatingStamp(false)
-
-      setLoadingStamps(true)
-      const ps = await bee.getAllPostageBatch()
-      setPostageStamps(ps)
-      setLoadingStamps(false)
-    }
-    catch(e) {
-      setStampError(e)
-    }
-  }
-
-  const getRandomStamp = () => {
-    const i = Math.floor(Math.random() * postageStamps.length)
-    return postageStamps[i]['batchID']
-  }
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (postageStamps.length <= 0) {
-      await createPostageStamp();
-    }
-    const selectedPostageStamp = getRandomStamp()
-    if (file) {
-      try {
-        setUploading(true)
-        setLink(null)
-
-        const {reference} = await bee.uploadFile(selectedPostageStamp, file);
-        setLink(`${beeUrl}/bzz/${reference}`)
-      } catch (e: any) {
-        setError(e)
-      }
-      finally {
-        setUploading(false)
+  const onDrop = async (files: any) => {
+    if (files.length > 0) {
+      // we only support one file at the moment
+      let file = files[0];
+      console.log("file on drop: ", file);
+      setSelectedFile(file);
+      if (file.type === "application/zip") {
+        let unzippedFiles = await Zip.unzip(file);
+        console.log("unzipped files: ", unzippedFiles);
+        setUnZippedFiles(unzippedFiles);
       }
     }
-  }
-
-  const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const f = event.target && event.target.files && event.target.files[0]
-
-    setFile(f)
-    setError(null)
-    setLink(null)
-  }
+  };
 
   return (
-    <div className="App">
-      <div className="col">
-        <div className="upload-form">
-          <code>
-            { (loadingStamps || creatingStamp) && <span>Loading...</span> }
-            { stampError && <span>{stampError.message}</span> }
-          </code>
-          <h1>Upload history to Swarm</h1>
-          <form onSubmit={handleSubmit}>
-            <input type="file" name="file" onChange={onFileChange} />
-            <input type="submit" disabled={!file} />
-          </form>
-          <br />
-          <code>
-            { uploading && <span>Uploading...</span> }
-            { link && <a href={link} target="blank" >{link}</a> }
-            { error && <span>{error.message}</span> }
-          </code>
+    <div>
+      {currentFile && (
+        <div className="progress mb-3">
+          <>
+            <div className="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100} style={{ width: progress + "%" }}>
+              {progress}%
+            </div>
+          </>
         </div>
+      )}
+      <Dropzone onDrop={onDrop} multiple={false}>
+        {({ getRootProps, getInputProps }) => (
+          <section>
+            <div {...getRootProps({ className: "dropzone" })}>
+              <input {...getInputProps()} />
+              {selectedFile && selectedFile.name ? "Drag and drop or select another file" : "Drag and drop or select a file"}
+            </div>
+          </section>
+        )}
+      </Dropzone>
+      <div className="alert alert-light" role="alert">
+        {message}
       </div>
-      {/* <div className="col">
-        <h2 className="col-header">How to Export</h2>
-        <b>Step 1</b>
-        <p>Go to your Account settings by clicking on the more  icon in
-        the navigation bar, and selecting Your account from the menu.</p>
-
-
-        Step 2
-
-        Click on Download an archive of your data.
-
-
-        Step 3
-
-        Once you receive the email, click the Download button while
-        logged in to your Twitter account and download a .zip file of
-        your Twitter archive.
-
-
-        Return to SocialArchive to upload your bundled archive.
-      </div> */}
+      {unZippedFiles.length > 0 ? (
+        <>
+          Filename: {selectedFile.name}
+          <br />
+          Size: {convertBytesToString(selectedFile.size)}
+          <br />
+          Total files in backup: {unZippedFiles.length}
+          <div className="card">
+            <div className="card-header">List of Files</div>
+            <ul className="list-group list-group-flush">
+              {unZippedFiles &&
+                unZippedFiles.length &&
+                unZippedFiles.map((item: any, i: React.Key) => (
+                  <li className="list-group-item" key={i}>
+                    {/* @ts-ignore */}
+                    {item.name} | {item.type}
+                  </li>
+                ))}
+            </ul>
+          </div>
+        </>
+      ) : (
+        selectedFile && (
+          <>
+            Filename: {selectedFile.name}
+            <br />
+            Size: {convertBytesToString(selectedFile.size)}
+            <br />
+            This is not a valid twitter backup file, please select a valid zip file{" "}
+          </>
+        )
+      )}
     </div>
   );
 }
