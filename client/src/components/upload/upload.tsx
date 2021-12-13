@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import Dropzone from "react-dropzone";
+import { useDropzone } from "react-dropzone";
 import { convertBytesToString } from "../../util";
 import { Zip } from "../../process/Zip";
 
 function Upload() {
   const [selectedFile, setSelectedFile] = useState<any>(undefined);
   const [unZippedFiles, setUnZippedFiles] = useState<any>([]);
-
   const [currentFile] = useState<any>(undefined);
   const [progress] = useState<any>(0);
   const [message] = useState<any>("");
@@ -25,6 +24,12 @@ function Upload() {
     }
   };
 
+  const { getRootProps, getInputProps } = useDropzone({
+    multiple: false, // we only support one file at the moment
+    accept: "application/zip",
+    onDrop: onDrop,
+  });
+
   return (
     <div>
       {currentFile && (
@@ -36,16 +41,12 @@ function Upload() {
           </>
         </div>
       )}
-      <Dropzone onDrop={onDrop} multiple={false}>
-        {({ getRootProps, getInputProps }) => (
-          <section>
-            <div {...getRootProps({ className: "dropzone" })}>
-              <input {...getInputProps()} />
-              {selectedFile && selectedFile.name ? "Drag and drop or select another file" : "Drag and drop or select a file"}
-            </div>
-          </section>
-        )}
-      </Dropzone>
+      <section>
+        <div {...getRootProps({ className: "dropzone" })}>
+          <input {...getInputProps()} />
+          {selectedFile && selectedFile.name ? "Drag and drop or select another file" : "Drag and drop or select a file"}
+        </div>
+      </section>
       <div className="alert alert-light" role="alert">
         {message}
       </div>
