@@ -63,6 +63,13 @@ function Upload() {
                   <li className="list-group-item" key={i}>
                     {/* @ts-ignore */}
                     {item.name} | {item.type}
+                    {item.type === "mp4" ? (
+                      <video controls>
+                        <source type="video/mp4" src={item.data} />
+                      </video>
+                    ) : (
+                      item.type !== "json" && <img src={item.data} alt={item.type} />
+                    )}
                   </li>
                 ))}
             </ul>
