@@ -64,7 +64,7 @@ function Upload() {
                     {/* @ts-ignore */}
                     {item.name} | {item.type}
                     {item.type === "mp4" ? (
-                      <video controls>
+                      <video autoPlay loop controls>
                         <source type="video/mp4" src={item.data} />
                       </video>
                     ) : (
