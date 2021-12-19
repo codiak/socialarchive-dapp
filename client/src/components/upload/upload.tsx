@@ -4,7 +4,10 @@ import { useStore } from "../../utils/store";
 
 function Upload() {
   // our faithful state management
-  const { state, dispatch } = useStore();
+  const {
+    state: { zipFile, unZippedFiles, loading, error, errorMessage },
+    dispatch,
+  } = useStore();
   const ZIP_MIME_TYPE = "application/zip";
 
   const onDrop = async (files: any[]) => {
@@ -17,11 +20,22 @@ function Upload() {
     }
   };
 
+  const onDropRejected = async (rejectedFiles: any[]) => {
+    if (rejectedFiles.length > 0) {
+      let file = rejectedFiles[0].file;
+      if (file.type === ZIP_MIME_TYPE) {
+        dispatch({ type: "ERROR", payload: rejectedFiles[0].errors[0].message });
+      }
+    }
+  };
+
   // options for dropzone, disable mutliple files and accept only zip files
   const { getRootProps, getInputProps } = useDropzone({
     multiple: false,
     accept: ZIP_MIME_TYPE,
     onDrop: onDrop,
+    maxSize: 1e9, // 1GB
+    onDropRejected: onDropRejected,
   });
 
   return (
@@ -29,23 +43,26 @@ function Upload() {
       <section>
         <div {...getRootProps({ className: "dropzone" })}>
           <input {...getInputProps()} />
-          {state.zipFile && state.zipFile ? "Drag and drop or select another file" : "Drag and drop or select a file"}
+          {zipFile ? "Drag and drop or select another file" : "Drag and drop or select a file"}
         </div>
       </section>
-      {state.loading && <div>Loading...</div>}
-      {!state.loading && state.zipFile && (
+      {error && <div style={{ color: "red" }}>Error: {errorMessage}</div>}
+      {loading && <div>Loading...</div>}
+      {!loading && zipFile && (
         <>
-          Filename: {state.zipFile.name}
+          Filename: {zipFile.name}
           <br />
-          Size: {state.zipFile.size}
+          Last modified date: {zipFile.lastModifiedDate}
           <br />
-          {state.unZippedFiles.length > 0 ? (
+          Size: {zipFile.size}
+          <br />
+          {unZippedFiles.length > 0 ? (
             <>
-              Total files in backup: {state.unZippedFiles.length}
+              Total files in backup: {unZippedFiles.length}
               <div className="card">
                 <div className="card-header">List of Files</div>
                 <ul className="list-group list-group-flush">
-                  {state.unZippedFiles.map((item: any, i: React.Key) => (
+                  {unZippedFiles.map((item: any, i: React.Key) => (
                     <li className="list-group-item" key={i}>
                       {/* @ts-ignore */}
                       {item.name} | {item.type}

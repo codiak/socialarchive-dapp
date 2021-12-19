@@ -1,6 +1,6 @@
-import React, { useEffect, useContext } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
-import Helmet from "react-helmet";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 import "./timeline.css";
 import AvatarCard from "../avatar-card/avatar-card";
@@ -10,18 +10,17 @@ import { ACCOUNT } from "../../data/cody/account";
 import { PROFILE } from "../../data/cody/profile";
 import { FOLLOWERS } from "../../data/cody/follower";
 import { FOLLOWING } from "../../data/cody/following";
-
 import { useStore } from "../../utils/store";
 
-// import { UserContext } from "../../utils/userDetails";
-// import { Context } from "../../Store";
-
 export default function Timeline() {
-  // const { unZippedFiles } = useZip();
-
-  const { state, dispatch } = useStore();
-  console.log("state: ", state);
-  // console.log("unZippedFiles babab: ", unZippedFiles.length);
+  const {
+    state: { unZippedFiles }, // nested destructure!
+  } = useStore();
+  if (unZippedFiles && unZippedFiles.length > 0) {
+    // console.log("unZippedFiles: ", unZippedFiles);
+    const manifest = unZippedFiles[0].data;
+    console.log("manifest: ", manifest);
+  }
 
   let { section } = useParams();
   const page = section || "account";
@@ -31,21 +30,13 @@ export default function Timeline() {
   const followingCount = FOLLOWING.length;
   const followersCount = FOLLOWERS.length;
 
-  // console.log("username: ", userName);
-
-  // useEffect(() => {
-  //   console.log("state: ", state.unZippedFiles.length);
-
-  //   // console.log("fire");
-  // }, [state.unZippedFiles]);
-
-  // console.log("zipFile", zipFile);
-
   return (
     <div className="container">
-      <Helmet>
-        <title>Social Archive</title>
-      </Helmet>
+      <HelmetProvider>
+        <Helmet>
+          <title>Social Archive</title>
+        </Helmet>
+      </HelmetProvider>
       <div className="left-col">
         <AvatarCard />
         {/* Date generated·March 4, 2021 at 4:03:52 PM GMT-8·Estimated size·62 MB */}

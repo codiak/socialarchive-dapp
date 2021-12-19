@@ -1,4 +1,4 @@
-import { createContext, useState, useContext, useEffect, useMemo, useReducer, useCallback } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 import { convertBytesToString } from "./index";
 import { get, set } from "idb-keyval";
 import { Zip } from "../process/Zip";
@@ -12,9 +12,13 @@ const reducerActions = (state = initialState, action) => {
     case "UNZIP":
       return { ...state, loading: false, error: false, unZippedFiles: action.payload, zipFile: action.zipFile, process: false };
     case "LOADING":
-      return { ...state, loading: true, error: false, unZippedFiles: [] };
+      return { ...state, loading: true, error: false };
     case "ERROR":
-      return { ...state, loading: false, error: true, unZippedFiles: [] };
+      let msg = action.payload;
+      // format the number into a human readable format
+      let formatBytes = msg.substring(msg.indexOf("an") + 3, msg.indexOf("bytes"));
+      msg = msg.replace(formatBytes + "bytes", convertBytesToString(formatBytes, 0)) + ". Please try again with a smaller file.";
+      return { ...state, loading: false, error: true, errorMessage: msg };
     default:
       return state;
   }
@@ -33,7 +37,7 @@ const initialState = {
 const StoreProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducerActions, initialState);
 
-  // fires
+  // loads files into state from idb if they exist
   useEffect(() => {
     const loadFromIdb = async () => {
       let zipFile = await get("zipFile");
@@ -46,6 +50,7 @@ const StoreProvider = ({ children }) => {
     loadFromIdb();
   }, []);
 
+  // couldn't figure out another way to fire async dispatches using useReducer,
   useEffect(() => {
     const unZip = async () => {
       dispatch({ type: "LOADING" });
@@ -55,19 +60,19 @@ const StoreProvider = ({ children }) => {
         name: file.name,
         size: convertBytesToString(file.size),
         type: file.type,
-        lastModifiedDate: file.lastModifiedDate,
+        lastModifiedDate: file.lastModifiedDate.toString(),
       };
       // if unzip does not return any files, it means that the file is not a real twitter backup file
       if (uzip.length > 0) {
         await set("zip", uzip);
       }
-      await set("zipFile", file);
+      await set("zipFile", zipDetails);
       dispatch({ type: "UNZIP", payload: uzip, zipFile: zipDetails });
     };
     if (state.process) {
       unZip();
     }
-  }, [state.process]);
+  }, [state.process, state.zipFile]);
 
   //   const value = useMemo(() => ({ state, dispatch }), [state, dispatch]);
 
