@@ -104,10 +104,9 @@ export class Zip {
 
       // if entry is a directory skip it (for now)
       if (!file.dir) {
-        // only process files that are under the data folder
+        // process files that are under the data folder
         if (key.includes("data")) {
           let extractedFile = await this.extractFile(file);
-
           if (extractedFile !== undefined) {
             unzippedFiles.push(extractedFile);
           }
