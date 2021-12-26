@@ -9,7 +9,7 @@ const reducerActions = (state = initialState, action) => {
     case "SET_ZIP_FILE":
       let file = action.payload;
       return { ...state, loading: true, error: false, zipFile: file, process: true };
-    case "UNZIP":
+    case "UNZIPPED_FILES_LOADED":
       return { ...state, loading: false, error: false, unZippedFiles: action.payload, zipFile: action.zipFile, process: false };
     case "LOADING":
       return { ...state, loading: true, error: false };
@@ -44,7 +44,7 @@ const StoreProvider = ({ children }) => {
       if (zipFile !== undefined) {
         dispatch({ type: "LOADING" });
         let unZippedFiles = await get("zip");
-        dispatch({ type: "UNZIP", payload: unZippedFiles ? unZippedFiles : [], zipFile: zipFile });
+        dispatch({ type: "UNZIPPED_FILES_LOADED", payload: unZippedFiles ? unZippedFiles : [], zipFile: zipFile });
       }
     };
     loadFromIdb();
@@ -67,7 +67,7 @@ const StoreProvider = ({ children }) => {
         await set("zip", uzip);
       }
       await set("zipFile", zipDetails);
-      dispatch({ type: "UNZIP", payload: uzip, zipFile: zipDetails });
+      dispatch({ type: "UNZIPPED_FILES_LOADED", payload: uzip, zipFile: zipDetails });
     };
     if (state.process) {
       unZip();

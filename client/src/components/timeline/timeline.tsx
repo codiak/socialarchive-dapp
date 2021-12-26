@@ -17,7 +17,7 @@ export default function Timeline() {
     state: { unZippedFiles }, // nested destructure!
   } = useStore();
   if (unZippedFiles && unZippedFiles.length > 0) {
-    // console.log("unZippedFiles: ", unZippedFiles);
+    console.log("unZippedFiles: ", unZippedFiles);
     const manifest = unZippedFiles[0].data;
     console.log("manifest: ", manifest);
   }
