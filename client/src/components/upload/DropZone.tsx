@@ -1,9 +1,9 @@
 import { useDropzone } from "react-dropzone";
 import { useStore } from "../../utils/store";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 const DropZone = ({ zipFile }: any) => {
-  let navigate = useNavigate();
+  // let navigate = useNavigate();
 
   const { dispatch } = useStore();
 
