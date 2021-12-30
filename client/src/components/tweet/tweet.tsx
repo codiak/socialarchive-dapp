@@ -5,14 +5,15 @@ import AvatarCard from '../avatar-card/avatar-card';
 import ReactIntense from 'react-intense';
 
 
-export default function TweetCard(props: { tweet: Tweet }) {
+export default function TweetCard(props: { tweet: Tweet, account: any, profile: any}) {
     const { created_at, full_text, favorite_count, retweet_count, id, entities } = props.tweet;
+    const { account, profile } = props;
     const date = new Date(Date.parse(created_at)).toLocaleDateString();
     const media = entities['media'] || [];
 
     return (
         <div className="tweet-card">
-            <AvatarCard hideBio={true} date={date} tweetId={id}/>
+            <AvatarCard hideBio={true} date={date} tweetId={id} archivedAccount={account} archivedProfile={profile} />
             {/* <span className="tweet-date">{date}</span> */}
             <p className="tweet-text">{full_text}</p>
             <div className="media-wrapper">

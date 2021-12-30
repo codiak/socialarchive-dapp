@@ -1,9 +1,9 @@
 import { useDropzone } from "react-dropzone";
 import { useStore } from "../../utils/store";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const DropZone = ({ zipFile }: any) => {
-  // let navigate = useNavigate();
+  let navigate = useNavigate();
 
   const { dispatch } = useStore();
 
@@ -16,7 +16,7 @@ const DropZone = ({ zipFile }: any) => {
       if (file.type === ZIP_MIME_TYPE) {
         dispatch({ type: "SET_ZIP_FILE", payload: file });
       }
-      //   navigate("/timeline/cybercody/tweets");
+        navigate("/timeline/cybercody/tweets");
     }
   };
 

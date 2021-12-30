@@ -4,9 +4,9 @@ import { ACCOUNT } from "../../data/cody/account";
 import { PROFILE } from "../../data/cody/profile";
 
 export default function AvatarCard(props: any) {
-  const { hideBio, date, tweetId, archivedAccount, isUserRow } = props;
+  const { hideBio, date, tweetId, archivedAccount, archivedProfile, isUserRow } = props;
   const { username, accountDisplayName } = archivedAccount || ACCOUNT.account;
-  const { avatarMediaUrl, description } = archivedAccount ||PROFILE.profile;
+  const { avatarMediaUrl, description } = archivedProfile || PROFILE.profile;
   const bio = description.bio;
   const cardStyles = ['card', isUserRow ? 'card-user-row' : ''].join(' ');
 

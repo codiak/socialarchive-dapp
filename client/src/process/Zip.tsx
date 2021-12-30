@@ -118,7 +118,6 @@ export class Zip {
 
     // update media references in tweets
     await this.replaceMediaLinks(unZippedFiles);
-
     return unZippedFiles;
   }
 

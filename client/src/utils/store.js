@@ -8,16 +8,58 @@ const reducerActions = (state = initialState, action) => {
   switch (action.type) {
     case "SET_ZIP_FILE":
       let file = action.payload;
-      return { ...state, loading: true, error: false, zipFile: file, process: true };
+      return {
+        ...state,
+        loading: true,
+        error: false,
+        zipFile: file,
+        process: true,
+      };
     case "UNZIPPED_FILES_LOADED":
-      return { ...state, loading: false, error: false, unZippedFiles: action.payload, zipFile: action.zipFile, process: false };
+      /** Build reference object
+         * todo: finalize format
+         */
+       let pendingBackup = {};
+       action.payload.forEach((f) => {
+        if (['tweet.js', 'like.js', 'following.js', 'follower.js'].includes(f.name)) {
+          // Handle nested arrays
+          let name = f.name.replace('.js', '');
+          let flattenedArray = [];
+          f.data.forEach((item) => {
+            flattenedArray.push(item[name]);
+            // item.entries().forEach((key, value) => {
+            //   if (!name) name = key;
+            //   flattenedArray.push(value);
+            // });
+          });
+          pendingBackup = Object.assign(pendingBackup, { [name]: flattenedArray });
+        } else {
+          pendingBackup = Object.assign(pendingBackup, f.data[0]);
+        }
+       });
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        unZippedFiles: action.payload,
+        pendingBackup: pendingBackup,
+        zipFile: action.zipFile,
+        process: false,
+      };
     case "LOADING":
       return { ...state, loading: true, error: false };
     case "ERROR":
       let msg = action.payload;
       // format the number into a human readable format
-      let formatBytes = msg.substring(msg.indexOf("an") + 3, msg.indexOf("bytes"));
-      msg = msg.replace(formatBytes + "bytes", convertBytesToString(formatBytes, 0)) + ". Please try again with a smaller file.";
+      let formatBytes = msg.substring(
+        msg.indexOf("an") + 3,
+        msg.indexOf("bytes")
+      );
+      msg =
+        msg.replace(
+          formatBytes + "bytes",
+          convertBytesToString(formatBytes, 0)
+        ) + ". Please try again with a smaller file.";
       return { ...state, loading: false, error: true, errorMessage: msg };
     default:
       return state;
@@ -28,6 +70,7 @@ const StoreContext = createContext({});
 
 const initialState = {
   unZippedFiles: [],
+  pendingBackup: {},
   zipFile: undefined,
   loading: false,
   error: false,
@@ -44,7 +87,11 @@ const StoreProvider = ({ children }) => {
       if (zipFile !== undefined) {
         dispatch({ type: "LOADING" });
         let unZippedFiles = await get("zip");
-        dispatch({ type: "UNZIPPED_FILES_LOADED", payload: unZippedFiles ? unZippedFiles : [], zipFile: zipFile });
+        dispatch({
+          type: "UNZIPPED_FILES_LOADED",
+          payload: unZippedFiles ? unZippedFiles : [],
+          zipFile: zipFile
+        });
       }
     };
     loadFromIdb();
@@ -67,7 +114,11 @@ const StoreProvider = ({ children }) => {
         await set("zip", uzip);
       }
       await set("zipFile", zipDetails);
-      dispatch({ type: "UNZIPPED_FILES_LOADED", payload: uzip, zipFile: zipDetails });
+      dispatch({
+        type: "UNZIPPED_FILES_LOADED",
+        payload: uzip,
+        zipFile: zipDetails,
+      });
     };
     if (state.process) {
       unZip();
@@ -76,7 +127,12 @@ const StoreProvider = ({ children }) => {
 
   //   const value = useMemo(() => ({ state, dispatch }), [state, dispatch]);
 
-  return <StoreContext.Provider value={{ state, dispatch }}>{children}</StoreContext.Provider>;
+  return (
+    <StoreContext.Provider value={{ state, dispatch }}>
+      {" "}
+      {children}{" "}
+    </StoreContext.Provider>
+  );
 };
 
 const useStore = () => {
