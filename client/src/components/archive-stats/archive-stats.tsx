@@ -1,7 +1,7 @@
 import React from 'react';
-import "./backup-stats.css";
+import "./archive-stats.css";
 
-export default function BackupStats(props: { backup: any }) {
+export default function ArchiveStats(props: { backup: any }) {
     const { tweet } = props.backup;
     const quickStats = [{
         title: 'Tweets',

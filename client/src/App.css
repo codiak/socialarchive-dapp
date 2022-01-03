@@ -89,3 +89,16 @@ h3 {
   font-family: 'Roboto Mono', monospace;
   font-weight: bold;
 }
+
+.default-avatar {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  background: #dedede;
+  overflow: hidden;
+}
+
+.icon-avatar {
+  width: 40px;
+  height: 40px;
+}
