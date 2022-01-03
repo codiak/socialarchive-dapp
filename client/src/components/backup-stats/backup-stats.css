@@ -1,0 +1,39 @@
+
+.stat-block {
+    border-radius: 12px;
+    margin: 2px;
+    width: 35%;
+    padding: 1em;
+    display: inline-block;
+    position: relative;
+    font-size: 12px;
+    padding-left: calc(2em + 19px);
+}
+
+.stat-block:hover,
+.stat-block:focus {
+    cursor: pointer;
+    background: rgba(29, 161, 242, 0.1);
+}
+
+.stat-block:hover .hover-show,
+.stat-block:focus .hover-show {
+    opacity: 1;
+}
+
+
+.stat-block .hover-show {
+    color: #1DA1F2;
+}
+
+.hover-show {
+    opacity: 0;
+}
+
+.icon {
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    left: 1em;
+    top: 1em;
+}

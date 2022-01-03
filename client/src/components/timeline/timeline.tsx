@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 
 import "./timeline.css";
@@ -11,39 +11,23 @@ import { TWEET_SUBSET } from "../../data/cody/tweet";
 import { FOLLOWERS } from "../../data/cody/follower";
 import { FOLLOWING } from "../../data/cody/following";
 import { useStore } from "../../utils/store";
+import BackupStats from "../backup-stats/backup-stats";
 
 export default function Timeline() {
   const {
-    state: { unZippedFiles, pendingBackup }, // nested destructure!
+    state: { pendingBackup }, // nested destructure!
   } = useStore();
-  if (unZippedFiles && unZippedFiles.length > 0) {
-    console.log("unZippedFiles: ", unZippedFiles);
-    const manifest = unZippedFiles[0].data;
-    console.log("manifest: ", manifest);
+  const { section } = useParams();
+  // if (unZippedFiles && unZippedFiles.length > 0) {
+  //   console.log("unZippedFiles: ", unZippedFiles);
+  //   const manifest = unZippedFiles[0].data;
+  //   console.log("manifest: ", manifest);
+  // }
+  console.log(pendingBackup)
+  if (!pendingBackup || !pendingBackup.account) {
+    return (<h2>Account backup not found</h2>)
   }
-  console.log('**** backup *****');
-  console.log(pendingBackup);
-  // 0: {name: 'manifest.js', type: 'json', data: {…}}
-  // 1: {name: 'account-creation-ip.js', type: 'json', data: Array(1)}
-  // 2: {name: 'account-timezone.js', type: 'json', data: Array(1)}
-  // 3: {name: 'account.js', type: 'json', data: Array(1)}
-  // 4: {name: 'ageinfo.js', type: 'json', data: Array(1)}
-  // 5: {name: 'device-token.js', type: 'json', data: Array(1)}
-  // 6: {name: 'follower.js', type: 'json', data: Array(2)}
-  // 7: {name: 'following.js', type: 'json', data: Array(6)}
-  // 8: {name: 'ip-audit.js', type: 'json', data: Array(14)}
-  // 9: {name: 'like.js', type: 'json', data: Array(1)}
-  // 10: {name: 'ni-devices.js', type: 'json', data: Array(1)}
-  // 11: {name: 'personalization.js', type: 'json', data: Array(1)}
-  // 12: {name: 'phone-number.js', type: 'json', data: Array(1)}
-  // 13: {name: 'profile.js', type: 'json', data: Array(1)}
-  // 14: {name: '93710905290770-YNyHklGt.jpg', type: 'jpg', data: 'data:image/jpg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/…gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA=', id: 'YNyHklGt.jpg'}
-  // 15: {name: 'screen-name-change.js', type: 'json', data: Array(1)}
-  // 16: {name: 'tweet.js', type: 'json', data: Array(5)}
-  // 17: {name: '76456984010755-FCVkCXSaUAA_IVN.mp4', type: 'mp4', data: 'data:video/mp4;base64,AAAAGGZ0eXBtcDQyAAAAAG1wNDFp…gigsgI2u12yvEgtSQkKljJKF3jfR/DvcbvffSjzqe8bSFT/Og', id: 'FCVkCXSaUAA_IVN.mp4'}
-  // 18: {name: 'verified.js', type: 'json', data: Array(1)}
 
-  let { section } = useParams();
   const page = section || "account";
   const btnClasses = "btn rounded-btn ";
   const {account, profile} = pendingBackup;
@@ -64,21 +48,28 @@ export default function Timeline() {
         <AvatarCard archivedAccount={pendingBackup.account} archivedProfile={pendingBackup.profile} />
         {/* Date generated·March 4, 2021 at 4:03:52 PM GMT-8·Estimated size·62 MB */}
         <div className="btn-stack">
-          <a href={"/timeline/" + username + "/home"} className={btnClasses + (page === "home" ? "active" : "")}>
+          <Link to={"/timeline/" + username + "/home"} className={btnClasses + (page === "home" ? "active" : "")}>
             Home
-          </a>
+          </Link>
           <br />
-          <a href={"/timeline/" + username + "/account"} className={btnClasses + (page === "account" ? "active" : "")}>
+          <Link to={"/timeline/" + username + "/account"} className={btnClasses + (page === "account" ? "active" : "")}>
             Account
-          </a>
+          </Link>
           <br />
-          <a href={"/timeline/" + username + "/tweets"} className={btnClasses + (page === "tweets" ? "active" : "")}>
+          <Link to={"/timeline/" + username + "/tweets"} className={btnClasses + (page === "tweets" ? "active" : "")}>
             Tweets
-          </a>
+          </Link>
           <br />
         </div>
       </div>
       <div className="feed-col">
+        {/***** Home/Stats Content ******/}
+        {page === "home" && (
+          <div className="account-home">
+            <BackupStats backup={pendingBackup}></BackupStats>
+          </div>
+        )}
+        {/***** Account Content ******/}
         {page === "account" && (
           <div className="account-info">
             <div className="row">
@@ -115,6 +106,7 @@ export default function Timeline() {
             </div>
           </div>
         )}
+        {/***** Tweet Timeline ******/}
         {page === "tweets" &&
           tweets.map((tweet: Tweet) => {
             return <TweetCard tweet={tweet} account={account} profile={profile} />;

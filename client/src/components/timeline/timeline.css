@@ -112,3 +112,8 @@
     margin-top: 0px;
     margin-bottom: 0.5em;
 }
+
+.account-home,
+.account-info {
+    position: relative;
+}
