@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet-async";
 
 import AvatarCard from "../avatar-card/avatar-card";
 
-export default function Timeline() {
+export default function BrowsePage() {
   let { section } = useParams();
   const page = section || "explore";
   const recentAccounts: ArchivedAccount[] = [
@@ -31,7 +31,7 @@ export default function Timeline() {
             <h2 className="col-header">Recently Added</h2>
             {recentAccounts.map((account) => {
               return (
-                <a href={"/timeline/" + account.username + "/tweets"}>
+                <a href={"/archive/" + account.username + "/tweets"}>
                   <AvatarCard archivedAccount={account} isUserRow={true} />
                 </a>
               );

@@ -16,7 +16,7 @@ const DropZone = ({ zipFile }: any) => {
       if (file.type === ZIP_MIME_TYPE) {
         dispatch({ type: "SET_ZIP_FILE", payload: file });
       }
-        navigate("/timeline/cybercody/tweets");
+      navigate("/archive/pending/home");
     }
   };
 

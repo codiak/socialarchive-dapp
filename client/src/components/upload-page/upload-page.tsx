@@ -2,7 +2,7 @@ import React from "react";
 import { useStore } from "../../utils/store";
 import Dropzone from "./DropZone";
 
-function Upload() {
+function UploadPage() {
   // our faithful state management
   const {
     state: { zipFile, unZippedFiles, loading, error, errorMessage },
@@ -52,4 +52,4 @@ function Upload() {
   );
 }
 
-export default Upload;
+export default UploadPage;

@@ -31,7 +31,7 @@ export default function ArchiveAccount(props: { backup: any }) {
         </div>
         <div className="row">
             <h3>Tweets</h3>
-            <Link to="/timeline/tweets">{tweet.length}</Link>
+            <Link to={`/archive/${username}/tweets`}>{tweet.length}</Link>
         </div>
         <div className="row">
             <h3>Followers</h3>

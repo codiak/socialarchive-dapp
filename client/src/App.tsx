@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Upload from "./components/upload/upload";
-import Browse from "./components/browse/browse";
-import Timeline from "./components/timeline/timeline";
+import UploadPage from "./components/upload-page/upload-page";
+import BrowsePage from "./components/browse-page/browse-page";
+import ArchivePage from "./components/archive-page/archive-page";
 import "./App.css";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 
@@ -40,13 +40,13 @@ function App() {
         <StoreProvider>
           <BrowserRouter>
             <Routes>
-              <Route path="/browse" element={<Browse />}>
-                <Route path=":section" element={<Browse />} />
+              <Route path="/browse" element={<BrowsePage />}>
+                <Route path=":section" element={<BrowsePage />} />
               </Route>
-              <Route path="/timeline" element={<Timeline />}>
-                <Route path=":user/:section" element={<Timeline />} />
+              <Route path="/archive" element={<ArchivePage />}>
+                <Route path=":user/:section" element={<ArchivePage />} />
               </Route>
-              <Route path="/" element={<Upload />} />
+              <Route path="/" element={<UploadPage />} />
             </Routes>
           </BrowserRouter>
         </StoreProvider>

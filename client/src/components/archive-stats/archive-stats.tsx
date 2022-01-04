@@ -2,7 +2,7 @@ import React from 'react';
 import "./archive-stats.css";
 
 export default function ArchiveStats(props: { backup: any }) {
-    const { tweet } = props.backup;
+    const { tweet, like, list, block, moment, mute } = props.backup;
     const quickStats = [{
         title: 'Tweets',
         icon: 'tweet',
@@ -10,23 +10,23 @@ export default function ArchiveStats(props: { backup: any }) {
       }, {
         title: 'Likes',
         icon: 'like',
-        count: 100
+        count: like ? like.length : 0
       }, {
         title: 'Blocked Accounts',
         icon: 'block',
-        count: 100
+        count: block ? block.length : 0
       }, {
         title: 'Muted Accounts',
         icon: 'mute',
-        count: 100
+        count: mute ? mute.length : 0
       }, {
         title: 'Lists',
         icon: 'list',
-        count: 100
+        count: list ? list.length : 0
       }, {
         title: 'Moments',
         icon: 'moment',
-        count: 100
+        count: moment ? moment.length : 0
       }]
 
     return (<>

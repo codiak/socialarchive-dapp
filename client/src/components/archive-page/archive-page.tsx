@@ -2,7 +2,7 @@ import React from "react";
 import { useParams, Link } from "react-router-dom";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 
-import "./timeline.css";
+import "./archive-page.css";
 import AvatarCard from "../avatar-card/avatar-card";
 import TweetCard, { Tweet } from "../tweet/tweet";
 import { useStore } from "../../utils/store";
@@ -11,14 +11,14 @@ import ArchiveAccount from "../archive-account/archive-account";
 import ArchiveLikes from "../archive-likes/archive-likes";
 import ArchiveLists from "../archive-lists/archive-lists";
 
-export default function Timeline() {
+export default function ArchivePage() {
   const {
     state: { pendingBackup }, // nested destructure!
   } = useStore();
-  const { section } = useParams();
+  const { user, section } = useParams();
 
   console.log(pendingBackup)
-  if (!pendingBackup || !pendingBackup.account) {
+  if (user === 'pending' && (!pendingBackup || !pendingBackup.account)) {
     return (<h2>Account backup not found</h2>)
   }
 
@@ -52,13 +52,19 @@ export default function Timeline() {
           <title>Social Archive</title>
         </Helmet>
       </HelmetProvider>
+      { user === 'pending' &&(<div className="archive-pending-label">
+        <b>Archive Preview</b>
+        <p>Not yet backed up to Swarm.</p>
+        <br />
+        Confirm | Cancel
+      </div>)}
       <div className="left-col">
         <AvatarCard archivedAccount={pendingBackup.account} archivedProfile={pendingBackup.profile} />
         {/* Date generated·March 4, 2021 at 4:03:52 PM GMT-8·Estimated size·62 MB */}
         <div className="btn-stack">
           { sections.map(section => {
             return (<>
-              <Link to={`/timeline/${username}/${section.slug}`} className={btnClasses + (page === section.slug ? "active" : "")}>
+              <Link to={`/archive/${user}/${section.slug}`} className={btnClasses + (page === section.slug ? "active" : "")}>
                 { section.title}
               </Link>
               <br/>
