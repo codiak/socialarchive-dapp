@@ -9,6 +9,7 @@ import { useStore } from "../../utils/store";
 import ArchiveStats from "../archive-stats/archive-stats";
 import ArchiveAccount from "../archive-account/archive-account";
 import ArchiveLikes from "../archive-likes/archive-likes";
+import ArchiveLists from "../archive-lists/archive-lists";
 
 export default function Timeline() {
   const {
@@ -23,7 +24,7 @@ export default function Timeline() {
 
   const page = section || "account";
   const btnClasses = "btn rounded-btn ";
-  const {account, profile} = pendingBackup;
+  const {account, profile, lists} = pendingBackup;
   const tweets = pendingBackup.tweet || [];
   const likes = pendingBackup.like || [];
   const { username } = account;
@@ -39,6 +40,9 @@ export default function Timeline() {
   }, {
     slug: 'likes',
     title: 'Likes'
+  }, {
+    slug: 'lists',
+    title: 'Lists'
   }]
 
   return (
@@ -84,6 +88,12 @@ export default function Timeline() {
         {page === "likes" && (
           <div className="account-likes">
             <ArchiveLikes likes={likes}></ArchiveLikes>
+          </div>
+        )}
+        {/***** Lists List ******/}
+        {page === "lists" && (
+          <div className="account-lists">
+            <ArchiveLists lists={lists}></ArchiveLists>
           </div>
         )}
       </div>
