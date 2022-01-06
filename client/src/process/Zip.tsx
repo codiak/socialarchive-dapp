@@ -165,7 +165,7 @@ export class Zip {
 
   async updateMediaPropertiesWithDataUri(media: any, midUri: any) {
     for (let mediaObj of media) {
-      let murl = mediaObj.media_url;
+      let murl = mediaObj.media_url_https;
       // extract the media id from the url
       let mediaId = murl.substring(murl.lastIndexOf("/") + 1, murl.length);
       // check if the media id is in the map
@@ -178,7 +178,7 @@ export class Zip {
       } else {
         // console.log("media id not found in map: ", mediaId);
         // if not, download the media and replace the url with the data uri
-        mediaObj.media_url = await this.mediaUrlToDataUri(mediaObj.media_url);
+        mediaObj.media_url = await this.mediaUrlToDataUri(mediaObj.media_url_https);
         // update the second property of the media object too
         mediaObj.media_url_https = mediaObj.media_url;
         // add the media id and data uri to the map
