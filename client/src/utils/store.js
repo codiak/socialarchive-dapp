@@ -21,9 +21,9 @@ const reducerActions = (state = initialState, action) => {
          */
        let pendingBackup = {};
        action.payload.forEach((f) => {
-        if (['tweet.js', 'like.js', 'following.js', 'follower.js'].includes(f.name)) {
+        if (['tweet.js', 'like.js', 'following.js', 'follower.js', 'mute.js', 'block.js'].includes(f.name)) {
           // Handle nested arrays
-          let name = f.name.replace('.js', '');
+          let name = Object.keys(f.data[0])[0];
           let flattenedArray = [];
           f.data.forEach((item) => {
             flattenedArray.push(item[name]);

@@ -1,8 +1,10 @@
 import React from 'react';
+import { useParams, Link } from "react-router-dom";
 import "./archive-stats.css";
 
 export default function ArchiveStats(props: { backup: any }) {
-    const { tweet, like, list, block, moment, mute } = props.backup;
+    const { tweet, like, list, blocking, moment, muting } = props.backup;
+    const { user } = useParams();
     const quickStats = [{
         title: 'Tweets',
         icon: 'tweet',
@@ -13,12 +15,12 @@ export default function ArchiveStats(props: { backup: any }) {
         count: like ? like.length : 0
       }, {
         title: 'Blocked Accounts',
-        icon: 'block',
-        count: block ? block.length : 0
+        icon: 'blocking',
+        count: blocking ? blocking.length : 0
       }, {
         title: 'Muted Accounts',
-        icon: 'mute',
-        count: mute ? mute.length : 0
+        icon: 'muting',
+        count: muting ? muting.length : 0
       }, {
         title: 'Lists',
         icon: 'list',
@@ -36,13 +38,13 @@ export default function ArchiveStats(props: { backup: any }) {
         { quickStats.map((stat: any) => {
             const iconsrc = process.env.PUBLIC_URL + '/icons/' + stat.icon + '.svg'
             return (
-            <div className="stat-block">
+            <Link to={`/archive/${user}/${stat.icon}`} className="stat-block">
                 <img src={iconsrc} alt={stat.title} className="icon"/>
                 {stat.title}
                 <br/>
                 <b>{stat.count}</b>
                 <div className="hover-show">View</div>
-            </div>);
+            </Link>);
         })}
     </>)
 };

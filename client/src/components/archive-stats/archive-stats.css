@@ -10,6 +10,11 @@
     padding-left: calc(2em + 19px);
 }
 
+a.stat-block {
+    text-decoration: none;
+    color: #121212;
+}
+
 .stat-block:hover,
 .stat-block:focus {
     cursor: pointer;

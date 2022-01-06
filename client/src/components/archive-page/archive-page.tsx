@@ -10,6 +10,7 @@ import ArchiveStats from "../archive-stats/archive-stats";
 import ArchiveAccount from "../archive-account/archive-account";
 import ArchiveLikes from "../archive-likes/archive-likes";
 import ArchiveLists from "../archive-lists/archive-lists";
+import ArchiveAccountList from "../archive-account-list/archive-account-list";
 
 export default function ArchivePage() {
   const {
@@ -27,7 +28,6 @@ export default function ArchivePage() {
   const {account, profile, lists} = pendingBackup;
   const tweets = pendingBackup.tweet || [];
   const likes = pendingBackup.like || [];
-  const { username } = account;
   const sections = [{
     slug: 'home',
     title: 'Home'
@@ -38,12 +38,13 @@ export default function ArchivePage() {
     slug: 'tweets',
     title: 'Tweets'
   }, {
-    slug: 'likes',
+    slug: 'like',
     title: 'Likes'
   }, {
     slug: 'lists',
     title: 'Lists'
   }]
+  const accounts = pendingBackup[page] || []
 
   return (
     <div className="container">
@@ -91,7 +92,7 @@ export default function ArchivePage() {
             return <TweetCard tweet={tweet} account={account} profile={profile} />;
           })}
         {/***** Likes List ******/}
-        {page === "likes" && (
+        {page === "like" && (
           <div className="account-likes">
             <ArchiveLikes likes={likes}></ArchiveLikes>
           </div>
@@ -100,6 +101,12 @@ export default function ArchivePage() {
         {page === "lists" && (
           <div className="account-lists">
             <ArchiveLists lists={lists}></ArchiveLists>
+          </div>
+        )}
+        {/***** Catch all account listing ******/}
+        {['muting', 'blocking', 'following', 'follower'].includes(page) && (
+          <div className="account-block">
+            <ArchiveAccountList accounts={accounts} title={page}></ArchiveAccountList>
           </div>
         )}
       </div>
