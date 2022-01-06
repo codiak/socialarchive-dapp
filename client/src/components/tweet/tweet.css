@@ -43,6 +43,9 @@
     margin-left: var(--tweet-indent);
     margin-bottom: 10px;
 }
+.media-wrapper video {
+    max-width: 100%;
+}
 .tweet-card .ri-wrapper {
     margin: 0 -1px 0 0;
     border: 1px solid #cdcdcd;

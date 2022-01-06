@@ -5,18 +5,23 @@ import AvatarCard from '../avatar-card/avatar-card';
 import ReactIntense from 'react-intense';
 
 
-export default function TweetCard(props: { tweet: Tweet }) {
-    const { created_at, full_text, favorite_count, retweet_count, id, entities } = props.tweet;
+export default function TweetCard(props: { tweet: Tweet, account: any, profile: any}) {
+    const { created_at, full_text, favorite_count, retweet_count, id, entities, extended_entities } = props.tweet;
+    const { account, profile } = props;
     const date = new Date(Date.parse(created_at)).toLocaleDateString();
     const media = entities['media'] || [];
+    // @todo: safer reference
+    const ext_media_url = extended_entities ? extended_entities['media'][0].video_info.variants[0].url : ''
 
     return (
         <div className="tweet-card">
-            <AvatarCard hideBio={true} date={date} tweetId={id}/>
+            <AvatarCard hideBio={true} date={date} tweetId={id} archivedAccount={account} archivedProfile={profile} />
             {/* <span className="tweet-date">{date}</span> */}
             <p className="tweet-text">{full_text}</p>
             <div className="media-wrapper">
-                { media.filter(m => m.type === 'photo').map(m => {
+                { ext_media_url ? (
+                    <video autoPlay loop controls src={ext_media_url}></video>
+                ) : media.filter(m => m.type === 'photo').map(m => {
                     // return (<img alt="" src={m['media_url']} />)
                     return (<ReactIntense src={m['media_url']} />)
                 })}
@@ -48,5 +53,6 @@ export interface Tweet {
     id: string,
     entities: {
         media: Array<TweetMedia>
-    }
+    },
+    extended_entities: any
 }
