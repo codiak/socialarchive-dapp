@@ -42,7 +42,10 @@ const DropZone = ({ zipFile }: any) => {
     <section>
       <div {...getRootProps({ className: "dropzone" })}>
         <input {...getInputProps()} />
-        {zipFile ? "Drag and drop or select another file" : "Drag and drop or select a file"}
+        {zipFile ? "Drag and drop or select another archive" : (<>
+          <p>Drag and drop or select zipped Twitter archive<br/><br/>
+          <i>eg. twitter-2021-11-04-..f918.zip</i></p>
+        </>)}
       </div>
     </section>
   );
