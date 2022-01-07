@@ -17,28 +17,40 @@ function UploadPage() {
       <Dropzone />
       {error && <div style={{ color: "red" }}>Error: {errorMessage}</div>}
       {loading && <div>Loading...</div>}
+      {!loading && zipFile && (
+        <>
+          {unZippedFiles.length === 0 && (
+            <>
+              <div style={{ color: "red" }}>This file does not contain any twitter backup data</div>
+              Filename: {zipFile.name}
+              <br />
+              Size: {zipFile.size}
+            </>
+          )}
+        </>
+      )}
       <div>
-      <h3>Need your Twitter archive?</h3>
-      <div className="step-wrap">
-        <div className="step-block">
-          <p>1. Access Twitter settings</p>
-          <img src="step1-settings.gif" alt="step 1"/>
+        <h3>Need your Twitter archive?</h3>
+        <div className="step-wrap">
+          <div className="step-block">
+            <p>1. Access Twitter settings</p>
+            <img src="step1-settings.gif" alt="step 1" />
+          </div>
+          <div className="step-block">
+            <p>2. Request archive</p>
+            <img src="step2-request.gif" alt="step 2" />
+          </div>
         </div>
-        <div className="step-block">
-          <p>2. Request archive</p>
-          <img src="step2-request.gif" alt="step 2"/>
+        <div className="step-wrap">
+          <div className="step-block">
+            <p>3. Wait for email confirmation</p>
+            <img src="step3-waitforemail.png" alt="step 3" />
+          </div>
+          <div className="step-block">
+            <p>4. Download archive</p>
+            <img src="step4-download.gif" alt="step 4" />
+          </div>
         </div>
-      </div>
-      <div className="step-wrap">
-        <div className="step-block">
-          <p>3. Wait for email confirmation</p>
-          <img src="step3-waitforemail.png" alt="step 3"/>
-        </div>
-        <div className="step-block">
-          <p>4. Download archive</p>
-          <img src="step4-download.gif" alt="step 4"/>
-        </div>
-      </div>
       </div>
     </div>
   );

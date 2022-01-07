@@ -11,40 +11,51 @@ import ArchiveAccount from "../archive-account/archive-account";
 import ArchiveLikes from "../archive-likes/archive-likes";
 import ArchiveLists from "../archive-lists/archive-lists";
 import ArchiveAccountList from "../archive-account-list/archive-account-list";
+import { useNavigate } from "react-router-dom";
 
 export default function ArchivePage() {
+  let navigate = useNavigate();
+
   const {
     state: { pendingBackup }, // nested destructure!
   } = useStore();
   const { user, section } = useParams();
 
-  console.log(pendingBackup)
-  if (user === 'pending' && (!pendingBackup || !pendingBackup.account)) {
-    return (<h2>Account backup not found</h2>)
+  console.log(pendingBackup);
+  if (user === "pending" && (!pendingBackup || !pendingBackup.account)) {
+    navigate("/");
+
+    return null;
   }
 
   const page = section || "account";
   const btnClasses = "btn rounded-btn ";
-  const {account, profile, lists} = pendingBackup;
+  const { account, profile, lists } = pendingBackup;
   const tweets = pendingBackup.tweet || [];
   const likes = pendingBackup.like || [];
-  const sections = [{
-    slug: 'home',
-    title: 'Home'
-  }, {
-    slug: 'account',
-    title: 'Account'
-  }, {
-    slug: 'tweets',
-    title: 'Tweets'
-  }, {
-    slug: 'like',
-    title: 'Likes'
-  }, {
-    slug: 'lists',
-    title: 'Lists'
-  }]
-  const accounts = pendingBackup[page] || []
+  const sections = [
+    {
+      slug: "home",
+      title: "Home",
+    },
+    {
+      slug: "account",
+      title: "Account",
+    },
+    {
+      slug: "tweets",
+      title: "Tweets",
+    },
+    {
+      slug: "like",
+      title: "Likes",
+    },
+    {
+      slug: "lists",
+      title: "Lists",
+    },
+  ];
+  const accounts = pendingBackup[page] || [];
 
   return (
     <div className="container">
@@ -53,23 +64,27 @@ export default function ArchivePage() {
           <title>Social Archive</title>
         </Helmet>
       </HelmetProvider>
-      { user === 'pending' &&(<div className="archive-pending-label">
-        <b>Archive Preview</b>
-        <p>Not yet backed up to Swarm.</p>
-        <br />
-        Confirm | Cancel
-      </div>)}
+      {user === "pending" && (
+        <div className="archive-pending-label">
+          <b>Archive Preview</b>
+          <p>Not yet backed up to Swarm.</p>
+          <br />
+          Confirm | Cancel
+        </div>
+      )}
       <div className="left-col">
         <AvatarCard archivedAccount={pendingBackup.account} archivedProfile={pendingBackup.profile} />
         {/* Date generated·March 4, 2021 at 4:03:52 PM GMT-8·Estimated size·62 MB */}
         <div className="btn-stack">
-          { sections.map(section => {
-            return (<>
-              <Link to={`/archive/${user}/${section.slug}`} className={btnClasses + (page === section.slug ? "active" : "")}>
-                { section.title}
-              </Link>
-              <br/>
-            </>)
+          {sections.map((section) => {
+            return (
+              <>
+                <Link to={`/archive/${user}/${section.slug}`} className={btnClasses + (page === section.slug ? "active" : "")}>
+                  {section.title}
+                </Link>
+                <br />
+              </>
+            );
           })}
         </div>
       </div>
@@ -104,7 +119,7 @@ export default function ArchivePage() {
           </div>
         )}
         {/***** Catch all account listing ******/}
-        {['muting', 'blocking', 'following', 'follower'].includes(page) && (
+        {["muting", "blocking", "following", "follower"].includes(page) && (
           <div className="account-block">
             <ArchiveAccountList accounts={accounts} title={page}></ArchiveAccountList>
           </div>
