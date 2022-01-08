@@ -10,6 +10,7 @@ import ArchiveStats from "../archive-stats/archive-stats";
 import ArchiveAccount from "../archive-account/archive-account";
 import ArchiveLikes from "../archive-likes/archive-likes";
 import ArchiveLists from "../archive-lists/archive-lists";
+import ArchiveMoment from "../archive-moment/archive-moment";
 import ArchiveAccountList from "../archive-account-list/archive-account-list";
 import { useNavigate } from "react-router-dom";
 
@@ -33,6 +34,7 @@ export default function ArchivePage() {
   const { account, profile, lists } = pendingBackup;
   const tweets = pendingBackup.tweet || [];
   const likes = pendingBackup.like || [];
+  const moments = pendingBackup.moment || [];
   const sections = [
     {
       slug: "home",
@@ -54,7 +56,17 @@ export default function ArchivePage() {
       slug: "lists",
       title: "Lists",
     },
+    {
+      slug: "moment",
+      title: "Moments",
+    }
   ];
+  const disabledSections = [
+    "Direct Messages",
+    "Safety",
+    "Personalziation",
+    "Ads"
+  ]
   const accounts = pendingBackup[page] || [];
 
   return (
@@ -86,6 +98,15 @@ export default function ArchivePage() {
               </>
             );
           })}
+          <p className="button-section-help-text">Private data excluded:</p>
+          {disabledSections.map((title) => {
+            return (
+              <>
+                <div className={btnClasses + 'disabled'}>{title}</div>
+                <br/>
+              </>
+            )
+          })}
         </div>
       </div>
       <div className="feed-col">
@@ -116,6 +137,12 @@ export default function ArchivePage() {
         {page === "lists" && (
           <div className="account-lists">
             <ArchiveLists lists={lists}></ArchiveLists>
+          </div>
+        )}
+        {/***** Moments ******/}
+        {page === "moment" && (
+          <div className="account-moment">
+            <ArchiveMoment moments={moments}></ArchiveMoment>
           </div>
         )}
         {/***** Catch all account listing ******/}
