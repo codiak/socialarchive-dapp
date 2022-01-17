@@ -4,13 +4,13 @@ import { Helmet, HelmetProvider } from "react-helmet-async";
 
 import "./archive-page.css";
 import AvatarCard from "../avatar-card/avatar-card";
-import TweetCard, { Tweet } from "../tweet/tweet";
 import { useStore } from "../../utils/store";
 import ArchiveStats from "../archive-stats/archive-stats";
 import ArchiveAccount from "../archive-account/archive-account";
 import ArchiveLikes from "../archive-likes/archive-likes";
 import ArchiveLists from "../archive-lists/archive-lists";
 import ArchiveMoment from "../archive-moment/archive-moment";
+import ArchiveTweets from "../archive-tweets/archive-tweets";
 import ArchiveAccountList from "../archive-account-list/archive-account-list";
 import { useNavigate } from "react-router-dom";
 
@@ -123,10 +123,11 @@ export default function ArchivePage() {
           </div>
         )}
         {/***** Tweet Timeline ******/}
-        {page === "tweets" &&
-          tweets.map((tweet: Tweet) => {
-            return <TweetCard tweet={tweet} account={account} profile={profile} />;
-          })}
+        {page === "tweets" && (
+          <div className="account-tweets">
+            <ArchiveTweets tweets={tweets} account={account} profile={profile}></ArchiveTweets>
+          </div>
+        )}
         {/***** Likes List ******/}
         {page === "like" && (
           <div className="account-likes">

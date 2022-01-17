@@ -7,7 +7,7 @@ export default function ArchiveStats(props: { backup: any }) {
     const { user } = useParams();
     const quickStats = [{
         title: 'Tweets',
-        icon: 'tweet',
+        icon: 'tweets',
         count: tweet.length
       }, {
         title: 'Likes',
