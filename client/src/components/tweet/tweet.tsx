@@ -10,8 +10,7 @@ export default function TweetCard(props: { tweet: Tweet, account: any, profile: 
     const { account, profile } = props;
     const date = new Date(Date.parse(created_at)).toLocaleDateString();
     const media = entities['media'] || [];
-    // @todo: safer reference
-    const ext_media_url = extended_entities ? extended_entities['media'][0].video_info.variants[0].url : ''
+    const ext_media_url = extended_entities?.media?.[0]?.video_info?.variants?.[0].url || '';
 
     return (
         <div className="tweet-card">
