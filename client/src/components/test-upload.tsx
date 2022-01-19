@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Bee, PostageBatch } from '@ethersphere/bee-js';
+import { Bee, PostageBatch, Reference } from '@ethersphere/bee-js';
 
 const POSTAGE_STAMPS_AMOUNT = BigInt(10000)
 const POSTAGE_STAMPS_DEPTH = 20
+const POSTAGE_STAMP = (process.env.REACT_APP_POSTAGE_STAMP as Reference | undefined) ||
+  ('0000000000000000000000000000000000000000000000000000000000000000' as Reference)
 
 const beeUrl = "https://bee-1.gateway.ethswarm.org"
 const bee = new Bee(beeUrl);
@@ -46,21 +48,21 @@ function TestUpload() {
       .finally(() => setLoadingStamps(false))
   }, [])
 
-  const createPostageStamp = async () => {
-    try {
-      setCreatingStamp(true)
-      await bee.createPostageBatch(POSTAGE_STAMPS_AMOUNT.toString(), POSTAGE_STAMPS_DEPTH)
-      setCreatingStamp(false)
+//   const createPostageStamp = async () => {
+//     try {
+//       setCreatingStamp(true)
+//       await bee.createPostageBatch(POSTAGE_STAMPS_AMOUNT.toString(), POSTAGE_STAMPS_DEPTH)
+//       setCreatingStamp(false)
 
-      setLoadingStamps(true)
-      const ps = await bee.getAllPostageBatch()
-      setPostageStamps(ps)
-      setLoadingStamps(false)
-    }
-    catch(e) {
-      setStampError(e)
-    }
-  }
+//       setLoadingStamps(true)
+//       const ps = await bee.getAllPostageBatch()
+//       setPostageStamps(ps)
+//       setLoadingStamps(false)
+//     }
+//     catch(e) {
+//       setStampError(e)
+//     }
+//   }
 
   const getRandomStamp = () => {
     const i = Math.floor(Math.random() * postageStamps.length)
@@ -69,16 +71,16 @@ function TestUpload() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (postageStamps.length <= 0) {
-      await createPostageStamp();
-    }
-    const selectedPostageStamp = getRandomStamp()
+    // if (postageStamps.length <= 0) {
+    //   await createPostageStamp();
+    // }
+    // const selectedPostageStamp = getRandomStamp()
     if (file) {
       try {
         setUploading(true)
         setLink(null)
 
-        const {reference, tagUid} = await bee.uploadFile(selectedPostageStamp, file);
+        const {reference, tagUid} = await bee.uploadFile(POSTAGE_STAMP, file);
         setLink(`${beeUrl}/bzz/${reference}`)
       } catch (e) {
         setError(e)
