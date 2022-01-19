@@ -50,7 +50,8 @@ function UploadPage() {
             <img src="step3-waitforemail.png" alt="step 3" />
           </div>
           <div className="step-block">
-            <p>4. Download archive</p>
+            <p>4. Download archive</p> <br />
+            <div className="econf">Expires in 7 days!</div>
             <img src="step4-download.gif" alt="step 4" />
           </div>
         </div>
