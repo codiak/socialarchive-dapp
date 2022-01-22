@@ -15,7 +15,7 @@ const reducerActions = (state = initialState, action) => {
         zipFile: file,
         process: true,
       };
-    case "UNZIPPED_FILES_LOADED":
+    case "ARCHIVE_LOADED":
       return {
         ...state,
         loading: false,
@@ -60,7 +60,7 @@ const StoreProvider = ({ children }) => {
         dispatch({ type: "LOADING" });
         let unZippedFiles = await get("zip");
         dispatch({
-          type: "UNZIPPED_FILES_LOADED",
+          type: "ARCHIVE_LOADED",
           payload: unZippedFiles ? unZippedFiles : [],
           zipFile: zipFile,
         });
@@ -87,7 +87,7 @@ const StoreProvider = ({ children }) => {
       }
       await set("zipFile", zipDetails);
       dispatch({
-        type: "UNZIPPED_FILES_LOADED",
+        type: "ARCHIVE_LOADED",
         payload: uzip,
         zipFile: zipDetails,
       });

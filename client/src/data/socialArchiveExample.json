@@ -1,0 +1,2607 @@
+{
+  "manifest": {
+      "userInfo": {
+          "accountId": "1448793710905290770",
+          "userName": "SocialArchiveCo",
+          "displayName": "SocialArchive"
+      },
+      "archiveInfo": {
+          "sizeBytes": "211086",
+          "generationDate": "2022-01-05T00:54:44.547Z",
+          "isPartialArchive": false,
+          "maxPartSizeBytes": "53687091200"
+      },
+      "readmeInfo": {
+          "fileName": "data/README.txt",
+          "directory": "data/",
+          "name": "README.txt"
+      },
+      "dataTypes": {
+          "account": {
+              "files": [
+                  {
+                      "fileName": "data/account.js",
+                      "globalName": "YTD.account.part0",
+                      "count": "1"
+                  }
+              ]
+          },
+          "accountCreationIp": {
+              "files": [
+                  {
+                      "fileName": "data/account-creation-ip.js",
+                      "globalName": "YTD.account_creation_ip.part0",
+                      "count": "1"
+                  }
+              ]
+          },
+          "accountSuspension": {
+              "files": [
+                  {
+                      "fileName": "data/account-suspension.js",
+                      "globalName": "YTD.account_suspension.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "accountTimezone": {
+              "files": [
+                  {
+                      "fileName": "data/account-timezone.js",
+                      "globalName": "YTD.account_timezone.part0",
+                      "count": "1"
+                  }
+              ]
+          },
+          "adEngagements": {
+              "files": [
+                  {
+                      "fileName": "data/ad-engagements.js",
+                      "globalName": "YTD.ad_engagements.part0",
+                      "count": "3"
+                  }
+              ]
+          },
+          "adImpressions": {
+              "files": [
+                  {
+                      "fileName": "data/ad-impressions.js",
+                      "globalName": "YTD.ad_impressions.part0",
+                      "count": "5"
+                  }
+              ]
+          },
+          "adMobileConversionsAttributed": {
+              "files": [
+                  {
+                      "fileName": "data/ad-mobile-conversions-attributed.js",
+                      "globalName": "YTD.ad_mobile_conversions_attributed.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "adMobileConversionsUnattributed": {
+              "files": [
+                  {
+                      "fileName": "data/ad-mobile-conversions-unattributed.js",
+                      "globalName": "YTD.ad_mobile_conversions_unattributed.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "adOnlineConversionsAttributed": {
+              "files": [
+                  {
+                      "fileName": "data/ad-online-conversions-attributed.js",
+                      "globalName": "YTD.ad_online_conversions_attributed.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "adOnlineConversionsUnattributed": {
+              "files": [
+                  {
+                      "fileName": "data/ad-online-conversions-unattributed.js",
+                      "globalName": "YTD.ad_online_conversions_unattributed.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "ageinfo": {
+              "files": [
+                  {
+                      "fileName": "data/ageinfo.js",
+                      "globalName": "YTD.ageinfo.part0",
+                      "count": "1"
+                  }
+              ]
+          },
+          "app": {
+              "files": [
+                  {
+                      "fileName": "data/app.js",
+                      "globalName": "YTD.app.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "birdwatchNote": {
+              "files": [
+                  {
+                      "fileName": "data/birdwatch-note.js",
+                      "globalName": "YTD.birdwatch_note.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "birdwatchNoteRating": {
+              "files": [
+                  {
+                      "fileName": "data/birdwatch-note-rating.js",
+                      "globalName": "YTD.birdwatch_note_rating.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "block": {
+              "files": [
+                  {
+                      "fileName": "data/block.js",
+                      "globalName": "YTD.block.part0",
+                      "count": "1"
+                  }
+              ]
+          },
+          "branchLinks": {
+              "files": [
+                  {
+                      "fileName": "data/branch-links.js",
+                      "globalName": "YTD.branch_links.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "communityTweet": {
+              "mediaDirectory": "data/community_tweet_media",
+              "files": [
+                  {
+                      "fileName": "data/community-tweet.js",
+                      "globalName": "YTD.community_tweet.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "communityTweetMedia": {
+              "mediaDirectory": "data/community_tweet_media"
+          },
+          "connectedApplication": {
+              "files": [
+                  {
+                      "fileName": "data/connected-application.js",
+                      "globalName": "YTD.connected_application.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "contact": {
+              "files": [
+                  {
+                      "fileName": "data/contact.js",
+                      "globalName": "YTD.contact.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "deviceToken": {
+              "files": [
+                  {
+                      "fileName": "data/device-token.js",
+                      "globalName": "YTD.device_token.part0",
+                      "count": "1"
+                  }
+              ]
+          },
+          "directMessageGroupHeaders": {
+              "files": [
+                  {
+                      "fileName": "data/direct-message-group-headers.js",
+                      "globalName": "YTD.direct_message_group_headers.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "directMessageHeaders": {
+              "files": [
+                  {
+                      "fileName": "data/direct-message-headers.js",
+                      "globalName": "YTD.direct_message_headers.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "directMessageMute": {
+              "files": [
+                  {
+                      "fileName": "data/direct-message-mute.js",
+                      "globalName": "YTD.direct_message_mute.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "directMessages": {
+              "mediaDirectory": "data/direct_messages_media",
+              "files": [
+                  {
+                      "fileName": "data/direct-messages.js",
+                      "globalName": "YTD.direct_messages.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "directMessagesGroup": {
+              "mediaDirectory": "data/direct_messages_group_media",
+              "files": [
+                  {
+                      "fileName": "data/direct-messages-group.js",
+                      "globalName": "YTD.direct_messages_group.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "directMessagesGroupMedia": {
+              "mediaDirectory": "data/direct_messages_group_media"
+          },
+          "directMessagesMedia": {
+              "mediaDirectory": "data/direct_messages_media"
+          },
+          "emailAddressChange": {
+              "files": [
+                  {
+                      "fileName": "data/email-address-change.js",
+                      "globalName": "YTD.email_address_change.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "follower": {
+              "files": [
+                  {
+                      "fileName": "data/follower.js",
+                      "globalName": "YTD.follower.part0",
+                      "count": "2"
+                  }
+              ]
+          },
+          "following": {
+              "files": [
+                  {
+                      "fileName": "data/following.js",
+                      "globalName": "YTD.following.part0",
+                      "count": "7"
+                  }
+              ]
+          },
+          "ipAudit": {
+              "files": [
+                  {
+                      "fileName": "data/ip-audit.js",
+                      "globalName": "YTD.ip_audit.part0",
+                      "count": "42"
+                  }
+              ]
+          },
+          "like": {
+              "files": [
+                  {
+                      "fileName": "data/like.js",
+                      "globalName": "YTD.like.part0",
+                      "count": "5"
+                  }
+              ]
+          },
+          "listsCreated": {
+              "files": [
+                  {
+                      "fileName": "data/lists-created.js",
+                      "globalName": "YTD.lists_created.part0",
+                      "count": "1"
+                  }
+              ]
+          },
+          "listsMember": {
+              "files": [
+                  {
+                      "fileName": "data/lists-member.js",
+                      "globalName": "YTD.lists_member.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "listsSubscribed": {
+              "files": [
+                  {
+                      "fileName": "data/lists-subscribed.js",
+                      "globalName": "YTD.lists_subscribed.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "moment": {
+              "mediaDirectory": "data/moments_media",
+              "files": [
+                  {
+                      "fileName": "data/moment.js",
+                      "globalName": "YTD.moment.part0",
+                      "count": "1"
+                  }
+              ]
+          },
+          "momentsMedia": {
+              "mediaDirectory": "data/moments_media"
+          },
+          "momentsTweetsMedia": {
+              "mediaDirectory": "data/moments_tweets_media"
+          },
+          "mute": {
+              "files": [
+                  {
+                      "fileName": "data/mute.js",
+                      "globalName": "YTD.mute.part0",
+                      "count": "2"
+                  }
+              ]
+          },
+          "niDevices": {
+              "files": [
+                  {
+                      "fileName": "data/ni-devices.js",
+                      "globalName": "YTD.ni_devices.part0",
+                      "count": "1"
+                  }
+              ]
+          },
+          "periscopeAccountInformation": {
+              "files": [
+                  {
+                      "fileName": "data/periscope-account-information.js",
+                      "globalName": "YTD.periscope_account_information.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "periscopeBanInformation": {
+              "files": [
+                  {
+                      "fileName": "data/periscope-ban-information.js",
+                      "globalName": "YTD.periscope_ban_information.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "periscopeBroadcastMetadata": {
+              "files": [
+                  {
+                      "fileName": "data/periscope-broadcast-metadata.js",
+                      "globalName": "YTD.periscope_broadcast_metadata.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "periscopeCommentsMadeByUser": {
+              "files": [
+                  {
+                      "fileName": "data/periscope-comments-made-by-user.js",
+                      "globalName": "YTD.periscope_comments_made_by_user.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "periscopeExpiredBroadcasts": {
+              "files": [
+                  {
+                      "fileName": "data/periscope-expired-broadcasts.js",
+                      "globalName": "YTD.periscope_expired_broadcasts.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "periscopeFollowers": {
+              "files": [
+                  {
+                      "fileName": "data/periscope-followers.js",
+                      "globalName": "YTD.periscope_followers.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "periscopeProfileDescription": {
+              "files": [
+                  {
+                      "fileName": "data/periscope-profile-description.js",
+                      "globalName": "YTD.periscope_profile_description.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "personalization": {
+              "files": [
+                  {
+                      "fileName": "data/personalization.js",
+                      "globalName": "YTD.personalization.part0",
+                      "count": "1"
+                  }
+              ]
+          },
+          "phoneNumber": {
+              "files": [
+                  {
+                      "fileName": "data/phone-number.js",
+                      "globalName": "YTD.phone_number.part0",
+                      "count": "1"
+                  }
+              ]
+          },
+          "professionalData": {
+              "files": [
+                  {
+                      "fileName": "data/professional-data.js",
+                      "globalName": "YTD.professional_data.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "profile": {
+              "mediaDirectory": "data/profile_media",
+              "files": [
+                  {
+                      "fileName": "data/profile.js",
+                      "globalName": "YTD.profile.part0",
+                      "count": "1"
+                  }
+              ]
+          },
+          "profileMedia": {
+              "mediaDirectory": "data/profile_media"
+          },
+          "protectedHistory": {
+              "files": [
+                  {
+                      "fileName": "data/protected-history.js",
+                      "globalName": "YTD.protected_history.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "replyPrompt": {
+              "files": [
+                  {
+                      "fileName": "data/reply-prompt.js",
+                      "globalName": "YTD.reply_prompt.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "savedSearch": {
+              "files": [
+                  {
+                      "fileName": "data/saved-search.js",
+                      "globalName": "YTD.saved_search.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "screenNameChange": {
+              "files": [
+                  {
+                      "fileName": "data/screen-name-change.js",
+                      "globalName": "YTD.screen_name_change.part0",
+                      "count": "1"
+                  }
+              ]
+          },
+          "smartblock": {
+              "files": [
+                  {
+                      "fileName": "data/smartblock.js",
+                      "globalName": "YTD.smartblock.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "spacesMetadata": {
+              "files": [
+                  {
+                      "fileName": "data/spaces-metadata.js",
+                      "globalName": "YTD.spaces_metadata.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "sso": {
+              "files": [
+                  {
+                      "fileName": "data/sso.js",
+                      "globalName": "YTD.sso.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "tweet": {
+              "mediaDirectory": "data/tweet_media",
+              "files": [
+                  {
+                      "fileName": "data/tweet.js",
+                      "globalName": "YTD.tweet.part0",
+                      "count": "6"
+                  }
+              ]
+          },
+          "tweetMedia": {
+              "mediaDirectory": "data/tweet_media"
+          },
+          "userLinkClicks": {
+              "files": [
+                  {
+                      "fileName": "data/user-link-clicks.js",
+                      "globalName": "YTD.user_link_clicks.part0",
+                      "count": "0"
+                  }
+              ]
+          },
+          "verified": {
+              "files": [
+                  {
+                      "fileName": "data/verified.js",
+                      "globalName": "YTD.verified.part0",
+                      "count": "1"
+                  }
+              ]
+          }
+      }
+  },
+  "accountCreationIp": {
+      "accountId": "1448793710905290770",
+      "userCreationIp": "47.146.209.16"
+  },
+  "accountTimezone": {
+      "accountId": "1448793710905290770"
+  },
+  "account": {
+      "email": "cody@doglover.com",
+      "createdVia": "oauth:3033300",
+      "username": "SocialArchiveCo",
+      "accountId": "1448793710905290770",
+      "createdAt": "2021-10-14T23:33:50.031Z",
+      "accountDisplayName": "SocialArchive"
+  },
+  "ads": [
+      {
+          "ad": {
+              "adsUserData": {
+                  "adEngagements": {
+                      "engagements": [
+                          {
+                              "impressionAttributes": {
+                                  "deviceInfo": {
+                                      "osType": "Desktop"
+                                  },
+                                  "displayLocation": "Trends",
+                                  "promotedTrendInfo": {
+                                      "trendId": "83095",
+                                      "name": "#WorkplacefromFB",
+                                      "description": "Bring more of what makes you to work"
+                                  },
+                                  "advertiserInfo": {
+                                      "advertiserName": "Workplace from Meta",
+                                      "screenName": "@WorkplaceMeta"
+                                  },
+                                  "impressionTime": "2021-10-24 03:29:21"
+                              },
+                              "engagementAttributes": [
+                                  {
+                                      "engagementTime": "2021-10-24 03:29:22",
+                                      "engagementType": "TrendView"
+                                  }
+                              ]
+                          }
+                      ]
+                  }
+              }
+          }
+      },
+      {
+          "ad": {
+              "adsUserData": {
+                  "adEngagements": {
+                      "engagements": [
+                          {
+                              "impressionAttributes": {
+                                  "deviceInfo": {
+                                      "osType": "Desktop"
+                                  },
+                                  "displayLocation": "Trends",
+                                  "promotedTrendInfo": {
+                                      "trendId": "83620",
+                                      "name": "#Eternals",
+                                      "description": "Now Playing Only In Theaters"
+                                  },
+                                  "advertiserInfo": {
+                                      "advertiserName": "Marvel Studios",
+                                      "screenName": "@MarvelStudios"
+                                  },
+                                  "impressionTime": "2021-11-04 14:20:36"
+                              },
+                              "engagementAttributes": [
+                                  {
+                                      "engagementTime": "2021-11-04 14:20:36",
+                                      "engagementType": "TrendView"
+                                  }
+                              ]
+                          },
+                          {
+                              "impressionAttributes": {
+                                  "deviceInfo": {
+                                      "osType": "Desktop"
+                                  },
+                                  "displayLocation": "Trends",
+                                  "promotedTrendInfo": {
+                                      "trendId": "83620",
+                                      "name": "#Eternals",
+                                      "description": "Now Playing Only In Theaters"
+                                  },
+                                  "advertiserInfo": {
+                                      "advertiserName": "Marvel Studios",
+                                      "screenName": "@MarvelStudios"
+                                  },
+                                  "impressionTime": "2021-11-04 23:15:16"
+                              },
+                              "engagementAttributes": [
+                                  {
+                                      "engagementTime": "2021-11-04 23:15:17",
+                                      "engagementType": "TrendView"
+                                  }
+                              ]
+                          }
+                      ]
+                  }
+              }
+          }
+      },
+      {
+          "ad": {
+              "adsUserData": {
+                  "adEngagements": {
+                      "engagements": [
+                          {
+                              "impressionAttributes": {
+                                  "deviceInfo": {
+                                      "osType": "Desktop"
+                                  },
+                                  "displayLocation": "Trends",
+                                  "promotedTrendInfo": {
+                                      "trendId": "84769",
+                                      "name": "#AmericanUnderdog",
+                                      "description": "The incredible true story of Kurt Warner. In theaters Christmas Day."
+                                  },
+                                  "advertiserInfo": {
+                                      "advertiserName": "American Underdog",
+                                      "screenName": "@AmericanUnderdg"
+                                  },
+                                  "impressionTime": "2021-12-21 20:06:05"
+                              },
+                              "engagementAttributes": [
+                                  {
+                                      "engagementTime": "2021-12-21 20:06:06",
+                                      "engagementType": "TrendView"
+                                  }
+                              ]
+                          }
+                      ]
+                  }
+              }
+          }
+      }
+  ],
+  "ads1": [
+      {
+          "ad": {
+              "adsUserData": {
+                  "adImpressions": {
+                      "impressions": [
+                          {
+                              "deviceInfo": {
+                                  "osType": "Desktop"
+                              },
+                              "displayLocation": "WtfSidebar",
+                              "advertiserInfo": {
+                                  "advertiserName": "XPENG",
+                                  "screenName": "@XPengMotors"
+                              },
+                              "matchedTargetingCriteria": [
+                                  {
+                                      "targetingType": "Locations",
+                                      "targetingValue": "United States"
+                                  }
+                              ],
+                              "impressionTime": "2021-10-24 03:29:22"
+                          },
+                          {
+                              "deviceInfo": {
+                                  "osType": "Desktop"
+                              },
+                              "displayLocation": "WtfSidebar",
+                              "advertiserInfo": {
+                                  "advertiserName": "XPENG",
+                                  "screenName": "@XPengMotors"
+                              },
+                              "matchedTargetingCriteria": [
+                                  {
+                                      "targetingType": "Locations",
+                                      "targetingValue": "United States"
+                                  }
+                              ],
+                              "impressionTime": "2021-10-24 03:29:23"
+                          }
+                      ]
+                  }
+              }
+          }
+      },
+      {
+          "ad": {
+              "adsUserData": {
+                  "adImpressions": {
+                      "impressions": [
+                          {
+                              "deviceInfo": {
+                                  "osType": "Desktop"
+                              },
+                              "displayLocation": "WtfSidebar",
+                              "advertiserInfo": {
+                                  "advertiserName": "Numbrs",
+                                  "screenName": "@Numbrs"
+                              },
+                              "matchedTargetingCriteria": [
+                                  {
+                                      "targetingType": "Interests",
+                                      "targetingValue": "Technology"
+                                  },
+                                  {
+                                      "targetingType": "Keywords",
+                                      "targetingValue": "decentralized"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@saylor"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@Ledger"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@BinanceLabs"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@binance"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@DocumentingBTC"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@BTCTN"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@BinanceChain"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@decryptmedia"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@CoinDesk"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@TheBlock__"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@brian_armstrong"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@BitcoinMagazine"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@cryptocom"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@coinbase"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@MetaMask"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@coingecko"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@CoinbaseWallet"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@TrustWallet"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@Blockworks_"
+                                  },
+                                  {
+                                      "targetingType": "Age",
+                                      "targetingValue": "18 and up"
+                                  },
+                                  {
+                                      "targetingType": "Locations",
+                                      "targetingValue": "United States"
+                                  }
+                              ],
+                              "impressionTime": "2021-11-03 22:33:36"
+                          }
+                      ]
+                  }
+              }
+          }
+      },
+      {
+          "ad": {
+              "adsUserData": {
+                  "adImpressions": {
+                      "impressions": [
+                          {
+                              "deviceInfo": {
+                                  "osType": "Desktop"
+                              },
+                              "displayLocation": "WtfSidebar",
+                              "advertiserInfo": {
+                                  "advertiserName": "BlackBoxStocks",
+                                  "screenName": "@BlackBoxStocks"
+                              },
+                              "matchedTargetingCriteria": [
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@saylor"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@scottmelker"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@brian_armstrong"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@APompliano"
+                                  },
+                                  {
+                                      "targetingType": "Locations",
+                                      "targetingValue": "United States"
+                                  },
+                                  {
+                                      "targetingType": "Locations",
+                                      "targetingValue": "California"
+                                  },
+                                  {
+                                      "targetingType": "Languages",
+                                      "targetingValue": "English"
+                                  },
+                                  {
+                                      "targetingType": "Age",
+                                      "targetingValue": "21 and up"
+                                  }
+                              ],
+                              "impressionTime": "2021-11-04 00:05:43"
+                          },
+                          {
+                              "deviceInfo": {
+                                  "osType": "Desktop"
+                              },
+                              "displayLocation": "WtfSidebar",
+                              "advertiserInfo": {
+                                  "advertiserName": "BlackBoxStocks",
+                                  "screenName": "@BlackBoxStocks"
+                              },
+                              "matchedTargetingCriteria": [
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@saylor"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@scottmelker"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@brian_armstrong"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@APompliano"
+                                  },
+                                  {
+                                      "targetingType": "Languages",
+                                      "targetingValue": "English"
+                                  },
+                                  {
+                                      "targetingType": "Age",
+                                      "targetingValue": "21 and up"
+                                  },
+                                  {
+                                      "targetingType": "Locations",
+                                      "targetingValue": "United States"
+                                  },
+                                  {
+                                      "targetingType": "Locations",
+                                      "targetingValue": "California"
+                                  }
+                              ],
+                              "impressionTime": "2021-11-04 00:05:41"
+                          }
+                      ]
+                  }
+              }
+          }
+      },
+      {
+          "ad": {
+              "adsUserData": {
+                  "adImpressions": {
+                      "impressions": [
+                          {
+                              "deviceInfo": {
+                                  "osType": "Desktop"
+                              },
+                              "displayLocation": "WtfSidebar",
+                              "advertiserInfo": {
+                                  "advertiserName": "BYBIT 🦍",
+                                  "screenName": "@Bybit_Official"
+                              },
+                              "matchedTargetingCriteria": [
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@justinsuntron"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@wavesprotocol"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@Uniswap"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@compoundfinance"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@hitbtc"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@bscscan"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@MakerDAO"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@saylor"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@AaveAave"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@blockchain"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@Shibtoken"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@BithumbOfficial"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@Neo_Blockchain"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@FantomFDN"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@Bitstamp"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@CoinDeskMarkets"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@kucoincom"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@bsc_daily"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@crypto"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@BalancerLabs"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@Cryptopia_NZ"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@BinanceAcademy"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@CoinbaseExch"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@BinanceLabs"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@Polkadot"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@binance"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@dydxprotocol"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@Ripple"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@BTCTN"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@bitfinex"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@BinanceResearch"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@BinanceChain"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@AxieInfinity"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@BitMEX"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@CoinMarketCap"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@Poloniex"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@CoinbaseSupport"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@CoinDesk"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@CoinDeskData"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@tyler"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@trondao"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@PancakeBunnyFin"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@litecoin"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@BitcoinMagazine"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@0xPolygon"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@PancakeSwap"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@cz_binance"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@APompliano"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@InjectiveLabs"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@OKEx"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@Bancor"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@cameron"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@hedera"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@cosmos"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@coinbase"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@Okcoin"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@ForbesCrypto"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@Bitcoin"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@BinanceUS"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@krakenfx"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@BittrexExchange"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@BlockFi"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@TrustWallet"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@HuobiGlobal"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@Gemini"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@TheCryptoLark"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@ProjectSerum"
+                                  },
+                                  {
+                                      "targetingType": "Age",
+                                      "targetingValue": "18 and up"
+                                  }
+                              ],
+                              "impressionTime": "2021-11-04 14:20:38"
+                          },
+                          {
+                              "deviceInfo": {
+                                  "osType": "Desktop"
+                              },
+                              "displayLocation": "WtfSidebar",
+                              "advertiserInfo": {
+                                  "advertiserName": "BYBIT 🦍",
+                                  "screenName": "@Bybit_Official"
+                              },
+                              "matchedTargetingCriteria": [
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@justinsuntron"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@wavesprotocol"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@Uniswap"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@compoundfinance"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@hitbtc"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@bscscan"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@MakerDAO"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@saylor"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@AaveAave"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@blockchain"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@Shibtoken"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@BithumbOfficial"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@Neo_Blockchain"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@FantomFDN"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@Bitstamp"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@CoinDeskMarkets"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@kucoincom"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@bsc_daily"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@crypto"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@BalancerLabs"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@Cryptopia_NZ"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@BinanceAcademy"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@CoinbaseExch"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@BinanceLabs"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@Polkadot"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@binance"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@dydxprotocol"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@Ripple"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@BTCTN"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@bitfinex"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@BinanceResearch"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@BinanceChain"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@AxieInfinity"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@BitMEX"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@CoinMarketCap"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@Poloniex"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@CoinbaseSupport"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@CoinDesk"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@CoinDeskData"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@tyler"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@trondao"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@PancakeBunnyFin"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@litecoin"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@BitcoinMagazine"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@0xPolygon"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@PancakeSwap"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@cz_binance"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@APompliano"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@InjectiveLabs"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@OKEx"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@Bancor"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@cameron"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@hedera"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@cosmos"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@coinbase"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@Okcoin"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@ForbesCrypto"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@Bitcoin"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@BinanceUS"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@krakenfx"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@BittrexExchange"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@BlockFi"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@TrustWallet"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@HuobiGlobal"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@Gemini"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@TheCryptoLark"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@ProjectSerum"
+                                  },
+                                  {
+                                      "targetingType": "Age",
+                                      "targetingValue": "18 and up"
+                                  }
+                              ],
+                              "impressionTime": "2021-11-04 14:20:36"
+                          },
+                          {
+                              "deviceInfo": {
+                                  "osType": "Desktop"
+                              },
+                              "displayLocation": "WtfSidebar",
+                              "advertiserInfo": {
+                                  "advertiserName": "ADM Investor Services",
+                                  "screenName": "@TradeADMIS"
+                              },
+                              "matchedTargetingCriteria": [
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@Investingcom"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@ICE_Markets"
+                                  },
+                                  {
+                                      "targetingType": "Locations",
+                                      "targetingValue": "United States"
+                                  },
+                                  {
+                                      "targetingType": "Age",
+                                      "targetingValue": "21 and up"
+                                  }
+                              ],
+                              "impressionTime": "2021-11-04 23:11:51"
+                          },
+                          {
+                              "deviceInfo": {
+                                  "osType": "Desktop"
+                              },
+                              "displayLocation": "WtfSidebar",
+                              "advertiserInfo": {
+                                  "advertiserName": "Saidler & Co.",
+                                  "screenName": "@Saidler"
+                              },
+                              "matchedTargetingCriteria": [
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@saylor"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@ftx_app"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@CoinbaseExch"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@binance"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@DocumentingBTC"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@decryptmedia"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@CoinDesk"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@100trillionUSD"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@BarrySilbert"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@woonomic"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@coinbase"
+                                  },
+                                  {
+                                      "targetingType": "Follower look-alikes",
+                                      "targetingValue": "@MetaMask"
+                                  },
+                                  {
+                                      "targetingType": "Locations",
+                                      "targetingValue": "United States"
+                                  }
+                              ],
+                              "impressionTime": "2021-11-04 23:15:17"
+                          }
+                      ]
+                  }
+              }
+          }
+      },
+      {
+          "ad": {
+              "adsUserData": {
+                  "adImpressions": {
+                      "impressions": [
+                          {
+                              "deviceInfo": {
+                                  "osType": "Desktop"
+                              },
+                              "displayLocation": "WtfSidebar",
+                              "advertiserInfo": {
+                                  "advertiserName": "Bank of America",
+                                  "screenName": "@BankofAmerica"
+                              },
+                              "matchedTargetingCriteria": [
+                                  {
+                                      "targetingType": "Interests",
+                                      "targetingValue": "Science news"
+                                  },
+                                  {
+                                      "targetingType": "List",
+                                      "targetingValue": "EHL_20211213"
+                                  },
+                                  {
+                                      "targetingType": "Age",
+                                      "targetingValue": "18 and up"
+                                  },
+                                  {
+                                      "targetingType": "Locations",
+                                      "targetingValue": "Minnesota"
+                                  }
+                              ],
+                              "impressionTime": "2021-12-21 20:06:06"
+                          }
+                      ]
+                  }
+              }
+          }
+      }
+  ],
+  "ageMeta": {
+      "ageInfo": {
+          "age": [
+              "28"
+          ],
+          "birthDate": "1993-02-01"
+      }
+  },
+  "blocking": [
+      {
+          "accountId": "3072359823",
+          "userLink": "https://twitter.com/intent/user?user_id=3072359823"
+      }
+  ],
+  "deviceToken": {
+      "clientApplicationId": "3033300",
+      "token": "cLoUb532ge8TWE0Ol1DuPq4EF3OjVClzaDOJgu84",
+      "createdAt": "2021-10-14T23:33:50.154Z",
+      "lastSeenAt": "2021-10-14T23:33:50.156Z",
+      "clientApplicationName": "Twitter Web App (Twitter. Inc)"
+  },
+  "follower": [
+      {
+          "accountId": "14321476",
+          "userLink": "https://twitter.com/intent/user?user_id=14321476"
+      },
+      {
+          "accountId": "17703833",
+          "userLink": "https://twitter.com/intent/user?user_id=17703833"
+      }
+  ],
+  "following": [
+      {
+          "accountId": "1442476876593696782",
+          "userLink": "https://twitter.com/intent/user?user_id=1442476876593696782"
+      },
+      {
+          "accountId": "17703833",
+          "userLink": "https://twitter.com/intent/user?user_id=17703833"
+      },
+      {
+          "accountId": "2312333412",
+          "userLink": "https://twitter.com/intent/user?user_id=2312333412"
+      },
+      {
+          "accountId": "1324574383806009345",
+          "userLink": "https://twitter.com/intent/user?user_id=1324574383806009345"
+      },
+      {
+          "accountId": "1385231003745234944",
+          "userLink": "https://twitter.com/intent/user?user_id=1385231003745234944"
+      },
+      {
+          "accountId": "879945922540646400",
+          "userLink": "https://twitter.com/intent/user?user_id=879945922540646400"
+      },
+      {
+          "accountId": "1021693481906003968",
+          "userLink": "https://twitter.com/intent/user?user_id=1021693481906003968"
+      }
+  ],
+  "ipAudits": [
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2022-01-05T00:03:14.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2022-01-04T23:02:35.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2022-01-03T23:55:31.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-12-30T18:47:44.000Z",
+              "loginIp": "97.116.2.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-12-29T20:22:38.000Z",
+              "loginIp": "97.116.2.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-12-29T06:44:15.000Z",
+              "loginIp": "107.117.200.113"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-12-21T21:29:20.000Z",
+              "loginIp": "97.116.2.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-12-20T22:42:10.000Z",
+              "loginIp": "97.116.2.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-12-17T20:56:00.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-12-16T22:16:04.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-12-15T23:05:54.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-12-14T21:03:21.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-12-13T21:32:34.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-12-12T15:18:07.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-12-11T17:49:02.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-12-10T19:09:27.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-12-09T23:08:23.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-12-08T21:25:43.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-12-07T21:46:07.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-12-06T22:51:23.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-12-05T23:50:57.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-12-04T00:03:53.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-12-03T17:35:43.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-12-02T17:03:30.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-12-01T22:30:54.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-11-30T20:37:13.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-11-29T21:13:49.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-11-27T22:12:00.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-11-26T21:07:59.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-11-25T19:47:34.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-11-23T22:19:24.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-11-22T23:54:49.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-11-21T04:15:18.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-11-20T22:48:50.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-11-19T21:45:09.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-11-17T21:36:43.000Z",
+              "loginIp": "65.215.127.162"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-11-16T13:11:11.000Z",
+              "loginIp": "64.124.37.3"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-11-11T20:59:22.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-11-10T22:28:07.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-11-09T22:25:51.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-11-08T19:13:17.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      },
+      {
+          "ipAudit": {
+              "accountId": "1448793710905290770",
+              "createdAt": "2021-11-06T22:35:47.000Z",
+              "loginIp": "47.146.209.16"
+          }
+      }
+  ],
+  "like": [
+      {
+          "tweetId": "1474183295852187651",
+          "fullText": "⟠ Latest Week in Ethereum News!\n\n⭐ @icebearhww PoW switch off consensus upgrade named Bellatrix\n💼 @SAP joins @EntEthAlliance / @baselineproto\n🎉 @Ethereum teams Q4 achievements\n\nhttps://t.co/zMF41qIpnD\n\nThanks to @kwenta_io &amp; @synthetix_io for making this issue possible 🙏",
+          "expandedUrl": "https://twitter.com/i/web/status/1474183295852187651"
+      },
+      {
+          "tweetId": "1451676767391989765",
+          "fullText": "@SocialArchiveCo https://t.co/8o8L9ARpe2",
+          "expandedUrl": "https://twitter.com/i/web/status/1451676767391989765"
+      },
+      {
+          "tweetId": "1474372496631676949",
+          "fullText": "Here's some good holiday news 🎉\n\nThe #ethswarm have reached their first milestone \n\nYou can now host unstoppable content on Swarm 🐝\n\nThis is the beginning of true unstoppable content on Swarm \n\nHappy unstoppable holidays 🎄",
+          "expandedUrl": "https://twitter.com/i/web/status/1474372496631676949"
+      },
+      {
+          "tweetId": "1474322188710916100",
+          "fullText": "The Swarm network is starting to fill up, and the price of storage is thus increasing.\nTop up your postage stamps to ensure your content is retained by Swarm! \nFind out how in the Bee Docs: https://t.co/Pf0tICDBbI",
+          "expandedUrl": "https://twitter.com/i/web/status/1474322188710916100"
+      },
+      {
+          "tweetId": "1474372498343010315",
+          "fullText": "To host your unstoppable content, you can use https://t.co/lt99pUy6xY for uploads up to 10MB. And if you want unlimited uploads/downloads, you can install your own Bee node.",
+          "expandedUrl": "https://twitter.com/i/web/status/1474372498343010315"
+      }
+  ],
+  "userListInfo": {
+      "url": "https://twitter.com/SocialArchiveCo/lists/1478162721589788672"
+  },
+  "moment": {
+      "momentId": "1478162996975513603",
+      "createdAt": "2022-01-04T00:34:56.076Z",
+      "createdBy": "1448793710905290770",
+      "title": "Excited for Swarm in 2022!",
+      "coverMediaUrls": [],
+      "tweets": [
+          {
+              "momentId": "1478162996975513603",
+              "tweet": {
+                  "deviceSource": {
+                      "name": "Twitter Web App",
+                      "parameter": "oauth:3033300",
+                      "url": "https://mobile.twitter.com",
+                      "internalName": "oauth:3033300",
+                      "id": "0",
+                      "clientAppId": "3033300",
+                      "display": "<a href=\"https://mobile.twitter.com\">Twitter Web App</a>"
+                  },
+                  "urls": [
+                      {
+                          "url": "https://t.co/msRcguYdVA",
+                          "expanded": "https://bit.ly/3zsepvd",
+                          "toIndex": "276",
+                          "fromIndex": "253",
+                          "display": "bit.ly/3zsepvd"
+                      }
+                  ],
+                  "coreData": {
+                      "nsfwUser": false,
+                      "createdVia": "oauth:3033300",
+                      "nsfwAdmin": false,
+                      "createdAtSecs": "1641221601",
+                      "text": "2021 was a huge year for #ethswarm \n\nThe team recapped the year at the Gather! Swarm event     🐝\n\n- Network status update\n- Research team's goal to enable node operators to earn bzz\n- Grants announcements\nAnd much more\n\nBe sure to check out the video 👇\nhttps://t.co/msRcguYdVA",
+                      "nullcast": false,
+                      "conversationId": "1478016637051674628",
+                      "userId": "1442476876593696782",
+                      "hasTakedown": false,
+                      "hasMedia": false
+                  },
+                  "mentions": [],
+                  "id": "1478016637051674628",
+                  "language": {
+                      "language": "en",
+                      "rightToLeft": false,
+                      "confidence": "0.590994656085968"
+                  },
+                  "media": [],
+                  "counts": {
+                      "retweetCount": "8",
+                      "replyCount": "3",
+                      "favoriteCount": "14"
+                  },
+                  "cashtags": [],
+                  "hashtags": [
+                      {
+                          "fromIndex": "25",
+                          "toIndex": "34",
+                          "text": "ethswarm"
+                      }
+                  ]
+              }
+          }
+      ]
+  },
+  "muting": [
+      {
+          "accountId": "1270725831086665729",
+          "userLink": "https://twitter.com/intent/user?user_id=1270725831086665729"
+      },
+      {
+          "accountId": "3069284711",
+          "userLink": "https://twitter.com/intent/user?user_id=3069284711"
+      }
+  ],
+  "niDeviceResponse": {
+      "messagingDevice": {
+          "deviceType": "Full",
+          "carrier": "att",
+          "phoneNumber": "+19522906724",
+          "createdDate": "2021.10.14"
+      }
+  },
+  "p13nData": {
+      "demographics": {
+          "languages": [
+              {
+                  "language": "English",
+                  "isDisabled": false
+              }
+          ],
+          "genderInfo": {
+              "gender": "male"
+          }
+      },
+      "interests": {
+          "interests": [
+              {
+                  "name": "Celebrity fan and gossip",
+                  "isDisabled": false
+              },
+              {
+                  "name": "Comedy",
+                  "isDisabled": false
+              },
+              {
+                  "name": "Comedy",
+                  "isDisabled": false
+              },
+              {
+                  "name": "Dogs",
+                  "isDisabled": false
+              },
+              {
+                  "name": "Music festivals and concerts",
+                  "isDisabled": false
+              },
+              {
+                  "name": "National parks",
+                  "isDisabled": false
+              },
+              {
+                  "name": "Online gaming",
+                  "isDisabled": false
+              },
+              {
+                  "name": "Science news",
+                  "isDisabled": false
+              },
+              {
+                  "name": "Social media",
+                  "isDisabled": false
+              },
+              {
+                  "name": "Space and astronomy",
+                  "isDisabled": false
+              },
+              {
+                  "name": "Sporting events",
+                  "isDisabled": false
+              },
+              {
+                  "name": "Sports news",
+                  "isDisabled": false
+              },
+              {
+                  "name": "Sports themed",
+                  "isDisabled": false
+              },
+              {
+                  "name": "Tech news",
+                  "isDisabled": false
+              },
+              {
+                  "name": "Technology",
+                  "isDisabled": false
+              },
+              {
+                  "name": "Twitter",
+                  "isDisabled": false
+              },
+              {
+                  "name": "Weather",
+                  "isDisabled": false
+              }
+          ],
+          "partnerInterests": [],
+          "audienceAndAdvertisers": {
+              "numAudiences": "56",
+              "advertisers": [
+                  "@CallofDuty",
+                  "@HBO",
+                  "@WonderYearsABC",
+                  "@adidas",
+                  "@fabriik_market",
+                  "@fold_app",
+                  "@hbomax",
+                  "@peacockTV"
+              ],
+              "lookalikeAdvertisers": [
+                  "@LinkedIn",
+                  "@BusinessInsider",
+                  "@CallofDuty",
+                  "@HBO",
+                  "@NintendoAmerica",
+                  "@PayPalUK",
+                  "@Spotify_PH",
+                  "@T2InteractiveUS",
+                  "@WonderYearsABC",
+                  "@adidas",
+                  "@business",
+                  "@fabriik_market",
+                  "@fold_app",
+                  "@hbomax",
+                  "@intel",
+                  "@peacockTV"
+              ]
+          },
+          "shows": []
+      },
+      "locationHistory": [
+          "Minneapolis, MN, USA",
+          "LOS ANGELES, USA"
+      ],
+      "inferredAgeInfo": {
+          "age": [
+              "13-54"
+          ],
+          "birthDate": ""
+      }
+  },
+  "device": {
+      "phoneNumber": "+19522906724"
+  },
+  "profile": {
+      "description": {
+          "bio": "Back-up your Social Media to the blockchain",
+          "website": "https://t.co/NxfoDqXOTo",
+          "location": ""
+      },
+      "avatarMediaUrl":""
+  },
+  "media": [
+      {
+          "name": "93710905290770-YNyHklGt.jpg",
+          "type": "jpg",
+          "data": "",
+          "id": "YNyHklGt.jpg",
+          "category": "media"
+      },
+      {
+          "name": "76456984010755-FCVkCXSaUAA_IVN.mp4",
+          "type": "mp4",
+          "data": "",
+          "id": "FCVkCXSaUAA_IVN.mp4",
+          "category": "media"
+      }
+  ],
+  "screenNameChange": {
+      "accountId": "1448793710905290770",
+      "screenNameChange": {
+          "changedAt": "2021-10-14T23:39:35.000Z",
+          "changedFrom": "SocialArchive2",
+          "changedTo": "SocialArchiveCo"
+      }
+  },
+  "tweet": [
+      {
+          "retweeted": false,
+          "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+          "entities": {
+              "hashtags": [],
+              "symbols": [],
+              "user_mentions": [],
+              "urls": []
+          },
+          "display_text_range": [
+              "0",
+              "184"
+          ],
+          "favorite_count": "1",
+          "id_str": "1478162618984525828",
+          "truncated": false,
+          "retweet_count": "0",
+          "id": "1478162618984525828",
+          "created_at": "Tue Jan 04 00:33:25 +0000 2022",
+          "favorited": false,
+          "full_text": "Continuing to make progress on Social Archive 💪\n\nWe're excited to see how distributed tweet archives can preserve individual voices, culture, and history. Can't wait to open up access!",
+          "lang": "en"
+      },
+      {
+          "retweeted": false,
+          "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+          "entities": {
+              "hashtags": [],
+              "symbols": [],
+              "user_mentions": [
+                  {
+                      "name": "meeru",
+                      "screen_name": "meeru",
+                      "indices": [
+                          "0",
+                          "6"
+                      ],
+                      "id_str": "17703833",
+                      "id": "17703833"
+                  }
+              ],
+              "urls": []
+          },
+          "display_text_range": [
+              "0",
+              "10"
+          ],
+          "favorite_count": "0",
+          "in_reply_to_status_id_str": "1451676767391989765",
+          "id_str": "1451678777012940800",
+          "in_reply_to_user_id": "17703833",
+          "truncated": false,
+          "retweet_count": "0",
+          "id": "1451678777012940800",
+          "in_reply_to_status_id": "1451676767391989765",
+          "created_at": "Fri Oct 22 22:36:05 +0000 2021",
+          "favorited": false,
+          "full_text": "@meeru 😎🚀🤘",
+          "lang": "und",
+          "in_reply_to_screen_name": "meeru",
+          "in_reply_to_user_id_str": "17703833"
+      },
+      {
+          "retweeted": false,
+          "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+          "entities": {
+              "user_mentions": [],
+              "urls": [],
+              "symbols": [],
+              "media": [
+                  {
+                      "expanded_url": "https://twitter.com/SocialArchiveCo/status/1451676456984010755/photo/1",
+                      "indices": [
+                          "81",
+                          "104"
+                      ],
+                      "url": "https://t.co/2m1tHy9MZN",
+                      "media_url":"", 
+                      "id_str": "1451676446670606336",
+                      "id": "1451676446670606336",
+                      "media_url_https":"", 
+                      "sizes": {
+                          "thumb": {
+                              "w": "150",
+                              "h": "150",
+                              "resize": "crop"
+                          },
+                          "large": {
+                              "w": "480",
+                              "h": "360",
+                              "resize": "fit"
+                          },
+                          "medium": {
+                              "w": "480",
+                              "h": "360",
+                              "resize": "fit"
+                          },
+                          "small": {
+                              "w": "480",
+                              "h": "360",
+                              "resize": "fit"
+                          }
+                      },
+                      "type": "photo",
+                      "display_url": "pic.twitter.com/2m1tHy9MZN"
+                  }
+              ],
+              "hashtags": []
+          },
+          "display_text_range": [
+              "0",
+              "104"
+          ],
+          "favorite_count": "1",
+          "id_str": "1451676456984010755",
+          "truncated": false,
+          "retweet_count": "1",
+          "id": "1451676456984010755",
+          "possibly_sensitive": false,
+          "created_at": "Fri Oct 22 22:26:52 +0000 2021",
+          "favorited": false,
+          "full_text": "Public Tweet archival builds on our belief that social media is a public utility https://t.co/2m1tHy9MZN",
+          "lang": "en",
+          "extended_entities": {
+              "media": [
+                  {
+                      "expanded_url": "https://twitter.com/SocialArchiveCo/status/1451676456984010755/photo/1",
+                      "indices": [
+                          "81",
+                          "104"
+                      ],
+                      "url": "https://t.co/2m1tHy9MZN",
+                      "media_url":"",                      
+                      "id_str": "1451676446670606336",
+                      "video_info": {
+                          "aspect_ratio": [
+                              "4",
+                              "3"
+                          ],
+                          "variants": [
+                              {
+                                  "bitrate": "0",
+                                  "content_type": "video/mp4",
+                                  "url" : "",
+                              }
+                          ]
+                      },
+                      "id": "1451676446670606336",
+                      "media_url_https": "",
+                      "sizes": {
+                          "thumb": {
+                              "w": "150",
+                              "h": "150",
+                              "resize": "crop"
+                          },
+                          "large": {
+                              "w": "480",
+                              "h": "360",
+                              "resize": "fit"
+                          },
+                          "medium": {
+                              "w": "480",
+                              "h": "360",
+                              "resize": "fit"
+                          },
+                          "small": {
+                              "w": "480",
+                              "h": "360",
+                              "resize": "fit"
+                          }
+                      },
+                      "type": "animated_gif",
+                      "display_url": "pic.twitter.com/2m1tHy9MZN"
+                  }
+              ]
+          }
+      },
+      {
+          "retweeted": false,
+          "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+          "entities": {
+              "hashtags": [],
+              "symbols": [],
+              "user_mentions": [],
+              "urls": []
+          },
+          "display_text_range": [
+              "0",
+              "186"
+          ],
+          "favorite_count": "0",
+          "in_reply_to_status_id_str": "1451675222508142592",
+          "id_str": "1451675396110389248",
+          "in_reply_to_user_id": "1448793710905290770",
+          "truncated": false,
+          "retweet_count": "0",
+          "id": "1451675396110389248",
+          "in_reply_to_status_id": "1451675222508142592",
+          "created_at": "Fri Oct 22 22:22:39 +0000 2021",
+          "favorited": false,
+          "full_text": "Check out our section in the article!\n\n\"SocialArchive will allow users to store their own data, giving them sovereignty to keep from and/or integrate with other services if they so wish\"",
+          "lang": "en",
+          "in_reply_to_screen_name": "SocialArchiveCo",
+          "in_reply_to_user_id_str": "1448793710905290770"
+      },
+      {
+          "retweeted": false,
+          "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+          "entities": {
+              "hashtags": [],
+              "symbols": [],
+              "user_mentions": [
+                  {
+                      "name": "Ethereum Swarm",
+                      "screen_name": "ethswarm",
+                      "indices": [
+                          "0",
+                          "9"
+                      ],
+                      "id_str": "1021693481906003968",
+                      "id": "1021693481906003968"
+                  }
+              ],
+              "urls": [
+                  {
+                      "url": "https://t.co/h1exOFIv6D",
+                      "expanded_url": "https://medium.com/ethereum-swarm/live-long-and-prosper-announcing-the-third-round-of-swarm-grant-recipients-20332fc364a9",
+                      "display_url": "medium.com/ethereum-swarm…",
+                      "indices": [
+                          "51",
+                          "74"
+                      ]
+                  }
+              ]
+          },
+          "display_text_range": [
+              "0",
+              "74"
+          ],
+          "favorite_count": "0",
+          "in_reply_to_status_id_str": "1451675036780163076",
+          "id_str": "1451675222508142592",
+          "in_reply_to_user_id": "1448793710905290770",
+          "truncated": false,
+          "retweet_count": "0",
+          "id": "1451675222508142592",
+          "in_reply_to_status_id": "1451675036780163076",
+          "possibly_sensitive": false,
+          "created_at": "Fri Oct 22 22:21:58 +0000 2021",
+          "favorited": false,
+          "full_text": "@ethswarm Learn about other grant recipients here:\nhttps://t.co/h1exOFIv6D",
+          "lang": "en",
+          "in_reply_to_screen_name": "SocialArchiveCo",
+          "in_reply_to_user_id_str": "1448793710905290770"
+      },
+      {
+          "retweeted": false,
+          "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+          "entities": {
+              "hashtags": [],
+              "symbols": [],
+              "user_mentions": [
+                  {
+                      "name": "Ethereum Swarm",
+                      "screen_name": "ethswarm",
+                      "indices": [
+                          "10",
+                          "19"
+                      ],
+                      "id_str": "1021693481906003968",
+                      "id": "1021693481906003968"
+                  }
+              ],
+              "urls": []
+          },
+          "display_text_range": [
+              "0",
+              "89"
+          ],
+          "favorite_count": "0",
+          "id_str": "1451675036780163076",
+          "truncated": false,
+          "retweet_count": "0",
+          "id": "1451675036780163076",
+          "created_at": "Fri Oct 22 22:21:14 +0000 2021",
+          "favorited": false,
+          "full_text": "Thanks to @ethswarm, we are building a decentralized public archival method for Twitter 📡",
+          "lang": "en"
+      }
+  ],
+  "verified": {
+      "accountId": "1448793710905290770",
+      "verified": false
+  }
+}

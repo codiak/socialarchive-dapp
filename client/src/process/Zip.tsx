@@ -1,4 +1,6 @@
 import JSZip from "jszip";
+let i = 0;
+let t = 0;
 export class Zip {
   file: any;
   unzippedFiles: any;
@@ -18,48 +20,69 @@ export class Zip {
 
     // all js files are json :)
     if (file.name.endsWith(".js")) {
+      // console.log("Extracting json file: ", file.name);
       try {
         extractedFile = await this.extractJson(file);
       } catch (e) {
         // console.log("file name: ", file.name);
-        console.log("Skip: no data: ", file.name, e);
+        // console.log("Skip: no data: ", file.name, e);
       }
     } else if (file.name.endsWith(".mp4") || file.name.endsWith(".jpg") || file.name.endsWith(".mp3") || file.name.endsWith(".png")) {
       try {
         extractedFile = await this.extractMedia(file, file.name.substring(file.name.lastIndexOf(".") + 1, file.name.length));
       } catch (e) {
-        console.log("Skip: no media data: ", file.name, e);
+        // console.log("Skip: no media data: ", file.name, e);
       }
     } else {
-      console.log("Skip: ", file);
+      // console.log("Skip: ", file);
     }
     return extractedFile;
+  }
+
+  // clean up and rearrange for our consumption
+  formatData(json: any, filename: any) {
+    try {
+      if (json.length === undefined) {
+        let propName = filename.substring(0, filename.indexOf("."));
+        return { [propName]: json };
+      }
+      let name = Object.keys(json[0])[0];
+      // console.log("format: name: ", name);
+      if (["tweet.js", "like.js", "following.js", "follower.js", "mute.js", "block.js"].includes(filename)) {
+        json = { [name]: json.map((t: any) => t[name]) };
+      } else {
+        if (json.length > 1) {
+          let plural = name + "s";
+          // this is a ugly hack, need to compare the various ad data files and merge them somehow using the timestamps
+          if (name.toString() === "ad") {
+            plural += i === 0 ? "" : i;
+            i++;
+          }
+          json = { [plural]: json };
+        } else {
+          json = json[0] !== undefined ? json[0] : json;
+        }
+      }
+      return json;
+    } catch (e) {
+      // eslint-disable-next-line no-throw-literal
+      throw "Error formatting json: " + e + json;
+    }
   }
 
   extractJson(file: any) {
     let extractedJson = new Promise<any>((resolve, reject) => {
       file.async("string").then((content: string) => {
-        let pendingBackup = {
-          name: file.name.replace("data/", ""), // strip out folder name
-          type: "json",
-        };
+        let fname = file.name.replace("data/", ""); // strip out folder name
         let json = {} as any;
-        // let pendingBackup = {};
         try {
           // remove var
           let c = content.substring(content.indexOf("=") + 1, content.length).trim();
           // don't need to parse or resolve if substring contains only 3 characters -> empty array;
           if (c.length > 3) {
-            //@ts-ignore
-            json = JSON.parse(c);
-            if (["tweet.js", "like.js", "following.js", "follower.js", "mute.js", "block.js"].includes(pendingBackup.name)) {
-              // Handle nested arrays
-              let name = Object.keys(json[0])[0];
-              json = { [name]: json.map((t: any) => t[name]) };
-            } else {
-              json = json[0] !== undefined ? json[0] : json;
-            }
+            json = this.formatData(JSON.parse(c), fname);
             console.log("Add: ", json);
+            t++;
             resolve(json);
           } else {
             reject(json);
@@ -93,10 +116,10 @@ export class Zip {
           if (proccessedFile.name.includes("-")) {
             proccessedFile.id = proccessedFile.name.substring(proccessedFile.name.lastIndexOf("-") + 1, proccessedFile.name.length);
           }
-          console.log("Add media file: ", proccessedFile);
+          console.log("Add media: ", proccessedFile);
           resolve(proccessedFile);
         } catch (e) {
-          console.log("Error parsing media : ", e);
+          console.log("Error parsing media: ", e);
           reject(proccessedFile);
         }
       });
@@ -107,7 +130,7 @@ export class Zip {
   async extract(zip: JSZip) {
     // let unZippedFiles: { name: string; type: string; data: {} }[] = [];
     let unZippedFiles = {} as any;
-    console.log("Extracting files...");
+    console.log("Building social archive twitter dataset");
 
     /* typcial twitter backup zip file structure
     twitter_backup.zip
@@ -137,19 +160,18 @@ export class Zip {
           }
         }
       } else {
-        console.log("Skip: Entry === directory name: ", key);
+        // console.log("Skip: Entry === directory name: ", key);
       }
     }
 
-    console.log("Final archive object: ", unZippedFiles);
     // update media references in tweets
     await this.replaceMediaLinks(unZippedFiles);
+    console.log("Total entries: ", t);
+    console.log("Built social archive twitter dataset: ", unZippedFiles);
     return unZippedFiles;
   }
 
   async replaceMediaLinks(unZippedFiles: any) {
-    console.log("Replace media links with data uris in tweets");
-
     let midUri = new Map();
     let tweetsWithMedia: any[] = [];
 
@@ -167,20 +189,18 @@ export class Zip {
     let mediaId = amu.substring(amu.lastIndexOf("/") + 1, amu.length);
     unZippedFiles.profile.avatarMediaUrl = midUri.get(mediaId);
 
-    // console.log("Profile after: ", unZippedFiles.profile);
-    console.log("Total tweets with media: ", tweetsWithMedia.length);
-
     // replace media links with data uri
     for (let tweet of tweetsWithMedia) {
       /* two references of media arrays in a tweet:
       1. entities.media (media displayed in the tweet)
       2. extended_entities.media (media stored in the tweet)
       */
-      console.log("entities.media");
+      // console.log("entities.media");
       await this.updateMediaPropertiesWithDataUri(tweet.entities.media, midUri);
-      console.log("extended_entities.media");
+      // console.log("extended_entities.media");
       await this.updateMediaPropertiesWithDataUri(tweet.extended_entities.media, midUri);
     }
+    console.log("Update urls with data uris in profile and tweets (" + tweetsWithMedia.length + ")");
   }
 
   async updateMediaPropertiesWithDataUri(media: any, midUri: any) {
@@ -249,8 +269,8 @@ export class Zip {
 
   async internalUnzip() {
     return JSZip.loadAsync(this.file).then(async (zip: JSZip) => {
-      console.log("Zipped file contents: ", zip);
-      console.log("Total entries: ", Object.keys(zip.files).length);
+      // console.log("Zipped file contents: ", zip);
+      console.log("Total entries in zip: ", Object.keys(zip.files).length);
       this.unzippedFiles = this.extract(zip);
     });
   }
