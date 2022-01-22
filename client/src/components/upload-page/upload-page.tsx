@@ -45,12 +45,15 @@ function UploadPage() {
           <div className="step-block">
             <p>
               3. Wait for email confirmation <br />
-              <div className="econf">Typically within 24 hours</div>
+              <span className="econf">Typically within 24 hours</span>
             </p>
             <img src="step3-waitforemail.png" alt="step 3" />
           </div>
           <div className="step-block">
-            <p>4. Download archive</p>
+            <p>
+              4. Download archive <br />
+              <span className="econf">Expires in 7 days!</span>
+            </p>
             <img src="step4-download.gif" alt="step 4" />
           </div>
         </div>
