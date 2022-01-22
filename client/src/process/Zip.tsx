@@ -15,18 +15,20 @@ export class Zip {
 
   async extractFile(file: any) {
     let extractedFile = undefined;
+
     // all js files are json :)
     if (file.name.endsWith(".js")) {
       try {
         extractedFile = await this.extractJson(file);
       } catch (e) {
-        console.log("Skip: no data: ", e);
+        // console.log("file name: ", file.name);
+        console.log("Skip: no data: ", file.name, e);
       }
-    } else if (file.name.endsWith(".jpg") || file.name.endsWith(".png") || file.name.endsWith(".mp4")) {
+    } else if (file.name.endsWith(".mp4") || file.name.endsWith(".jpg") || file.name.endsWith(".mp3") || file.name.endsWith(".png")) {
       try {
         extractedFile = await this.extractMedia(file, file.name.substring(file.name.lastIndexOf(".") + 1, file.name.length));
       } catch (e) {
-        console.log("Skip: no data: ", e);
+        console.log("Skip: no media data: ", file.name, e);
       }
     } else {
       console.log("Skip: ", file);
@@ -37,25 +39,34 @@ export class Zip {
   extractJson(file: any) {
     let extractedJson = new Promise<any>((resolve, reject) => {
       file.async("string").then((content: string) => {
-        let proccessedFile = {
+        let pendingBackup = {
           name: file.name.replace("data/", ""), // strip out folder name
           type: "json",
-          data: undefined,
         };
+        let json = {} as any;
+        // let pendingBackup = {};
         try {
           // remove var
           let c = content.substring(content.indexOf("=") + 1, content.length).trim();
           // don't need to parse or resolve if substring contains only 3 characters -> empty array;
           if (c.length > 3) {
-            proccessedFile.data = JSON.parse(c);
-            console.log("Add: ", proccessedFile);
-            resolve(proccessedFile);
+            //@ts-ignore
+            json = JSON.parse(c);
+            if (["tweet.js", "like.js", "following.js", "follower.js", "mute.js", "block.js"].includes(pendingBackup.name)) {
+              // Handle nested arrays
+              let name = Object.keys(json[0])[0];
+              json = { [name]: json.map((t: any) => t[name]) };
+            } else {
+              json = json[0] !== undefined ? json[0] : json;
+            }
+            console.log("Add: ", json);
+            resolve(json);
           } else {
-            reject(proccessedFile);
+            reject(json);
           }
         } catch (e) {
           console.log("Error parsing json : ", e);
-          reject(proccessedFile);
+          reject(json);
         }
       });
     });
@@ -70,14 +81,19 @@ export class Zip {
           type,
           data: "",
           id: "",
+          category: "media",
         };
         try {
+          // TODO: handle ALL media types
           // don't need to parse or resolve if substring contains only 3 characters -> empty array;
-          proccessedFile.data = "data:" + (type === "mp4" ? "video/mp4" : "image/" + type) + ";base64," + content;
+          let video = type === "mp4" ? "video/mp4" : null;
+          let audio = type === "mp3" ? "audio/mp3" : null;
+          let image = type !== "mp4" && type !== "mp3" ? "image/" + type : null;
+          proccessedFile.data = "data:" + (video !== null ? video : image !== null ? image : audio !== null ? audio : null) + ";base64," + content;
           if (proccessedFile.name.includes("-")) {
             proccessedFile.id = proccessedFile.name.substring(proccessedFile.name.lastIndexOf("-") + 1, proccessedFile.name.length);
           }
-          console.log("Add: ", proccessedFile);
+          console.log("Add media file: ", proccessedFile);
           resolve(proccessedFile);
         } catch (e) {
           console.log("Error parsing media : ", e);
@@ -89,7 +105,8 @@ export class Zip {
   }
 
   async extract(zip: JSZip) {
-    let unZippedFiles: { name: string; type: string; data: {} }[] = [];
+    // let unZippedFiles: { name: string; type: string; data: {} }[] = [];
+    let unZippedFiles = {} as any;
     console.log("Extracting files...");
 
     /* typcial twitter backup zip file structure
@@ -98,7 +115,8 @@ export class Zip {
       + data            <-- folder we are interested in
       Your archive.html <-- skip this file
     */
-    // iterate over zip contents and add to unzippedFiles array
+    // iterate over media contents and add to unzippedFiles array
+    let media = [];
     for (var key in zip.files) {
       let file = zip.files[key];
 
@@ -108,7 +126,14 @@ export class Zip {
         if (key.includes("data")) {
           let extractedFile = await this.extractFile(file);
           if (extractedFile !== undefined) {
-            unZippedFiles.push(extractedFile);
+            // Object.assign(unZippedFiles, extractedFile);
+            if (extractedFile.category === "media") {
+              // @ts-ignore
+              media.push(extractedFile);
+              unZippedFiles = { ...unZippedFiles, media };
+            } else {
+              unZippedFiles = { ...unZippedFiles, ...extractedFile };
+            }
           }
         }
       } else {
@@ -116,46 +141,41 @@ export class Zip {
       }
     }
 
+    console.log("Final archive object: ", unZippedFiles);
     // update media references in tweets
     await this.replaceMediaLinks(unZippedFiles);
     return unZippedFiles;
   }
 
-  async replaceMediaLinks(unZippedFiles: any[]) {
+  async replaceMediaLinks(unZippedFiles: any) {
     console.log("Replace media links with data uris in tweets");
 
     let midUri = new Map();
     let tweetsWithMedia: any[] = [];
 
     // eslint-disable-next-line array-callback-return
-    for (let file of unZippedFiles) {
-      // add media id and data uri to a map, used for replace media links in the tweet.js file
-      if (file.type !== "json") {
-        // console.log("+ id and uri to map:", file.id);
-        midUri.set(file.id, file.data);
-      }
-      // find the tweets file in the zip file
-      if (file.name === "tweet.js") {
-        // filter tweets that contain media, extended entities is always present for tweets with media
-        tweetsWithMedia = file.data.filter((obj2: any) => {
-          return obj2.tweet.extended_entities !== undefined;
-        });
-        console.log("Total tweets with media: ", tweetsWithMedia.length);
-      }
+    for (let file of unZippedFiles.media) {
+      // add media id and data uri to a map, used for replacing media links in the tweet.js file
+      midUri.set(file.id, file.data);
     }
+    // filter tweets that contain media, extended entities is always present for tweets with media
+    tweetsWithMedia = unZippedFiles.tweet.filter((obj2: any) => {
+      return obj2.extended_entities !== undefined;
+    });
 
-    // console.log("tweetsWithMedia: ", tweetsWithMedia);
-    // console.log("map size: ", midUri.size);
+    let amu = unZippedFiles.profile.avatarMediaUrl;
+    let mediaId = amu.substring(amu.lastIndexOf("/") + 1, amu.length);
+    unZippedFiles.profile.avatarMediaUrl = midUri.get(mediaId);
+
+    // console.log("Profile after: ", unZippedFiles.profile);
+    console.log("Total tweets with media: ", tweetsWithMedia.length);
 
     // replace media links with data uri
-    for (let { tweet } of tweetsWithMedia) {
-      // console.log("tweet: ", tweet);
-
+    for (let tweet of tweetsWithMedia) {
       /* two references of media arrays in a tweet:
       1. entities.media (media displayed in the tweet)
       2. extended_entities.media (media stored in the tweet)
       */
-
       console.log("entities.media");
       await this.updateMediaPropertiesWithDataUri(tweet.entities.media, midUri);
       console.log("extended_entities.media");
@@ -209,7 +229,7 @@ export class Zip {
         }
       }
       // console.log("map size: ", midUri.size);
-      console.log("updated object: ", mediaObj);
+      // console.log("updated object: ", mediaObj);
     }
   }
 

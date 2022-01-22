@@ -16,33 +16,12 @@ const reducerActions = (state = initialState, action) => {
         process: true,
       };
     case "UNZIPPED_FILES_LOADED":
-      /** Build reference object
-         * todo: finalize format
-         */
-       let pendingBackup = {};
-       action.payload.forEach((f) => {
-        if (['tweet.js', 'like.js', 'following.js', 'follower.js', 'mute.js', 'block.js'].includes(f.name)) {
-          // Handle nested arrays
-          let name = Object.keys(f.data[0])[0];
-          let flattenedArray = [];
-          f.data.forEach((item) => {
-            flattenedArray.push(item[name]);
-            // item.entries().forEach((key, value) => {
-            //   if (!name) name = key;
-            //   flattenedArray.push(value);
-            // });
-          });
-          pendingBackup = Object.assign(pendingBackup, { [name]: flattenedArray });
-        } else {
-          pendingBackup = Object.assign(pendingBackup, f.data[0]);
-        }
-       });
       return {
         ...state,
         loading: false,
         error: false,
         unZippedFiles: action.payload,
-        pendingBackup: pendingBackup,
+        pendingBackup: action.payload,
         zipFile: action.zipFile,
         process: false,
       };
@@ -51,15 +30,8 @@ const reducerActions = (state = initialState, action) => {
     case "ERROR":
       let msg = action.payload;
       // format the number into a human readable format
-      let formatBytes = msg.substring(
-        msg.indexOf("an") + 3,
-        msg.indexOf("bytes")
-      );
-      msg =
-        msg.replace(
-          formatBytes + "bytes",
-          convertBytesToString(formatBytes, 0)
-        ) + ". Please try again with a smaller file.";
+      let formatBytes = msg.substring(msg.indexOf("an") + 3, msg.indexOf("bytes"));
+      msg = msg.replace(formatBytes + "bytes", convertBytesToString(formatBytes, 0)) + ". Please try again with a smaller file.";
       return { ...state, loading: false, error: true, errorMessage: msg };
     default:
       return state;
@@ -90,7 +62,7 @@ const StoreProvider = ({ children }) => {
         dispatch({
           type: "UNZIPPED_FILES_LOADED",
           payload: unZippedFiles ? unZippedFiles : [],
-          zipFile: zipFile
+          zipFile: zipFile,
         });
       }
     };
@@ -110,7 +82,7 @@ const StoreProvider = ({ children }) => {
         lastModifiedDate: file.lastModifiedDate.toString(),
       };
       // if unzip does not return any files, it means that the file is not a real twitter backup file
-      if (uzip.length > 0) {
+      if (Object.keys(uzip).length !== 0) {
         await set("zip", uzip);
       }
       await set("zipFile", zipDetails);
@@ -127,12 +99,7 @@ const StoreProvider = ({ children }) => {
 
   //   const value = useMemo(() => ({ state, dispatch }), [state, dispatch]);
 
-  return (
-    <StoreContext.Provider value={{ state, dispatch }}>
-      {" "}
-      {children}{" "}
-    </StoreContext.Provider>
-  );
+  return <StoreContext.Provider value={{ state, dispatch }}> {children} </StoreContext.Provider>;
 };
 
 const useStore = () => {
