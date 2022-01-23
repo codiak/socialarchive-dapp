@@ -4,22 +4,25 @@ import AvatarCard from '../avatar-card/avatar-card';
 // @ts-ignore
 import ReactIntense from 'react-intense';
 
+const SHORT_VIDEO_MAX_MILLIS = 6000;
 
 export default function TweetCard(props: { tweet: Tweet, account: any, profile: any}) {
     const { created_at, full_text, favorite_count, retweet_count, id, entities, extended_entities } = props.tweet;
     const { account, profile } = props;
     const date = new Date(Date.parse(created_at)).toLocaleDateString();
     const media = entities['media'] || [];
-    const ext_media_url = extended_entities?.media?.[0]?.video_info?.variants?.[0].url || '';
-
+    const videoInfo = extended_entities?.media?.[0]?.video_info || {};
+    const { duration_millis, variants } = videoInfo;
+    const videoUrl = variants?.[0].url || '';
+    const isGifLike = parseInt(duration_millis) <= SHORT_VIDEO_MAX_MILLIS;
     return (
         <div className="tweet-card">
             <AvatarCard hideBio={true} date={date} tweetId={id} archivedAccount={account} archivedProfile={profile} />
             {/* <span className="tweet-date">{date}</span> */}
             <p className="tweet-text">{full_text}</p>
             <div className="media-wrapper">
-                { ext_media_url ? (
-                    <video autoPlay loop controls src={ext_media_url}></video>
+                { videoUrl ? (
+                    <video autoPlay={isGifLike} muted loop={isGifLike} controls src={videoUrl}></video>
                 ) : media.filter(m => m.type === 'photo').map(m => {
                     // return (<img alt="" src={m['media_url']} />)
                     return (<ReactIntense src={m['media_url']} />)
