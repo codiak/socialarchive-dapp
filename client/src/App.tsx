@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import UploadPage from "./components/upload-page/upload-page";
 import BrowsePage from "./components/browse-page/browse-page";
 import ArchivePage from "./components/archive-page/archive-page";
-import TestUpload from "./components/test-upload";
 import "./App.css";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 
@@ -48,7 +47,6 @@ function App() {
                 <Route path=":user/:section" element={<ArchivePage />} />
               </Route>
               <Route path="/" element={<UploadPage />} />
-              <Route path="/test" element={<TestUpload />} />
             </Routes>
           </BrowserRouter>
         </StoreProvider>
