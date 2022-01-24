@@ -29,9 +29,9 @@ export default function BrowsePage() {
         {page === "explore" && (
           <>
             <h2 className="col-header">Recently Added</h2>
-            {recentAccounts.map((account) => {
+            {recentAccounts.map((account, i) => {
               return (
-                <a href={"/archive/" + account.username + "/tweets"}>
+                <a key={i} href={"/archive/" + account.username + "/tweets"}>
                   <AvatarCard archivedAccount={account} isUserRow={true} />
                 </a>
               );

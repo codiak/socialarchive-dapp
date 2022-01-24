@@ -130,7 +130,7 @@ export class Zip {
   async extract(zip: JSZip) {
     // let unZippedFiles: { name: string; type: string; data: {} }[] = [];
     let unZippedFiles = {} as any;
-    console.log("Building social archive twitter dataset");
+    console.log("Building archive");
 
     /* typcial twitter backup zip file structure
     twitter_backup.zip
@@ -167,7 +167,19 @@ export class Zip {
     // update media references in tweets
     await this.replaceMediaLinks(unZippedFiles);
     console.log("Total entries: ", t);
-    console.log("Built social archive twitter dataset: ", unZippedFiles);
+
+    const size = new TextEncoder().encode(JSON.stringify(unZippedFiles)).length;
+    const kiloBytes = size / 1024;
+    const megaBytes = kiloBytes / 1024;
+    let bundleSize = "";
+    if (megaBytes < 1) {
+      bundleSize = `${Math.round(kiloBytes)} KB`;
+    } else {
+      bundleSize = `${Math.round(megaBytes)} MB`;
+    }
+    unZippedFiles.bsize = bundleSize;
+
+    console.log(`Built archive (${bundleSize}): `, unZippedFiles);
     return unZippedFiles;
   }
 

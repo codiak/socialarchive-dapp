@@ -6,7 +6,7 @@ import "./dropzone.css";
 function UploadPage() {
   // our faithful state management
   const {
-    state: { zipFile, unZippedFiles, loading, error, errorMessage },
+    state: { zipFile, pendingBackup, loading, error, errorMessage },
   } = useStore();
 
   return (
@@ -19,7 +19,7 @@ function UploadPage() {
       {loading && <div>Loading...</div>}
       {!loading && zipFile && (
         <>
-          {unZippedFiles.length === 0 && (
+          {Object.keys(pendingBackup).length === 0 && (
             <>
               <div style={{ color: "red" }}>This file does not contain any twitter backup data</div>
               Filename: {zipFile.name}

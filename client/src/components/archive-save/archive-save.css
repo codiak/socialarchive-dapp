@@ -1,0 +1,23 @@
+.archive-pending-label {
+  position: fixed;
+  /* width: 215px; */
+  width: 13.5em;
+  bottom: 15px;
+  right: 15px;
+  padding: 20px;
+  background: #fffdd0;
+  /* color: #e7b90e; */
+  /* border: 1px solid #e7b90e; */
+  border-radius: 10px;
+  box-shadow: 1px 2px 15px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.link-button {
+  background: none;
+  color: inherit;
+  border: none;
+  cursor: pointer;
+  bottom: 15px;
+  font-size: medium;
+}

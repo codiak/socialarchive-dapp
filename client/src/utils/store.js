@@ -2,11 +2,12 @@ import { createContext, useContext, useEffect, useReducer } from "react";
 import { convertBytesToString } from "./index";
 import { get, set } from "idb-keyval";
 import { Zip } from "../process/Zip";
+import { Beejs } from "../process/Beejs";
 
 const reducerActions = (state = initialState, action) => {
   console.log("action: ", action.type);
   switch (action.type) {
-    case "SET_ZIP_FILE":
+    case "PROCESS_ZIP_FILE":
       let file = action.payload;
       return {
         ...state,
@@ -15,15 +16,34 @@ const reducerActions = (state = initialState, action) => {
         zipFile: file,
         process: true,
       };
+    case "UPLOAD_TO_SWARM":
+      return {
+        ...state,
+        loading: true,
+        error: false,
+        pendingBackup: action.payload,
+        username: action.username,
+        progressCb: action.progressCb,
+        upload: true,
+      };
+    case "UPLOAD_SUCCESS":
+      return {
+        ...state,
+        upload: false,
+        hash: action.hash,
+        url: action.url,
+      };
+
     case "ARCHIVE_LOADED":
+      console.log("archive: ", action.payload);
       return {
         ...state,
         loading: false,
         error: false,
-        unZippedFiles: action.payload,
         pendingBackup: action.payload,
         zipFile: action.zipFile,
         process: false,
+        upload: false,
       };
     case "LOADING":
       return { ...state, loading: true, error: false };
@@ -41,12 +61,12 @@ const reducerActions = (state = initialState, action) => {
 const StoreContext = createContext({});
 
 const initialState = {
-  unZippedFiles: [],
   pendingBackup: {},
   zipFile: undefined,
   loading: false,
   error: false,
   process: false,
+  upload: false,
 };
 
 const StoreProvider = ({ children }) => {
@@ -58,10 +78,10 @@ const StoreProvider = ({ children }) => {
       let zipFile = await get("zipFile");
       if (zipFile !== undefined) {
         dispatch({ type: "LOADING" });
-        let unZippedFiles = await get("zip");
+        let archive = await get("archive");
         dispatch({
           type: "ARCHIVE_LOADED",
-          payload: unZippedFiles ? unZippedFiles : [],
+          payload: archive ? archive : {},
           zipFile: zipFile,
         });
       }
@@ -69,7 +89,7 @@ const StoreProvider = ({ children }) => {
     loadFromIdb();
   }, []);
 
-  // couldn't figure out another way to fire async dispatches using useReducer,
+  // unzips files - couldn't figure out another way to fire async dispatches using useReducer,
   useEffect(() => {
     const unZip = async () => {
       dispatch({ type: "LOADING" });
@@ -81,9 +101,10 @@ const StoreProvider = ({ children }) => {
         type: file.type,
         lastModifiedDate: file.lastModifiedDate.toString(),
       };
+
       // if unzip does not return any files, it means that the file is not a real twitter backup file
       if (Object.keys(uzip).length !== 0) {
-        await set("zip", uzip);
+        await set("archive", uzip);
       }
       await set("zipFile", zipDetails);
       dispatch({
@@ -96,6 +117,26 @@ const StoreProvider = ({ children }) => {
       unZip();
     }
   }, [state.process, state.zipFile]);
+
+  // uploads files to swarm,
+  useEffect(() => {
+    const uploadSwarm = async () => {
+      dispatch({ type: "LOADING" });
+
+      let b = new Beejs();
+      let result = await b.upload(state.pendingBackup, state.progressCb);
+      console.log("hash", result);
+
+      dispatch({
+        type: "UPLOAD_SUCCESS",
+        hash: result,
+        url: `https://gateway.ethswarm.org/access/${result}`,
+      });
+    };
+    if (state.upload) {
+      uploadSwarm();
+    }
+  }, [state.upload, state.pendingBackup, state.progressCb]);
 
   //   const value = useMemo(() => ({ state, dispatch }), [state, dispatch]);
 
