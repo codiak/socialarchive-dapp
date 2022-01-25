@@ -53,11 +53,14 @@ export class Beejs {
     });
     const fetch = buildAxiosFetch(axiosInstance);
     try {
+      console.log("Uploading to Swarm: ", this.bee.url);
       // @ts-ignore
       let { reference } = await this.bee.uploadFile(this.POSTAGE_STAMP, bundle, bundleOwner, { fetch });
       result = reference;
     } catch (e) {
-      console.log("error uploading", e);
+      console.log("Error uploading", e);
+      // @ts-ignore
+      e.message = "Error during upload: " + e.message + "\n\nPlease try again.";
       result = e;
     }
     return result;

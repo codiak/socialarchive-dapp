@@ -32,8 +32,15 @@ const reducerActions = (state = initialState, action) => {
         upload: false,
         hash: action.hash,
         url: action.url,
+        error: false,
       };
-
+    case "UPLOAD_FAIL":
+      return {
+        ...state,
+        upload: false,
+        error: true,
+        errorMessage: action.errorMessage,
+      };
     case "ARCHIVE_LOADED":
       console.log("archive: ", action.payload);
       return {
@@ -41,7 +48,7 @@ const reducerActions = (state = initialState, action) => {
         loading: false,
         error: false,
         pendingBackup: action.payload,
-        zipFile: action.zipFile,
+        zipFile: action.zipFile ? action.zipFile : null,
         process: false,
         upload: false,
       };
@@ -75,16 +82,16 @@ const StoreProvider = ({ children }) => {
   // loads files into state from idb if they exist
   useEffect(() => {
     const loadFromIdb = async () => {
-      let zipFile = await get("zipFile");
-      if (zipFile !== undefined) {
-        dispatch({ type: "LOADING" });
-        let archive = await get("archive");
-        dispatch({
-          type: "ARCHIVE_LOADED",
-          payload: archive ? archive : {},
-          zipFile: zipFile,
-        });
-      }
+      // let zipFile = await get("zipFile");
+      // if (zipFile !== undefined) {
+      dispatch({ type: "LOADING" });
+      let archive = await get("archive");
+      dispatch({
+        type: "ARCHIVE_LOADED",
+        payload: archive ? archive : {},
+        // zipFile: zipFile,
+      });
+      // }
     };
     loadFromIdb();
   }, []);
@@ -118,7 +125,7 @@ const StoreProvider = ({ children }) => {
     }
   }, [state.process, state.zipFile]);
 
-  // uploads files to swarm,
+  // upload file to swarm,
   useEffect(() => {
     const uploadSwarm = async () => {
       dispatch({ type: "LOADING" });
@@ -127,17 +134,25 @@ const StoreProvider = ({ children }) => {
       let result = await b.upload(state.pendingBackup, state.progressCb);
       console.log("hash", result);
 
-      dispatch({
-        type: "UPLOAD_SUCCESS",
-        hash: result,
-        url: `https://gateway.ethswarm.org/access/${result}`,
-      });
+      // response is an exception object :)
+      if (result.message) {
+        dispatch({
+          type: "UPLOAD_FAIL",
+          error: true,
+          errorMessage: result.message,
+        });
+      } else {
+        dispatch({
+          type: "UPLOAD_SUCCESS",
+          hash: result,
+          url: `https://gateway.ethswarm.org/access/${result}`,
+        });
+      }
     };
     if (state.upload) {
       uploadSwarm();
     }
   }, [state.upload, state.pendingBackup, state.progressCb]);
-
   //   const value = useMemo(() => ({ state, dispatch }), [state, dispatch]);
 
   return <StoreContext.Provider value={{ state, dispatch }}> {children} </StoreContext.Provider>;

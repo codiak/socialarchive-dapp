@@ -6,7 +6,7 @@ import ProgressBar from "../progressbar/progressbar";
 
 export default function ArchiveSave() {
   const {
-    state: { pendingBackup, hash, upload },
+    state: { pendingBackup, hash, upload, url, error, errorMessage },
     dispatch,
   } = useStore();
 
@@ -15,7 +15,7 @@ export default function ArchiveSave() {
   function logProgress(input: any): void {
     const { loaded, total } = input;
     const percent = Math.floor((loaded / total) * 100);
-    console.log("progress: ", percent);
+    console.log(`progress: ${percent}%`);
     setProgress(percent);
   }
 
@@ -25,12 +25,12 @@ export default function ArchiveSave() {
   };
 
   let previewOrBackup = hash && hash.length > 0 ? "Saved" : "Preview";
-  let copy = hash && hash.length > 0 ? "Backed up to Swarm" : "Not yet backed up to Swarm.";
-  let furl = `https://gateway.ethswarm.org/access/${hash}`;
+  // let furl = `https://gateway.ethswarm.org/access/${hash}`;
 
   const divStyle = {
-    color: hash && hash.length > 0 ? "green" : "red",
+    color: hash && hash.length > 0 ? "green" : "#CB8554",
   };
+  let copy = hash && hash.length > 0 ? "Backed up to Swarm" : "Not yet backed up to Swarm.";
 
   return (
     <div className="archive-pending-label">
@@ -46,16 +46,17 @@ export default function ArchiveSave() {
           <br />
           <div>
             {hash && hash.length > 0 ? (
-              <a href={furl} rel="noreferrer" className="link-button" target="_blank">
+              <a href={url} rel="noreferrer" className="link-button" target="_blank">
                 Swarm Hash
               </a>
             ) : !upload ? (
               <>
-                <input type="submit" disabled={upload} className="link-button" value="Confirm" />| Cancel
+                <input type="submit" className="link-button" value="Confirm" />| Cancel
               </>
             ) : (
-              "Saving..."
+              "Uploading..."
             )}
+            {error && errorMessage.length > 0 && <p style={{ color: "red" }}>{errorMessage}</p>}
           </div>
         </form>
       </div>

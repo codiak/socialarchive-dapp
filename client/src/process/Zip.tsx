@@ -163,23 +163,27 @@ export class Zip {
         // console.log("Skip: Entry === directory name: ", key);
       }
     }
-
-    // update media references in tweets
-    await this.replaceMediaLinks(unZippedFiles);
     console.log("Total entries: ", t);
 
-    const size = new TextEncoder().encode(JSON.stringify(unZippedFiles)).length;
-    const kiloBytes = size / 1024;
-    const megaBytes = kiloBytes / 1024;
-    let bundleSize = "";
-    if (megaBytes < 1) {
-      bundleSize = `${Math.round(kiloBytes)} KB`;
-    } else {
-      bundleSize = `${Math.round(megaBytes)} MB`;
-    }
-    unZippedFiles.bsize = bundleSize;
+    if (Object.keys(unZippedFiles).length > 0) {
+      // update media references in tweets
+      await this.replaceMediaLinks(unZippedFiles);
+      const size = new TextEncoder().encode(JSON.stringify(unZippedFiles)).length;
+      const kiloBytes = size / 1024;
+      const megaBytes = kiloBytes / 1024;
+      let bundleSize = "";
+      if (megaBytes < 1) {
+        bundleSize = `${Math.round(kiloBytes)} KB`;
+      } else {
+        bundleSize = `${Math.round(megaBytes)} MB`;
+      }
+      unZippedFiles.bsize = bundleSize;
 
-    console.log(`Built archive (${bundleSize}): `, unZippedFiles);
+      console.log(`Built archive (${bundleSize}): `, unZippedFiles);
+    } else {
+      console.log("No data extracted, skip building archive");
+    }
+
     return unZippedFiles;
   }
 

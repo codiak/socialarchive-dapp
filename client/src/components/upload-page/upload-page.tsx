@@ -1,7 +1,7 @@
-import React from "react";
 import { useStore } from "../../utils/store";
 import Dropzone from "./DropZone";
 import "./dropzone.css";
+import { Navigate } from "react-router-dom";
 
 function UploadPage() {
   // our faithful state management
@@ -19,13 +19,15 @@ function UploadPage() {
       {loading && <div>Loading...</div>}
       {!loading && zipFile && (
         <>
-          {Object.keys(pendingBackup).length === 0 && (
+          {Object.keys(pendingBackup).length === 0 ? (
             <>
               <div style={{ color: "red" }}>This file does not contain any twitter backup data</div>
               Filename: {zipFile.name}
               <br />
               Size: {zipFile.size}
             </>
+          ) : (
+            <Navigate to="/archive/pending/home" />
           )}
         </>
       )}

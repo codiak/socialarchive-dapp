@@ -1,10 +1,7 @@
 import { useDropzone } from "react-dropzone";
 import { useStore } from "../../utils/store";
-import { useNavigate } from "react-router-dom";
 
 const DropZone = ({ zipFile }: any) => {
-  let navigate = useNavigate();
-
   const { dispatch } = useStore();
 
   const ZIP_MIME_TYPE = "application/zip";
@@ -16,7 +13,6 @@ const DropZone = ({ zipFile }: any) => {
       if (file.type === ZIP_MIME_TYPE) {
         dispatch({ type: "PROCESS_ZIP_FILE", payload: file });
       }
-      navigate("/archive/pending/home");
     }
   };
 

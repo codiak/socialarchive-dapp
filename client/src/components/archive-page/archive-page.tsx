@@ -18,7 +18,7 @@ export default function ArchivePage() {
     state: { pendingBackup }, // nested destructure!
   } = useStore();
   const { user, section } = useParams();
-  // console.log(pendingBackup);
+
   const page = section || "account";
   const btnClasses = "btn rounded-btn ";
 
