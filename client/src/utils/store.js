@@ -22,7 +22,6 @@ const reducerActions = (state = initialState, action) => {
         loading: true,
         error: false,
         pendingBackup: action.payload,
-        username: action.username,
         progressCb: action.progressCb,
         upload: true,
       };
