@@ -62,7 +62,7 @@ export default function ArchivePage() {
           <title>Social Archive</title>
         </Helmet>
       </HelmetProvider>
-      {user === "pending" && <ArchiveSave />}
+      {user === "pending" && !pendingBackup['hash'] && <ArchiveSave />}
       <div className="left-col">
         <AvatarCard archivedAccount={pendingBackup.account} archivedProfile={pendingBackup.profile} />
         {/* Date generated·March 4, 2021 at 4:03:52 PM GMT-8·Estimated size·62 MB */}

@@ -6,18 +6,31 @@
 .spinner {
   animation: rotate 2s linear infinite;
   z-index: 2;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin: -25px 0 0 -25px;
-  width: 50px;
-  height: 50px;
+  width: 80px;
+  height: 80px;
 }
 
 .spinner .path {
   stroke: rgb(180, 180, 180);
   stroke-linecap: round;
   animation: dash 1.5s ease-in-out infinite;
+}
+
+.spinner-wrap {
+  position: relative;
+  text-align: center;
+}
+
+.spinner-text {
+  position: absolute;
+  font-size: 11px;
+  top: 50%;
+  left: 50%;
+  margin-top: -1px;
+  font-weight: bold;
+  color: #121212;
+  white-space: nowrap;
+  transform: translate3d(-50%, -50%, 0);
 }
 
 @keyframes rotate {
@@ -223,3 +236,18 @@ ul {
   text-align: left;
   font-weight: normal;
 }
+
+.center-flex-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 125px);
+}
+
+/* .center-absolute-wrap > svg,
+.center-absolute-wrap > div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+} */

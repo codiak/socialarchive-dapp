@@ -202,6 +202,7 @@ const StoreProvider = ({ children }) => {
         errorMessage: result.message,
       });
     } else {
+      result['hash'] = hash;
       dispatch({
         type: "ARCHIVE_LOADED",
         payload: result ? result : {},
