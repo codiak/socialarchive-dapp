@@ -12,12 +12,12 @@ export default function ArchiveSave() {
 
   const [progress, setProgress] = useState(0);
 
-  function logProgress(input: any): void {
+  const logProgress = (input: any) => {
     const { loaded, total } = input;
     const percent = Math.floor((loaded / total) * 100);
     console.log(`progress: ${percent}%`);
     setProgress(percent);
-  }
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

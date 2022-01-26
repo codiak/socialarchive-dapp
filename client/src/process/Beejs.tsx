@@ -27,15 +27,19 @@ export class Beejs {
     this.bee = randomBee;
   }
 
-  // logProgress(input: any): void {
-  //   console.log(JSON.stringify(input, ["timeStamp", "loaded", "total"]));
-  // }
-
-  async download(reference: any) {
+  async download(reference: any, progressCb: any) {
     let result = undefined;
+    const axiosInstance = axios.create({
+      onDownloadProgress: progressCb,
+    });
+    const fetch = buildAxiosFetch(axiosInstance);
+    console.log("Downloading from Swarm: ", this.bee.url);
+    console.log(reference);
+
     try {
-      let bundle = await this.bee.downloadData(reference);
-      result = bundle.json();
+      // @ts-ignore
+      let bundle = await this.bee.downloadFile(reference, undefined, { fetch });
+      result = bundle.data.json();
     } catch (e) {
       console.log("error downloading", e);
       result = e;

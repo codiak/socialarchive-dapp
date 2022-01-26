@@ -1,8 +1,44 @@
 @font-face {
-  font-family: 'Roboto Mono';
-  src: local("RobotoMono"),
-    url('./fonts/RobotoMono-Regular.woff') format('woff'), /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-    url('./fonts/RobotoMono-Regular.ttf') format('truetype'); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
+  font-family: "Roboto Mono";
+  src: local("RobotoMono"), url("./fonts/RobotoMono-Regular.woff") format("woff"), /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */ url("./fonts/RobotoMono-Regular.ttf") format("truetype"); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
+}
+
+.spinner {
+  animation: rotate 2s linear infinite;
+  z-index: 2;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -25px 0 0 -25px;
+  width: 50px;
+  height: 50px;
+}
+
+.spinner .path {
+  stroke: rgb(180, 180, 180);
+  stroke-linecap: round;
+  animation: dash 1.5s ease-in-out infinite;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
 }
 
 .App {
@@ -22,7 +58,7 @@
 }
 
 .App-header {
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
   background-color: #fff;
   border-bottom: 1px solid #c1c1c1;
   min-height: 100px;
@@ -45,20 +81,20 @@
 
 .menu-link {
   display: inline-block;
-  color: #669FDA;
+  color: #669fda;
   font-size: 18px;
   margin-left: 1.5em;
   text-decoration: none;
 }
 
 .menu-link:hover {
-  border-bottom: 1px solid #669FDA;
+  border-bottom: 1px solid #669fda;
 }
 
 .menu-link.active {
   font-weight: bold;
-  color: #669FDA;
-  border-bottom: 1px solid #669FDA;
+  color: #669fda;
+  border-bottom: 1px solid #669fda;
 }
 
 h2.small {
@@ -86,7 +122,7 @@ h3 {
 .col-header {
   margin: 1em 0 1em;
   font-size: 18px;
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
   font-weight: bold;
 }
 
