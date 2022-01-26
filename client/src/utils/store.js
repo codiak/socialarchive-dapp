@@ -113,6 +113,7 @@ const StoreProvider = ({ children }) => {
     if (state.process) {
       unzip(state.zipFile);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.process, state.zipFile]);
 
   // upload file to swarm,
@@ -127,6 +128,7 @@ const StoreProvider = ({ children }) => {
     if (state.download) {
       downloadFromSwarm(state.hash, state.progressCb);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.download, state.hash, state.progressCb]);
 
   /*   */
@@ -135,6 +137,7 @@ const StoreProvider = ({ children }) => {
     dispatch({ type: "LOADING" });
     let file = zipFile;
     let uzip = await Zip.unzip(file);
+    //
     let zipDetails = {
       name: file.name,
       size: convertBytesToString(file.size),

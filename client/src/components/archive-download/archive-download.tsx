@@ -1,21 +1,19 @@
 import { useEffect, useState } from "react";
 import { useStore } from "../../utils/store";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { useParams, Navigate } from "react-router-dom";
 import { convertBytesToString } from "../../utils/";
-
-import ProgressBar from "../progressbar/progressbar";
-import loader from "../../loading-14.gif";
 
 export default function ArchiveDownload() {
   const { id } = useParams();
   const {
-    state: { pendingBackup, hash, download, error, errorMessage },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    state: { pendingBackup, error, errorMessage },
     dispatch,
   } = useStore();
   const [progress, setProgress] = useState("");
 
   const logProgress = (input: any) => {
-    const { loaded, total } = input;
     setProgress(convertBytesToString(input.loaded));
   };
 
