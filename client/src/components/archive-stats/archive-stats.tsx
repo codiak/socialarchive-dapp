@@ -9,7 +9,7 @@ export default function ArchiveStats(props: { backup: any }) {
     {
       title: "Tweets",
       icon: "tweets",
-      count: tweet.length,
+      count: tweet ? tweet.length : 0,
     },
     {
       title: "Likes",

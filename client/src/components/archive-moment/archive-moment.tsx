@@ -1,15 +1,33 @@
 import React from "react";
 import "./archive-moment.css";
-import { Tweet } from "../tweet/tweet";
 
-export default function ArchiveMoment(props: { moments: Moment[] }) {
+export default function ArchiveMoment(props: { moments: Moment }) {
   const moments = props.moments;
+
+  if (!moments) {
+    return <div>
+      <h3>No Moments created.</h3>
+    </div>
+  }
 
   return (
     <>
-      {moments.map((moment: Moment) => {
+      {/* TODO: {moments.map((moment: Moment) => {
         return <div className="tweet-card">Moment here!</div>;
-      })}
+      })} */}
+      <div>
+        <h2>Moments</h2>
+        <b>{moments.title}</b>
+        <div>
+          {(moments.tweets || []).map((tweet, key) => {
+            const t = tweet['tweet'];
+            const url = t['urls'][0];
+            return <div key={key}>
+              <a href={url['url']}>{url['display']}</a>
+            </div>
+          })}
+        </div>
+      </div>
     </>
   );
 }
@@ -22,6 +40,6 @@ interface Moment {
   title: string;
   tweets: {
     momentId: string;
-    tweet: Tweet;
-  };
+    tweet: any; // moment tweets are different format
+  }[];
 }
