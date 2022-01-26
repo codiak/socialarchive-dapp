@@ -53,7 +53,7 @@ export class Zip {
       } else {
         if (json.length > 1) {
           let plural = name + "s";
-          // this is a ugly hack, need to compare the various ad data files and merge them somehow using the timestamps
+          // TODO this is a ugly hack, need to compare the various ad data files and merge them somehow using the timestamps
           if (name.toString() === "ad") {
             plural += i === 0 ? "" : i;
             i++;

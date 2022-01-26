@@ -40,6 +40,22 @@ const reducerActions = (state = initialState, action) => {
         error: true,
         errorMessage: action.errorMessage,
       };
+    case "DOWNLOAD_FAIL":
+      return {
+        ...state,
+        download: false,
+        error: true,
+        errorMessage: action.errorMessage,
+      };
+    case "DOWNLOAD_FROM_SWARM":
+      return {
+        ...state,
+        loading: true,
+        hash: action.payload,
+        progressCb: action.progressCb,
+        error: false,
+        download: true,
+      };
     case "ARCHIVE_LOADED":
       console.log("archive: ", action.payload);
       return {
@@ -50,6 +66,7 @@ const reducerActions = (state = initialState, action) => {
         zipFile: action.zipFile ? action.zipFile : null,
         process: false,
         upload: false,
+        download: false,
       };
     case "LOADING":
       return { ...state, loading: true, error: false };
@@ -81,78 +98,117 @@ const StoreProvider = ({ children }) => {
   // loads files into state from idb if they exist
   useEffect(() => {
     const loadFromIdb = async () => {
-      // let zipFile = await get("zipFile");
-      // if (zipFile !== undefined) {
       dispatch({ type: "LOADING" });
       let archive = await get("archive");
       dispatch({
         type: "ARCHIVE_LOADED",
         payload: archive ? archive : {},
-        // zipFile: zipFile,
       });
-      // }
     };
     loadFromIdb();
   }, []);
 
   // unzips files - couldn't figure out another way to fire async dispatches using useReducer,
   useEffect(() => {
-    const unZip = async () => {
-      dispatch({ type: "LOADING" });
-      let file = state.zipFile;
-      let uzip = await Zip.unzip(file);
-      let zipDetails = {
-        name: file.name,
-        size: convertBytesToString(file.size),
-        type: file.type,
-        lastModifiedDate: file.lastModifiedDate.toString(),
-      };
-
-      // if unzip does not return any files, it means that the file is not a real twitter backup file
-      if (Object.keys(uzip).length !== 0) {
-        await set("archive", uzip);
-      }
-      await set("zipFile", zipDetails);
-      dispatch({
-        type: "ARCHIVE_LOADED",
-        payload: uzip,
-        zipFile: zipDetails,
-      });
-    };
     if (state.process) {
-      unZip();
+      unzip(state.zipFile);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.process, state.zipFile]);
 
   // upload file to swarm,
   useEffect(() => {
-    const uploadSwarm = async () => {
-      dispatch({ type: "LOADING" });
-
-      let b = new Beejs();
-      let result = await b.upload(state.pendingBackup, state.progressCb);
-      console.log("hash", result);
-
-      // response is an exception object :)
-      if (result.message) {
-        dispatch({
-          type: "UPLOAD_FAIL",
-          error: true,
-          errorMessage: result.message,
-        });
-      } else {
-        dispatch({
-          type: "UPLOAD_SUCCESS",
-          hash: result,
-          url: `https://gateway.ethswarm.org/access/${result}`,
-        });
-      }
-    };
     if (state.upload) {
-      uploadSwarm();
+      uploadToSwarm(state.pendingBackup, state.progressCb);
     }
   }, [state.upload, state.pendingBackup, state.progressCb]);
-  //   const value = useMemo(() => ({ state, dispatch }), [state, dispatch]);
+
+  // download file from swarm
+  useEffect(() => {
+    if (state.download) {
+      downloadFromSwarm(state.hash, state.progressCb);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.download, state.hash, state.progressCb]);
+
+  /*   */
+
+  const unzip = async (zipFile) => {
+    dispatch({ type: "LOADING" });
+    let file = zipFile;
+    let uzip = await Zip.unzip(file);
+    //
+    let zipDetails = {
+      name: file.name,
+      size: convertBytesToString(file.size),
+      type: file.type,
+      lastModifiedDate: file.lastModifiedDate.toString(),
+    };
+
+    // if unzip does not return any files, it means that the file is not a real twitter backup file
+    if (Object.keys(uzip).length !== 0) {
+      await saveToIdb("archive", uzip);
+    }
+    await saveToIdb("zipFile", zipDetails);
+    dispatch({
+      type: "ARCHIVE_LOADED",
+      payload: uzip,
+      zipFile: zipDetails,
+    });
+  };
+
+  const saveToIdb = async (key, value) => {
+    try {
+      await set(key, value);
+    } catch (e) {
+      console.log("Error saving to idb: ", e);
+    }
+  };
+
+  const uploadToSwarm = async (pendingBackup, progressCb) => {
+    dispatch({ type: "LOADING" });
+
+    let b = new Beejs();
+    let result = await b.upload(pendingBackup, progressCb);
+    console.log("hash", result);
+
+    // response is an exception object :)
+    if (result.message) {
+      dispatch({
+        type: "UPLOAD_FAIL",
+        error: true,
+        errorMessage: result.message,
+      });
+    } else {
+      dispatch({
+        type: "UPLOAD_SUCCESS",
+        hash: result,
+        url: `https://gateway.ethswarm.org/access/${result}`,
+      });
+    }
+  };
+
+  const downloadFromSwarm = async (hash, progressCb) => {
+    let b = new Beejs();
+    let result = await b.download(hash, progressCb);
+
+    await saveToIdb("archive", result);
+
+    // response is an exception object :)
+    if (result.message) {
+      dispatch({
+        type: "DOWNLOAD_FAIL",
+        error: true,
+        errorMessage: result.message,
+      });
+    } else {
+      result['hash'] = hash;
+      dispatch({
+        type: "ARCHIVE_LOADED",
+        payload: result ? result : {},
+      });
+    }
+  };
 
   return <StoreContext.Provider value={{ state, dispatch }}> {children} </StoreContext.Provider>;
 };
