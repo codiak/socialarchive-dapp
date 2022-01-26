@@ -1,12 +1,12 @@
-import React from "react";
 import { useStore } from "../../utils/store";
 import Dropzone from "./DropZone";
 import "./dropzone.css";
+import { Navigate } from "react-router-dom";
 
 function UploadPage() {
   // our faithful state management
   const {
-    state: { zipFile, unZippedFiles, loading, error, errorMessage },
+    state: { zipFile, pendingBackup, loading, error, errorMessage },
   } = useStore();
 
   return (
@@ -19,13 +19,15 @@ function UploadPage() {
       {loading && <div>Loading...</div>}
       {!loading && zipFile && (
         <>
-          {unZippedFiles.length === 0 && (
+          {Object.keys(pendingBackup).length === 0 ? (
             <>
               <div style={{ color: "red" }}>This file does not contain any twitter backup data</div>
               Filename: {zipFile.name}
               <br />
               Size: {zipFile.size}
             </>
+          ) : (
+            <Navigate to="/archive/pending/home" />
           )}
         </>
       )}
@@ -45,12 +47,15 @@ function UploadPage() {
           <div className="step-block">
             <p>
               3. Wait for email confirmation <br />
-              <div className="econf">Typically within 24 hours</div>
+              <span className="econf">Typically within 24 hours</span>
             </p>
             <img src="step3-waitforemail.png" alt="step 3" />
           </div>
           <div className="step-block">
-            <p>4. Download archive</p>
+            <p>
+              4. Download archive <br />
+              <span className="econf">Expires in 7 days!</span>
+            </p>
             <img src="step4-download.gif" alt="step 4" />
           </div>
         </div>

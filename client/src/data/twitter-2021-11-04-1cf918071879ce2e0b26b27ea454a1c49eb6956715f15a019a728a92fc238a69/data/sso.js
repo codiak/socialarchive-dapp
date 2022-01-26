@@ -1,1 +1,0 @@
-window.YTD.sso.part0 = [ ]

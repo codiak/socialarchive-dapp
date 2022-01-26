@@ -1,4 +1,3 @@
-import React from "react";
 import { useParams, Link } from "react-router-dom";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 
@@ -12,25 +11,17 @@ import ArchiveLists from "../archive-lists/archive-lists";
 import ArchiveMoment from "../archive-moment/archive-moment";
 import ArchiveTweets from "../archive-tweets/archive-tweets";
 import ArchiveAccountList from "../archive-account-list/archive-account-list";
-import { useNavigate } from "react-router-dom";
+import ArchiveSave from "../archive-save/archive-save";
 
 export default function ArchivePage() {
-  let navigate = useNavigate();
-
   const {
     state: { pendingBackup }, // nested destructure!
   } = useStore();
   const { user, section } = useParams();
 
-  console.log(pendingBackup);
-  if (user === "pending" && (!pendingBackup || !pendingBackup.account)) {
-    navigate("/");
-
-    return null;
-  }
-
   const page = section || "account";
   const btnClasses = "btn rounded-btn ";
+
   const { account, profile, lists } = pendingBackup;
   const tweets = pendingBackup.tweet || [];
   const likes = pendingBackup.like || [];
@@ -59,14 +50,9 @@ export default function ArchivePage() {
     {
       slug: "moment",
       title: "Moments",
-    }
+    },
   ];
-  const disabledSections = [
-    "Direct Messages",
-    "Safety",
-    "Personalziation",
-    "Ads"
-  ]
+  const disabledSections = ["Direct Messages", "Safety", "Personalziation", "Ads"];
   const accounts = pendingBackup[page] || [];
 
   return (
@@ -76,36 +62,29 @@ export default function ArchivePage() {
           <title>Social Archive</title>
         </Helmet>
       </HelmetProvider>
-      {user === "pending" && (
-        <div className="archive-pending-label">
-          <b>Archive Preview</b>
-          <p>Not yet backed up to Swarm.</p>
-          <br />
-          Confirm | Cancel
-        </div>
-      )}
+      {user === "pending" && <ArchiveSave />}
       <div className="left-col">
         <AvatarCard archivedAccount={pendingBackup.account} archivedProfile={pendingBackup.profile} />
         {/* Date generated·March 4, 2021 at 4:03:52 PM GMT-8·Estimated size·62 MB */}
         <div className="btn-stack">
-          {sections.map((section) => {
+          {sections.map((section, i) => {
             return (
-              <>
+              <div key={i}>
                 <Link to={`/archive/${user}/${section.slug}`} className={btnClasses + (page === section.slug ? "active" : "")}>
                   {section.title}
                 </Link>
                 <br />
-              </>
+              </div>
             );
           })}
           <p className="button-section-help-text">Private data excluded:</p>
-          {disabledSections.map((title) => {
+          {disabledSections.map((title, i) => {
             return (
-              <>
-                <div className={btnClasses + 'disabled'}>{title}</div>
-                <br/>
-              </>
-            )
+              <div key={i}>
+                <div className={btnClasses + "disabled"}>{title}</div>
+                <br />
+              </div>
+            );
           })}
         </div>
       </div>
