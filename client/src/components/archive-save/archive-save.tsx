@@ -30,7 +30,8 @@ export default function ArchiveSave() {
   const divStyle = {
     color: hash && hash.length > 0 ? "green" : "#CB8554",
   };
-  let copy = hash && hash.length > 0 ? "Backed up to Swarm" : "Not yet backed up to Swarm.";
+  const copy = hash && hash.length > 0 ? "Backed up to Swarm" : "Not yet backed up to Swarm.";
+  const socialArchiveUrl = (url || '').replace('https://gateway.ethswarm.org/access/', '/archive/');
 
   return (
     <div className="archive-pending-label">
@@ -45,11 +46,14 @@ export default function ArchiveSave() {
           <ProgressBar bgcolor={"#00695c"} completed={progress} />
           <br />
           <div>
-            {hash && hash.length > 0 ? (
+            {hash && hash.length > 0 ? (<div className="btn-row">
+              <a href={socialArchiveUrl} rel="noreferrer" className="link-button" target="_blank">
+                Open to Verify
+              </a>&nbsp;|&nbsp;
               <a href={url} rel="noreferrer" className="link-button" target="_blank">
                 Swarm Hash
               </a>
-            ) : !upload ? (
+            </div>) : !upload ? (
               <div className="btn-row">
                 <input type="submit" className="btn secondary" value="Confirm" />
                 {/* TODO: | Cancel btn to clear local copy/IndexDB */}
