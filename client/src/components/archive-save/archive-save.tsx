@@ -50,9 +50,10 @@ export default function ArchiveSave() {
                 Swarm Hash
               </a>
             ) : !upload ? (
-              <>
-                <input type="submit" className="link-button" value="Confirm" />| Cancel
-              </>
+              <div className="btn-row">
+                <input type="submit" className="btn secondary" value="Confirm" />
+                {/* TODO: | Cancel btn to clear local copy/IndexDB */}
+              </div>
             ) : (
               "Uploading..."
             )}

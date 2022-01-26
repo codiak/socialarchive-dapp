@@ -20,4 +20,5 @@
   cursor: pointer;
   bottom: 15px;
   font-size: medium;
+  border-bottom: 1px solid;
 }
