@@ -38,6 +38,17 @@
     z-index: 1000;
 }
 
+.archive-pending-action {
+    display: flex;
+    flex-direction: column;
+}
+
+.archive-pending-error {
+  color: red;
+  margin-top: 3px;
+  font-size: smaller;
+}
+
 .account-info .row {
     border: 1px solid rgb(204, 214, 221);
     border-top: none;

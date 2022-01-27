@@ -61,11 +61,12 @@ export class Beejs {
       // @ts-ignore
       let { reference } = await this.bee.uploadFile(this.POSTAGE_STAMP, bundle, bundleOwner, { fetch });
       result = reference;
-    } catch (e) {
-      console.log("Error uploading", e);
-      // @ts-ignore
-      e.message = "Error during upload: " + e.message + "\n\nPlease try again.";
-      result = e;
+    } catch (err) {
+      console.log("Error uploading", err);
+      const { status, message } = err;
+      const massagedMessage = status === 413 ? 'max file size exceeded.' : `${message} \n\nPlease try again.`;
+      err.message = `Error during upload: ${massagedMessage}`;
+      result = err;
     }
     return result;
   }
