@@ -6,7 +6,7 @@ import ProgressBar from "../progressbar/progressbar";
 
 export default function ArchiveSave() {
   const {
-    state: { pendingBackup, hash, upload, url, error, errorMessage },
+    state: { pendingBackup, hash, upload, gatewayUrl, error, errorMessage },
     dispatch,
   } = useStore();
 
@@ -25,20 +25,19 @@ export default function ArchiveSave() {
   };
 
   let previewOrBackup = hash && hash.length > 0 ? "Saved" : "Preview";
-  // let furl = `https://gateway.ethswarm.org/access/${hash}`;
 
   const divStyle = {
     color: hash && hash.length > 0 ? "green" : "#CB8554",
   };
   const copy = hash && hash.length > 0 ? "Backed up to Swarm" : "Not yet backed up to Swarm.";
-  const socialArchiveUrl = (url || '').replace('https://gateway.ethswarm.org/access/', '/archive/');
+  const viewUrl = '/archive/' + hash;
   const displayHash = () => {
     return (
         <div className="btn-row">
-            <a href={socialArchiveUrl} rel="noreferrer" className="link-button" target="_blank">
+            <a href={viewUrl} rel="noreferrer" className="link-button" target="_blank">
             Open to Verify
             </a>&nbsp;|&nbsp;
-            <a href={url} rel="noreferrer" className="link-button" target="_blank">
+            <a href={gatewayUrl} rel="noreferrer" className="link-button" target="_blank">
             Swarm Hash
             </a>
         </div>
