@@ -148,7 +148,6 @@ export const unzipTwitterArchive = async (twitterArchive: any) => {
       }
     }
     console.log("Total entries: ", t);
-    return archiveItems;
   };
 
   const zip: JSZip = await JSZip.loadAsync(twitterArchive);
@@ -192,6 +191,14 @@ export const unzipTwitterArchive = async (twitterArchive: any) => {
     });
   }
 
+  const amu = archiveItems.profile?.avatarMediaUrl;
+  if (amu) {
+    const mediaId = amu.substring(amu.lastIndexOf("/") + 1, amu.length);
+    const goodUrl = 'https://pbs.twimg.com/profile_images/1483539661859561472/sHsDFLCV_400x400.jpg';
+    const mediaDataUrl = await mediaUrlToDataUri(goodUrl);
+    mediaMap[mediaId] = mediaDataUrl;
+  }
+
   for (let tweet of archiveItems.tweet) {
     /* two references of media arrays in a tweet:
     1. entities.media (media displayed in the tweet)
@@ -205,6 +212,10 @@ export const unzipTwitterArchive = async (twitterArchive: any) => {
     await updateMediaPropertiesWithDataUri(entities.media);
     await updateMediaPropertiesWithDataUri(extended_entities.media);
   }
+  const itemsSize = new TextEncoder().encode(JSON.stringify(archiveItems)).length;
+  const mediaSize = new TextEncoder().encode(JSON.stringify(mediaMap)).length;
+  const archiveSize = itemsSize + mediaSize;
+  const archive = { archiveSize, archiveItems, mediaMap };
 
-  return { archiveItems, mediaMap };
+  return archive;
 };

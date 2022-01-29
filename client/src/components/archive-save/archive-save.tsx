@@ -32,14 +32,16 @@ export default function ArchiveSave() {
   };
   const copy = hash && hash.length > 0 ? "Backed up to Swarm" : "Not yet backed up to Swarm.";
   const socialArchiveUrl = (url || '').replace('https://gateway.ethswarm.org/access/', '/archive/');
+  const { archiveSize } = pendingBackup;
+  const kiloBytes = archiveSize / 1024;
+  const megaBytes = kiloBytes / 1024;
+  const bundleSize = megaBytes < 1 ? `${Math.round(kiloBytes)} KB` : `${Math.round(megaBytes)} MB`;
 
   return (
     <div className="archive-pending-label">
       <div style={divStyle}>
         <form onSubmit={handleSubmit}>
-          <b>
-            Archive {previewOrBackup} {pendingBackup && pendingBackup.bsize && "(" + pendingBackup.bsize + ")"}
-          </b>
+          <b>Archive {previewOrBackup} ({bundleSize})</b>
           <p></p>
           <p>{copy}</p>
           {/* {upload && ( */}

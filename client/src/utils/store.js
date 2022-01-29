@@ -87,6 +87,7 @@ const StoreContext = createContext({});
 
 const initialState = {
   pendingBackup: { archiveItems: {}, mediaMap: {} },
+  pendingBackupSize: 0,
   zipFile: undefined,
   loading: false,
   error: false,
