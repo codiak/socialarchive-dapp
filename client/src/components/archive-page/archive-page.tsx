@@ -15,17 +15,21 @@ import ArchiveSave from "../archive-save/archive-save";
 
 export default function ArchivePage() {
   const {
-    state: { pendingBackup }, // nested destructure!
+    state: { pendingBackup: { archiveItems } },
   } = useStore();
   const { user, section } = useParams();
-
   const page = section || "account";
   const btnClasses = "btn rounded-btn ";
-
-  const { account, profile, lists } = pendingBackup;
-  const tweets = pendingBackup.tweet || [];
-  const likes = pendingBackup.like || [];
-  const moments = pendingBackup.moment || [];
+  const {
+    hash,
+    account,
+    profile,
+    lists,
+    tweet: tweets = [],
+    like: likes = [],
+    moment: moments = [],
+    page: accounts = [],
+  } = archiveItems;
   const sections = [
     {
       slug: "home",
@@ -52,8 +56,7 @@ export default function ArchivePage() {
       title: "Moments",
     },
   ];
-  const disabledSections = ["Direct Messages", "Safety", "Personalziation", "Ads"];
-  const accounts = pendingBackup[page] || [];
+  const disabledSections = ["Direct Messages", "Safety", "Personalization", "Ads"];
 
   return (
     <div className="container">
@@ -62,9 +65,9 @@ export default function ArchivePage() {
           <title>Social Archive</title>
         </Helmet>
       </HelmetProvider>
-      {user === "pending" && !pendingBackup['hash'] && <ArchiveSave />}
+      {user === "pending" && !hash && <ArchiveSave />}
       <div className="left-col">
-        <AvatarCard archivedAccount={pendingBackup.account} archivedProfile={pendingBackup.profile} />
+        <AvatarCard archivedAccount={account} archivedProfile={profile} />
         {/* Date generated·March 4, 2021 at 4:03:52 PM GMT-8·Estimated size·62 MB */}
         <div className="btn-stack">
           {sections.map((section, i) => {
@@ -92,13 +95,13 @@ export default function ArchivePage() {
         {/***** Home/Stats Content ******/}
         {page === "home" && (
           <div className="account-home">
-            <ArchiveStats backup={pendingBackup}></ArchiveStats>
+            <ArchiveStats backup={archiveItems}></ArchiveStats>
           </div>
         )}
         {/***** Account Content ******/}
         {page === "account" && (
           <div className="account-info">
-            <ArchiveAccount backup={pendingBackup}></ArchiveAccount>
+            <ArchiveAccount backup={archiveItems}></ArchiveAccount>
           </div>
         )}
         {/***** Tweet Timeline ******/}
