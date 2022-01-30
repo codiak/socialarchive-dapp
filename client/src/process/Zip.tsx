@@ -3,7 +3,9 @@ let i = 0;
 let t = 0;
 export class Zip {
   file: any;
-  unzippedFiles: any;
+  archiveItems: any = {};
+  media: any = {};
+  archiveSize = 0;
 
   constructor(file: any) {
     this.file = file;
@@ -12,7 +14,8 @@ export class Zip {
   static async unzip(file: any) {
     const zip = new Zip(file);
     await zip.internalUnzip();
-    return zip.unzippedFiles;
+    const { archiveItems, archiveSize, media: mediaMap} = zip;
+    return { archiveSize, archiveItems, mediaMap };
   }
 
   async extractFile(file: any) {
@@ -71,7 +74,7 @@ export class Zip {
   }
 
   extractJson(file: any) {
-    let extractedJson = new Promise<any>((resolve, reject) => {
+    return new Promise<any>((resolve, reject) => {
       file.async("string").then((content: string) => {
         let fname = file.name.replace("data/", ""); // strip out folder name
         let json = {} as any;
@@ -93,38 +96,32 @@ export class Zip {
         }
       });
     });
-    return extractedJson;
   }
 
   extractMedia(file: any, type: string) {
-    let extractedMedia = new Promise<any>((resolve, reject) => {
+    return new Promise<any>((resolve, reject) => {
+      const name = file.name.replace("data/", "").substring(file.name.lastIndexOf("/") + 1, file.name.length); // strip out folder names
+      // TODO: handle ALL media types
+      const video = type === "mp4" ? "video/mp4" : null;
+      const audio = type === "mp3" ? "audio/mp3" : null;
+      const image = type !== "mp4" && type !== "mp3" ? "image/" + type : null;
+      const dataUrlProlog = "data:" + (video !== null ? video : image !== null ? image : audio !== null ? audio : null) + ";base64,";
+      const processedFile = {
+        name,
+        type,
+        data: "",
+        id: "",
+        category: "media",
+      };
       file.async("base64").then((content: any) => {
-        let proccessedFile = {
-          name: file.name.replace("data/", "").substring(file.name.lastIndexOf("/") + 1, file.name.length), // strip out folder names
-          type,
-          data: "",
-          id: "",
-          category: "media",
-        };
-        try {
-          // TODO: handle ALL media types
-          // don't need to parse or resolve if substring contains only 3 characters -> empty array;
-          let video = type === "mp4" ? "video/mp4" : null;
-          let audio = type === "mp3" ? "audio/mp3" : null;
-          let image = type !== "mp4" && type !== "mp3" ? "image/" + type : null;
-          proccessedFile.data = "data:" + (video !== null ? video : image !== null ? image : audio !== null ? audio : null) + ";base64," + content;
-          if (proccessedFile.name.includes("-")) {
-            proccessedFile.id = proccessedFile.name.substring(proccessedFile.name.lastIndexOf("-") + 1, proccessedFile.name.length);
-          }
-          console.log("Add media: ", proccessedFile);
-          resolve(proccessedFile);
-        } catch (e) {
-          console.log("Error parsing media: ", e);
-          reject(proccessedFile);
+        processedFile.data = dataUrlProlog + content;
+        if (processedFile.name.includes("-")) {
+          processedFile.id = processedFile.name.substring(processedFile.name.lastIndexOf("-") + 1, processedFile.name.length);
         }
+        console.log("Add media: ", processedFile);
+        resolve(processedFile);
       });
     });
-    return extractedMedia;
   }
 
   async extract(zip: JSZip) {
@@ -139,7 +136,6 @@ export class Zip {
       Your archive.html <-- skip this file
     */
     // iterate over media contents and add to unzippedFiles array
-    let media = [];
     for (var key in zip.files) {
       let file = zip.files[key];
 
@@ -149,11 +145,10 @@ export class Zip {
         if (key.includes("data")) {
           let extractedFile = await this.extractFile(file);
           if (extractedFile !== undefined) {
-            // Object.assign(unZippedFiles, extractedFile);
-            if (extractedFile.category === "media") {
-              // @ts-ignore
-              media.push(extractedFile);
-              unZippedFiles = { ...unZippedFiles, media };
+            const { id, category } = extractedFile;
+
+            if (category === "media") {
+              this.media[id] = extractedFile.data
             } else {
               unZippedFiles = { ...unZippedFiles, ...extractedFile };
             }
@@ -164,108 +159,52 @@ export class Zip {
       }
     }
     console.log("Total entries: ", t);
+    this.archiveItems = unZippedFiles;
 
-    if (Object.keys(unZippedFiles).length > 0) {
-      // update media references in tweets
-      await this.replaceMediaLinks(unZippedFiles);
-      const size = new TextEncoder().encode(JSON.stringify(unZippedFiles)).length;
-      const kiloBytes = size / 1024;
-      const megaBytes = kiloBytes / 1024;
-      let bundleSize = "";
-      if (megaBytes < 1) {
-        bundleSize = `${Math.round(kiloBytes)} KB`;
-      } else {
-        bundleSize = `${Math.round(megaBytes)} MB`;
-      }
-      unZippedFiles.bsize = bundleSize;
-
-      console.log(`Built archive (${bundleSize}): `, unZippedFiles);
-    } else {
-      console.log("No data extracted, skip building archive");
-    }
-
-    return unZippedFiles;
+    await this.buildMediaMap();
+    const itemsSize = new TextEncoder().encode(JSON.stringify(unZippedFiles)).length;
+    const mediaSize = new TextEncoder().encode(JSON.stringify(this.media)).length;
+    this.archiveSize = itemsSize + mediaSize; // TODO: keep separate?
   }
 
-  async replaceMediaLinks(unZippedFiles: any) {
-    let midUri = new Map();
-    let tweetsWithMedia: any[] = [];
-
-    // eslint-disable-next-line array-callback-return
-    for (let file of unZippedFiles.media) {
-      // add media id and data uri to a map, used for replacing media links in the tweet.js file
-      midUri.set(file.id, file.data);
-    }
-    // filter tweets that contain media, extended entities is always present for tweets with media
-    tweetsWithMedia = unZippedFiles.tweet.filter((obj2: any) => {
-      return obj2.extended_entities !== undefined;
-    });
-
-    let amu = unZippedFiles.profile.avatarMediaUrl;
+  async buildMediaMap() {
+    const { tweet: tweets, profile: { avatarMediaUrl: amu } } = this.archiveItems;
     let mediaId = amu.substring(amu.lastIndexOf("/") + 1, amu.length);
-    unZippedFiles.profile.avatarMediaUrl = midUri.get(mediaId);
+    this.media[mediaId] = await this.mediaUrlToDataUri(amu);
 
-    // replace media links with data uri
-    for (let tweet of tweetsWithMedia) {
+    for (let tweet of tweets) {
       /* two references of media arrays in a tweet:
       1. entities.media (media displayed in the tweet)
       2. extended_entities.media (media stored in the tweet)
       */
-      // console.log("entities.media");
-      await this.updateMediaPropertiesWithDataUri(tweet.entities.media, midUri);
-      // console.log("extended_entities.media");
-      await this.updateMediaPropertiesWithDataUri(tweet.extended_entities.media, midUri);
+      const { extended_entities, entities } = tweet;
+      if (!extended_entities) {
+        continue;
+      }
+      await this.updateMediaPropertiesWithDataUri(entities.media);
+      await this.updateMediaPropertiesWithDataUri(extended_entities.media);
     }
-    console.log("Update urls with data uris in profile and tweets (" + tweetsWithMedia.length + ")");
   }
 
-  async updateMediaPropertiesWithDataUri(media: any, midUri: any) {
-    for (let mediaObj of media) {
-      let murl = mediaObj.media_url_https;
+  async updateMediaPropertiesWithDataUri(mediaArray: any) {
+    for (let mediaObj of mediaArray) {
+      const {media_url_https, video_info} = mediaObj;
       // extract the media id from the url
-      let mediaId = murl.substring(murl.lastIndexOf("/") + 1, murl.length);
-      // check if the media id is in the map
-      if (midUri.has(mediaId)) {
-        // if it is, replace the media url with the data uri
-        // console.log("media id found in map: ", mediaId, " avoided fetching media");
-        mediaObj.media_url = midUri.get(mediaId);
-        // update the second property of the media object too
-        mediaObj.media_url_https = mediaObj.media_url;
-      } else {
-        // console.log("media id not found in map: ", mediaId);
-        // if not, download the media and replace the url with the data uri
-        mediaObj.media_url = await this.mediaUrlToDataUri(mediaObj.media_url_https);
-        // update the second property of the media object too
-        mediaObj.media_url_https = mediaObj.media_url;
-        // add the media id and data uri to the map
-        // console.log("+ id and uri to map:", mediaId);
-        midUri.set(mediaId, mediaObj.media_url);
+      const mediaId = media_url_https.substring(media_url_https.lastIndexOf("/") + 1, media_url_https.length);
+      if (!(mediaId in this.media)) {
+        this.media[mediaId] = await this.mediaUrlToDataUri(media_url_https);
       }
-
       // if tweet contains video, replace the video url with the data uri
-      if (mediaObj.video_info) {
-        // console.log("video info: ", mediaObj.video_info);
-        for (let variant of mediaObj.video_info.variants) {
+      if (video_info) {
+        for (let variant of video_info.variants) {
           let vurl = variant.url;
           // extract the media id from the url
           let videoId = vurl.substring(vurl.lastIndexOf("/") + 1, vurl.length);
-          // check if the media id is in the map
-          if (midUri.has(videoId)) {
-            // if it is, replace the media url with the data uri
-            // console.log("video id found in map: ", videoId, " avoided fetching media");
-            variant.url = midUri.get(videoId);
-          } else {
-            // console.log("video id not found in map: ", videoId);
-            // if not, download the media and replace the url with the data uri
-            variant.url = await this.mediaUrlToDataUri(variant.url);
-            // add the media id and data uri to the map
-            // console.log("+ id and uri to map:", videoId);
-            midUri.set(videoId, variant.url);
+          if (!(videoId in this.media)) {
+            this.media[videoId] = await this.mediaUrlToDataUri(vurl);
           }
         }
       }
-      // console.log("map size: ", midUri.size);
-      // console.log("updated object: ", mediaObj);
     }
   }
 
@@ -285,9 +224,8 @@ export class Zip {
 
   async internalUnzip() {
     return JSZip.loadAsync(this.file).then(async (zip: JSZip) => {
-      // console.log("Zipped file contents: ", zip);
       console.log("Total entries in zip: ", Object.keys(zip.files).length);
-      this.unzippedFiles = this.extract(zip);
+      return this.extract(zip);
     });
   }
 }

@@ -1,8 +1,7 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
 import { convertBytesToString } from "./index";
 import { get, set } from "idb-keyval";
-// import { Zip } from "../process/Zip";
-import { unzipTwitterArchive } from "../process/Zip2";
+import { Zip } from "../process/Zip";
 import { Beejs } from "../process/Beejs";
 
 const reducerActions = (state = initialState, action) => {
@@ -139,10 +138,7 @@ const StoreProvider = ({ children }) => {
   const unzip = async (zipFile) => {
     dispatch({ type: "LOADING" });
     let file = zipFile;
-    // let uzip = await Zip.unzip(file);
-    const uzip = await unzipTwitterArchive(file);
-
-    //
+    let uzip = await Zip.unzip(file);
     let zipDetails = {
       name: file.name,
       size: convertBytesToString(file.size),
