@@ -184,7 +184,7 @@ const StoreProvider = ({ children }) => {
       dispatch({
         type: "UPLOAD_SUCCESS",
         hash: result,
-        url: `https://gateway.ethswarm.org/access/${result}`,
+        gatewayUrl: `https://gateway.ethswarm.org/access/${result}`,
       });
     }
   };
