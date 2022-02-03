@@ -101,6 +101,7 @@ export class Zip {
   extractMedia(file: any, type: string) {
     return new Promise<any>((resolve, reject) => {
       const name = file.name.replace("data/", "").substring(file.name.lastIndexOf("/") + 1, file.name.length); // strip out folder names
+      const id = name.includes('-') ? name.substring(name.lastIndexOf('-') + 1, name.length) : '';
       // TODO: handle ALL media types
       const video = type === "mp4" ? "video/mp4" : null;
       const audio = type === "mp3" ? "audio/mp3" : null;
@@ -108,16 +109,13 @@ export class Zip {
       const dataUrlProlog = "data:" + (video !== null ? video : image !== null ? image : audio !== null ? audio : null) + ";base64,";
       const processedFile = {
         name,
+        id,
+        category: "media",
         type,
         data: "",
-        id: "",
-        category: "media",
       };
       file.async("base64").then((content: any) => {
         processedFile.data = dataUrlProlog + content;
-        if (processedFile.name.includes("-")) {
-          processedFile.id = processedFile.name.substring(processedFile.name.lastIndexOf("-") + 1, processedFile.name.length);
-        }
         console.log("Add media: ", processedFile);
         resolve(processedFile);
       });
