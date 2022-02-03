@@ -125,34 +125,36 @@ export class Beejs {
     let socResult = await this.writeSOC(feedIndexInt, compress);
     console.log("saved payload in feed", socResult);
 
-    // 5. Download last profile (check the last entry we uploaded)
-    // let socReaderResult = await this.readSOC(feedIndexInt);
-    // let uncompress = LZString.decompressFromUint8Array(socReaderResult.payload()) as string;
-    // console.log("Uncompressed and parsed message: ", JSON.parse(uncompress));
-
-    // 6. Download last 5 profiles
+    // 5. Download the last 5 profiles
     let feeds = await this.getFeeds(feedIndexInt, 5);
     console.log("last 5 feed messages: ", feeds);
   }
 
   async writeSOC(index: number, data: any) {
-    const topic = Buffer.alloc(32);
-    topic.writeUInt16LE(index, 0);
-
-    type Identifier = Bytes<32>;
-    const topicBytes: Identifier = Utils.hexToBytes(topic.toString("hex"));
-
-    return await this.socWriter.upload(this.POSTAGE_STAMP, topicBytes, data);
+    try {
+      let topicBytes = await this.createTopic(index);
+      return await this.socWriter.upload(this.POSTAGE_STAMP, topicBytes, data);
+    } catch (error) {
+      throw error;
+    }
   }
 
   async readSOC(index: number) {
+    try {
+      let topicBytes = await this.createTopic(index);
+      return await this.socReader.download(topicBytes);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async createTopic(index: number) {
     const topic = Buffer.alloc(32);
     topic.writeUInt16LE(index, 0);
 
     type Identifier = Bytes<32>;
     const topicBytes: Identifier = Utils.hexToBytes(topic.toString("hex"));
-
-    return await this.socReader.download(topicBytes);
+    return topicBytes;
   }
 
   async getFeedIndex(hash: Reference) {
