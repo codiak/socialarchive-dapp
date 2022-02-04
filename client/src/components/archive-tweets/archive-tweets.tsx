@@ -10,20 +10,29 @@ export default function ArchiveTweets(props: { tweets: Tweet[]; account: any; pr
     { title: "Tweets", exclude: ["in_reply_to_status_id", "retweeted"] },
     { title: "Replies", include: ["in_reply_to_status_id"] },
     { title: "Retweets", include: ["retweeted"] },
+    {
+      title: "Media",
+      filterFunc: ({extended_entities}) => {
+        return !!extended_entities
+      },
+    },
   ];
-  const activeFilter = tweetFilters[activeTab];
+  const { exclude, include, filterFunc, title } = tweetFilters[activeTab];
   const filteredTweets = tweets.filter((tweet: any) => {
     let keep = true;
-    (activeFilter["exclude"] || []).forEach((p) => {
+    (exclude || []).forEach((p) => {
       if (tweet[p]) {
         keep = false;
       }
     });
-    (activeFilter["include"] || []).forEach((p) => {
+    (include || []).forEach((p) => {
       if (!tweet[p]) {
         keep = false;
       }
     });
+    if (keep && filterFunc) {
+      keep = filterFunc(tweet);
+    }
     return keep;
   });
 
@@ -39,7 +48,7 @@ export default function ArchiveTweets(props: { tweets: Tweet[]; account: any; pr
           );
         })}
       </div>
-      {filteredTweets.length === 0 && <div className="row fill-message">User does not have any archived {activeFilter.title}.</div>}
+      {filteredTweets.length === 0 && <div className="row fill-message">User does not have any archived {title}.</div>}
       {filteredTweets.map((tweet: Tweet, i) => {
         // @ts-ignore
         return <TweetCard key={i} tweet={tweet} account={account} profile={profile} />;
