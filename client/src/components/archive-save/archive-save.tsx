@@ -9,6 +9,10 @@ export default function ArchiveSave() {
     state: { pendingBackup, hash, upload, gatewayUrl, error, errorMessage },
     dispatch,
   } = useStore();
+  const { archiveSize } = pendingBackup;
+  const kiloBytes = archiveSize / 1024;
+  const megaBytes = kiloBytes / 1024;
+  const bundleSize = megaBytes < 1 ? `${Math.round(kiloBytes)} KB` : `${Math.round(megaBytes)} MB`;
 
   const [progress, setProgress] = useState(0);
 
@@ -48,9 +52,7 @@ export default function ArchiveSave() {
     <div className="archive-pending-label">
       <div style={divStyle}>
         <form onSubmit={handleSubmit}>
-          <b>
-            Archive {previewOrBackup} {pendingBackup && pendingBackup.bsize && "(" + pendingBackup.bsize + ")"}
-          </b>
+          <b>Archive {previewOrBackup} ({bundleSize})</b>
           <p></p>
           <p>{copy}</p>
           {/* {upload && ( */}

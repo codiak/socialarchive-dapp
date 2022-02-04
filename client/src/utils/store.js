@@ -5,15 +5,15 @@ import { Zip } from "../process/Zip";
 import { Beejs } from "../process/Beejs";
 
 const reducerActions = (state = initialState, action) => {
-  console.log("action: ", action.type);
-  switch (action.type) {
+  const { type, payload } = action
+  console.log("action: ", type);
+  switch (type) {
     case "PROCESS_ZIP_FILE":
-      let file = action.payload;
       return {
         ...state,
         loading: true,
         error: false,
-        zipFile: file,
+        zipFile: payload,
         process: true,
       };
     case "UPLOAD_TO_SWARM":
@@ -21,7 +21,7 @@ const reducerActions = (state = initialState, action) => {
         ...state,
         loading: true,
         error: false,
-        pendingBackup: action.payload,
+        pendingBackup: payload,
         progressCb: action.progressCb,
         upload: true,
       };
@@ -51,19 +51,20 @@ const reducerActions = (state = initialState, action) => {
       return {
         ...state,
         loading: true,
-        hash: action.payload,
+        hash: payload,
         progressCb: action.progressCb,
         error: false,
         download: true,
       };
     case "ARCHIVE_LOADED":
-      console.log("archive: ", action.payload);
+      console.log("archive: ", payload);
+      const { zipFile = null } = action;
       return {
         ...state,
         loading: false,
         error: false,
-        pendingBackup: action.payload,
-        zipFile: action.zipFile ? action.zipFile : null,
+        pendingBackup: payload,
+        zipFile,
         process: false,
         upload: false,
         download: false,
@@ -71,7 +72,7 @@ const reducerActions = (state = initialState, action) => {
     case "LOADING":
       return { ...state, loading: true, error: false };
     case "ERROR":
-      let msg = action.payload;
+      let msg = payload;
       // format the number into a human readable format
       let formatBytes = msg.substring(msg.indexOf("an") + 3, msg.indexOf("bytes"));
       msg = msg.replace(formatBytes + "bytes", convertBytesToString(formatBytes, 0)) + ". Please try again with a smaller file.";
@@ -84,7 +85,8 @@ const reducerActions = (state = initialState, action) => {
 const StoreContext = createContext({});
 
 const initialState = {
-  pendingBackup: {},
+  pendingBackup: { archiveItems: {}, mediaMap: {} },
+  pendingBackupSize: 0,
   zipFile: undefined,
   loading: false,
   error: false,
@@ -137,7 +139,6 @@ const StoreProvider = ({ children }) => {
     dispatch({ type: "LOADING" });
     let file = zipFile;
     let uzip = await Zip.unzip(file);
-    //
     let zipDetails = {
       name: file.name,
       size: convertBytesToString(file.size),

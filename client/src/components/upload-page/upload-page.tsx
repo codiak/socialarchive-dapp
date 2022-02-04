@@ -6,7 +6,7 @@ import { Navigate } from "react-router-dom";
 function UploadPage() {
   // our faithful state management
   const {
-    state: { zipFile, pendingBackup, loading, error, errorMessage },
+    state: { zipFile, pendingBackup: { archiveItems }, loading, error, errorMessage },
   } = useStore();
 
   return (
@@ -19,7 +19,7 @@ function UploadPage() {
       {loading && <div>Loading...</div>}
       {!loading && zipFile && (
         <>
-          {Object.keys(pendingBackup).length === 0 ? (
+          {Object.keys(archiveItems).length === 0 ? (
             <>
               <div style={{ color: "red" }}>This file does not contain any twitter backup data</div>
               Filename: {zipFile.name}

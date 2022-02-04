@@ -2,11 +2,15 @@ import React from 'react';
 import './tweet.css';
 import AvatarCard from '../avatar-card/avatar-card';
 // @ts-ignore
-import ReactIntense from 'react-intense';
+import ReactIntense from 'react-intense'; // TODO: causes string ref warning
+import {useStore} from "../../utils/store";
 
 const SHORT_VIDEO_MAX_MILLIS = 6000;
 
 export default function TweetCard(props: { tweet: Tweet, account: any, profile: any}) {
+    const {
+      state: { pendingBackup: { mediaMap } },
+    } = useStore();
     const { created_at, full_text, favorite_count, retweet_count, id, entities, extended_entities } = props.tweet;
     const { account, profile } = props;
     const date = new Date(Date.parse(created_at)).toLocaleDateString();
@@ -15,6 +19,17 @@ export default function TweetCard(props: { tweet: Tweet, account: any, profile: 
     const { duration_millis, variants } = videoInfo;
     const videoUrl = variants?.[0].url || '';
     const isGifLike = parseInt(duration_millis) <= SHORT_VIDEO_MAX_MILLIS;
+    const mediaDataUrl = (mediaUrl) => {
+      const mediaId = mediaUrl.substring(mediaUrl.lastIndexOf("/") + 1, mediaUrl.length);
+      const dataUrl = mediaMap[mediaId] || ''; // TODO: default back to mediaUrl
+      return dataUrl
+    };
+    const photos = () => {
+      return media.filter(m => m.type === 'photo').map((photo, index) => {
+        const { media_url_https } = photo;
+        return (<ReactIntense key={index} src={mediaDataUrl(media_url_https)} />)
+      })
+    };
     return (
         <div className="tweet-card">
             <AvatarCard hideBio={true} date={date} tweetId={id} archivedAccount={account} archivedProfile={profile} />
@@ -22,11 +37,8 @@ export default function TweetCard(props: { tweet: Tweet, account: any, profile: 
             <p className="tweet-text">{full_text}</p>
             <div className="media-wrapper">
                 { videoUrl ? (
-                    <video autoPlay={isGifLike} muted loop={isGifLike} controls src={videoUrl}></video>
-                ) : media.filter(m => m.type === 'photo').map(m => {
-                    // return (<img alt="" src={m['media_url']} />)
-                    return (<ReactIntense src={m['media_url']} />)
-                })}
+                    <video autoPlay={isGifLike} muted loop={isGifLike} controls src={mediaDataUrl(videoUrl)}></video>
+                ) : photos() }
             </div>
             <div className="tweet-icons">
                 <div className="tweet-retweets">
