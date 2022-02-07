@@ -40,6 +40,17 @@ code {
   cursor: pointer;
 }
 
+.btn.btn-toggle {
+  font-weight: 600;
+  color: #657786;
+  margin: 2px;
+}
+
+.btn-toggle:hover,
+.btn-toggle:active {
+  color: #1b95e0;
+}
+
 .btn.secondary {
   color: rgb(203, 133, 84);
 }

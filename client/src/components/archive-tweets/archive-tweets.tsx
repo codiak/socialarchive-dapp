@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import "./archive-tweets.css";
 import TweetCard, { Tweet } from "../tweet/tweet";
-// import { Link } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 export default function ArchiveTweets(props: { tweets: Tweet[]; account: any; profile: any }) {
   const { account, profile, tweets } = props;
   const [activeTab, setActiveTab] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const sort = searchParams.get("sort");
   const tweetFilters = [
     { title: "Tweets", exclude: ["in_reply_to_status_id", "retweeted"] },
     { title: "Replies", include: ["in_reply_to_status_id"] },
@@ -34,6 +36,14 @@ export default function ArchiveTweets(props: { tweets: Tweet[]; account: any; pr
       keep = filterFunc(tweet);
     }
     return keep;
+  }).sort((a,b) => {
+    /** @todo: parse dates ahead of time */
+    let date_a = Date.parse(a.created_at);
+    let date_b = Date.parse(b.created_at);
+    if (sort === 'asc') {
+      [date_a, date_b] = [date_b, date_a];
+    }
+    return date_b - date_a;
   });
 
   return (
@@ -47,6 +57,11 @@ export default function ArchiveTweets(props: { tweets: Tweet[]; account: any; pr
             </div>
           );
         })}
+      </div>
+      <div className="tab-row text-right">
+        <div className="btn btn-toggle" onClick={() => setSearchParams({'sort': (sort === 'asc' ? 'desc' : 'asc')})}>
+          { sort === 'asc' ? 'Oldest  ⬆️' : 'Newest  ⬇️' }
+        </div>
       </div>
       {filteredTweets.length === 0 && <div className="row fill-message">User does not have any archived {title}.</div>}
       {filteredTweets.map((tweet: Tweet, i) => {
