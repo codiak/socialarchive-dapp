@@ -255,3 +255,32 @@ ul {
   left: 50%;
   transform: translate3d(-50%, -50%, 0);
 } */
+
+ul.paginate-list {
+  list-style-type:none;
+  text-align: center;
+  width: 100%;
+  padding-inline-start: 0px;
+}
+
+.paginate-list li {
+  display: inline-block;
+  cursor: pointer;
+  padding: 0.5em;
+  font-weight: 600;
+  color: #686868;
+}
+
+.paginate-list li:hover {
+  color: #1b95e0;
+  background: rgba(29, 161, 242, 0.1);
+  border-radius: 5px;
+  border: none;
+}
+
+.paginate-list li.selected {
+  color: #1b95e0;
+  cursor: default;
+  border-bottom: 1px solid #1b95e0;
+  pointer-events: none;
+}
