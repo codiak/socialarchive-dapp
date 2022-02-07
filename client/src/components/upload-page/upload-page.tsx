@@ -14,9 +14,8 @@ function UploadPage() {
       <div>
         <h3>Upload Twitter archive to begin</h3>
       </div>
-      <Dropzone />
+      <Dropzone loading={loading} />
       {error && <div style={{ color: "red" }}>Error: {errorMessage}</div>}
-      {loading && <div>Loading...</div>}
       {!loading && zipFile && (
         <>
           {Object.keys(archiveItems).length === 0 ? (

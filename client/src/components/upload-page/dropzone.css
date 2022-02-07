@@ -9,6 +9,12 @@
   color: #989898;
 }
 
+.dropzone--disabled {
+  pointer-events: none;
+  opacity: 0.35;
+  border-style: solid;
+}
+
 .upload-page {
   max-width: 600px;
   margin: 1em auto;

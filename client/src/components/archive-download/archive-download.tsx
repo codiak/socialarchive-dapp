@@ -3,6 +3,7 @@ import { useStore } from "../../utils/store";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { useParams, Navigate } from "react-router-dom";
 import { convertBytesToString } from "../../utils/";
+import Spinner from "../spinner/spinner";
 
 export default function ArchiveDownload() {
   const { id } = useParams();
@@ -26,12 +27,7 @@ export default function ArchiveDownload() {
   return (
     <div>
       <div className="center-flex-wrap">
-        <div className="spinner-wrap">
-          <svg className="spinner" viewBox="0 0 50 50">
-            <circle className="path" cx="25" cy="25" r="20" fill="none" strokeWidth="5" />
-          </svg>
-          <div className="spinner-text">{progress}</div>
-        </div>
+        <Spinner label={progress} />
       </div>
       {/* hide spinner and request user to paste swarm hash? */}
       {error && errorMessage}

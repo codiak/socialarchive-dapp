@@ -21,15 +21,15 @@ export default function ArchivePage() {
   const page = section || "account";
   const btnClasses = "btn rounded-btn ";
   const {
-    hash,
-    account,
-    profile,
-    lists,
+    account = {},
+    profile = {},
+    lists = [],
     tweet: tweets = [],
     like: likes = [],
     moment: moments = [],
     page: accounts = [],
   } = archiveItems;
+  const hash = archiveItems.hash || false;
   const sections = [
     {
       slug: "home",
@@ -68,7 +68,6 @@ export default function ArchivePage() {
       {user === "pending" && !hash && <ArchiveSave />}
       <div className="left-col">
         <AvatarCard archivedAccount={account} archivedProfile={profile} />
-        {/* Date generated·March 4, 2021 at 4:03:52 PM GMT-8·Estimated size·62 MB */}
         <div className="btn-stack">
           {sections.map((section, i) => {
             return (
