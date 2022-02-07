@@ -7,7 +7,7 @@ export default function AvatarCard(props: any) {
   const { hideBio, date, tweetId, archivedAccount, archivedProfile, isUserRow } = props;
   const { username, accountDisplayName } = archivedAccount || ACCOUNT.account;
   const { avatarMediaUrl, description } = archivedProfile || PROFILE.profile;
-  const bio = description.bio;
+  const bio = description?.bio;
   const cardStyles = ['card', isUserRow ? 'card-user-row' : ''].join(' ');
 
   return (

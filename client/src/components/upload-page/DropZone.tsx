@@ -1,7 +1,9 @@
 import { useDropzone } from "react-dropzone";
 import { useStore } from "../../utils/store";
+import Spinner from "../spinner/spinner";
+import classnames from 'classnames';
 
-const DropZone = ({ zipFile }: any) => {
+const DropZone = ({ zipFile, loading }: any) => {
   const { dispatch } = useStore();
 
   const ZIP_MIME_TYPE = "application/zip";
@@ -35,8 +37,9 @@ const DropZone = ({ zipFile }: any) => {
   });
 
   return (
-    <section>
-      <div {...getRootProps({ className: "dropzone" })}>
+    <section style={{position: 'relative'}}>
+      { loading && (<Spinner overlay={true} label="Extracting" />)}
+      <div {...getRootProps({ className: classnames('dropzone', {'dropzone--disabled': loading}) })}>
         <input {...getInputProps()} />
         {zipFile ? (
           "Drag and drop or select another archive"
