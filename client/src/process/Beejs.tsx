@@ -4,7 +4,7 @@ import axios from "axios";
 import LZString from "lz-string";
 import { buildAxiosFetch } from "@lifeomic/axios-fetch";
 import { Buffer } from "buffer";
-import { convertFeedIndexToInt, getJsonSize, convertBytesToString } from "../utils";
+import { convertFeedIndexToInt, getJsonSize, convertBytesToString, convertImageToAscii, createImageFromAscii } from "../utils";
 
 export class Beejs {
   private bee: Bee;
@@ -61,23 +61,28 @@ export class Beejs {
   }
 
   async upload(data: any, progressCb: any) {
-    let username = data.account?.username;
-    let name = data.account?.accountDisplayName;
-    let isVerified = data.verified?.verified;
-    let bio = data.profile.description.bio;
+    let { archiveItems, mediaMap } = data;
+    // bundle that gets uploaded to swarm
     let bundle = JSON.stringify(data);
+    let username = archiveItems.account?.username;
+    let name = archiveItems.account?.accountDisplayName;
+    let isVerified = archiveItems.verified?.verified;
+    let bio = archiveItems.profile.description.bio;
+    const { avatarMediaUrl } = archiveItems.profile;
+    let profileMediaId = avatarMediaUrl.substring(avatarMediaUrl.lastIndexOf("/") + 1, avatarMediaUrl.length);
+    let profileMediaUri = mediaMap[profileMediaId];
+    let asciiProfile = (await convertImageToAscii(profileMediaUri)) as Uint8Array;
+
     let result = undefined;
 
     try {
       console.log("Uploading to Swarm: ", this.bee.url);
-
       const fetch = this.trackRequest(progressCb, true);
       //1. upload bundle and get hash
-
       // @ts-ignore
       let { reference } = await this.bee.uploadFile(this.POSTAGE_STAMP, bundle, username, { fetch });
       result = reference;
-      await this.addProfileToFeed(reference, username, name, bio, isVerified);
+      await this.addProfileToFeed(reference, username, name, bio, isVerified, asciiProfile);
     } catch (err: any) {
       console.log("Error uploading", err);
       const { status, message } = err;
@@ -93,41 +98,35 @@ export class Beejs {
     return buildAxiosFetch(axiosInstance);
   }
 
-  async addProfileToFeed(hash: Reference, username: string, name: string, bio: string, isVerified: boolean) {
+  async addProfileToFeed(hash: Reference, username: string, name: string, bio: string, isVerified: boolean, asciiProfile: Uint8Array) {
     // build feed entry
     const payload = {
       timestamp: new Date().getTime(),
-      profile: {
-        hash,
-        username,
-        name,
+      username,
+      accountDisplayName: name,
+      description: {
         bio,
-        isVerified,
       },
-      // profileImage,
+      avatarMediaUrl: asciiProfile,
+      swarmHash: hash,
     };
 
     // 2. Upload feed with hash and get feed index
     await this.feedWriter.upload(this.POSTAGE_STAMP, hash);
-    let feedIndex = await this.getFeedIndex(hash);
-    console.log("feedIndex", feedIndex);
+    let feedIndex = (await this.getFeedIndex(hash)) as number;
 
-    // 3. Convert feedIndex to int
-    let feedIndexInt = convertFeedIndexToInt(feedIndex);
-    console.log("feedIndex converted: ", feedIndexInt);
-
-    // 4. Upload profile by adding feedIndex to topic
+    // 3. Upload profile by adding feedIndex to topic
     let message = JSON.stringify(payload);
-    console.log("payload and size: ", payload, getJsonSize(payload));
+    console.log("feed payload and size: ", payload, getJsonSize(payload));
 
     let compress = LZString.compressToUint8Array(message);
-    console.log("compressed payload size: ", convertBytesToString(compress.length));
-    let socResult = await this.writeSOC(feedIndexInt, compress);
+    console.log("compressed feed payload size: ", convertBytesToString(compress.length));
+    let socResult = await this.writeSOC(feedIndex, compress);
     console.log("saved payload in feed", socResult);
 
-    // 5. Download the last 5 profiles
-    let feeds = await this.getFeeds(feedIndexInt, 5);
-    console.log("last 5 feed messages: ", feeds);
+    // // 4. Download the last 5 profiles
+    // let feeds = await this.getFeeds(feedIndex, 5);
+    // console.log("last 5 feed messages: ", feeds);
   }
 
   async writeSOC(index: number, data: any) {
@@ -159,27 +158,43 @@ export class Beejs {
 
   async getFeedIndex(hash: Reference) {
     try {
+      console.log("Getting latest feed index");
       const result = await this.feedReader.download();
+      // console.log("result", result);
       let { feedIndex, reference } = result;
-      if (reference === hash) {
-        return feedIndex;
+      let feedIndexAsInt = convertFeedIndexToInt(feedIndex);
+      console.log("latest index: ", feedIndexAsInt);
+      if (hash !== null && hash !== undefined) {
+        if (reference === hash) {
+          return feedIndexAsInt;
+        }
+        throw "Archive hash does not match feed hash.";
+      } else if (feedIndex !== null && feedIndex !== undefined) {
+        return feedIndexAsInt;
       }
-      throw "Archive hash does not match feed hash.";
     } catch (error: any) {
       throw error;
     }
   }
 
   async getFeeds(feedIndex: number, maxPreviousUpdates: number) {
-    console.log("Getting feeds...");
+    console.log("Getting last", maxPreviousUpdates, "feeds...");
     let feeds = [];
-    for (let index = feedIndex; index > 0 && feedIndex - (index - 1) <= maxPreviousUpdates; index--) {
-      console.log("index:", index);
-      let socReaderResult = await this.readSOC(index);
-      let uncompress = LZString.decompressFromUint8Array(socReaderResult.payload()) as string;
-      let parsedMessage = JSON.parse(uncompress);
-      console.log("parsed message:", parsedMessage);
-      feeds.push(parsedMessage);
+    try {
+      for (let index = feedIndex; index > 0 && feedIndex - (index - 1) <= maxPreviousUpdates; index--) {
+        console.log("index:", index);
+        let socReaderResult = await this.readSOC(index);
+        let uncompress = LZString.decompressFromUint8Array(socReaderResult.payload()) as string;
+        let parsedMessage = JSON.parse(uncompress);
+        if (parsedMessage.avatarMediaUrl) {
+          parsedMessage.avatarMediaUrl = createImageFromAscii(parsedMessage.avatarMediaUrl);
+        }
+        feeds.push(parsedMessage);
+      }
+    } catch (error) {
+      console.log("error downloading feeds", error);
+      // @ts-ignore
+      feeds = error;
     }
     return feeds;
   }

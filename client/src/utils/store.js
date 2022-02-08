@@ -5,7 +5,7 @@ import { Zip } from "../process/Zip";
 import { Beejs } from "../process/Beejs";
 
 const reducerActions = (state = initialState, action) => {
-  const { type, payload } = action
+  const { type, payload } = action;
   console.log("action: ", type);
   switch (type) {
     case "PROCESS_ZIP_FILE":
@@ -37,6 +37,29 @@ const reducerActions = (state = initialState, action) => {
       return {
         ...state,
         upload: false,
+        error: true,
+        errorMessage: action.errorMessage,
+      };
+    case "GET_FEEDS_FROM_SWARM":
+      return {
+        ...state,
+        loading: true,
+        error: false,
+        downloadingFeeds: true,
+      };
+    case "FEEDS_LOADED":
+      console.log("feeds: ", payload);
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        feeds: payload,
+        downloadingFeeds: false,
+      };
+    case "FEEDS_DOWNLOAD_FAIL":
+      return {
+        ...state,
+        downloadingFeeds: false,
         error: true,
         errorMessage: action.errorMessage,
       };
@@ -133,7 +156,12 @@ const StoreProvider = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.download, state.hash, state.progressCb]);
 
-  /*   */
+  // get feeds from swarm
+  useEffect(() => {
+    if (state.downloadingFeeds) {
+      downloadFeedsFromSwarm(state.hash, state.progressCb);
+    }
+  }, [state.downloadingFeeds]);
 
   const unzip = async (zipFile) => {
     dispatch({ type: "LOADING" });
@@ -192,6 +220,7 @@ const StoreProvider = ({ children }) => {
   const downloadFromSwarm = async (hash, progressCb) => {
     let b = new Beejs();
     let result = await b.download(hash, progressCb);
+    console.log("downloaded: ", result);
 
     await saveToIdb("archive", result);
 
@@ -203,12 +232,45 @@ const StoreProvider = ({ children }) => {
         errorMessage: result.message,
       });
     } else {
-      result['hash'] = hash;
+      result["hash"] = hash;
       dispatch({
         type: "ARCHIVE_LOADED",
         payload: result ? result : {},
       });
     }
+  };
+
+  const downloadFeedsFromSwarm = async () => {
+    let b = new Beejs();
+    let feedIndex = await b.getFeedIndex();
+    let feeds = await b.getFeeds(feedIndex, 5);
+    if (feeds && feeds.length > 0) {
+      dispatch({
+        type: "FEEDS_LOADED",
+        payload: feeds,
+      });
+    } else {
+      dispatch({
+        type: "FEEDS_DOWNLOAD_FAIL",
+        error: true,
+        errorMessage: feeds.message,
+      });
+    }
+
+    // // response is an exception object :)
+    // if (result.message) {
+    //   dispatch({
+    //     type: "DOWNLOAD_FAIL",
+    //     error: true,
+    //     errorMessage: result.message,
+    //   });
+    // } else {
+    //   result["hash"] = hash;
+    //   dispatch({
+    //     type: "ARCHIVE_LOADED",
+    //     payload: result ? result : {},
+    //   });
+    // }
   };
 
   return <StoreContext.Provider value={{ state, dispatch }}> {children} </StoreContext.Provider>;
