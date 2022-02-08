@@ -12,9 +12,13 @@ export default function BrowsePage() {
     dispatch,
   } = useStore();
 
-  useEffect(() => {
-    dispatch({ type: "GET_FEEDS_FROM_SWARM" });
-  }, []);
+  useEffect(
+    () => {
+      dispatch({ type: "GET_FEEDS_FROM_SWARM" });
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   const recentAccounts: ArchivedAccount[] = feeds;
 

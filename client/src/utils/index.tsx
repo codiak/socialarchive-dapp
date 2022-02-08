@@ -83,6 +83,7 @@ export const createImageFromAscii = (asciiLines: []) => {
     let opacity = 10;
 
     // Draw the ASCII lines
+    // eslint-disable-next-line array-callback-return
     asciiLines.map((line: string) => {
       // TODO This darkens the image, could employ a better approach via css or filters
       for (let j = 0; j < opacity; j++) {

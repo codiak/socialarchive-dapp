@@ -157,11 +157,15 @@ const StoreProvider = ({ children }) => {
   }, [state.download, state.hash, state.progressCb]);
 
   // get feeds from swarm
-  useEffect(() => {
-    if (state.downloadingFeeds) {
-      downloadFeedsFromSwarm(state.hash, state.progressCb);
-    }
-  }, [state.downloadingFeeds]);
+  useEffect(
+    () => {
+      if (state.downloadingFeeds) {
+        downloadFeedsFromSwarm(state.hash, state.progressCb);
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [state.downloadingFeeds]
+  );
 
   const unzip = async (zipFile) => {
     dispatch({ type: "LOADING" });

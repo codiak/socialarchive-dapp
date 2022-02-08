@@ -168,6 +168,7 @@ export class Beejs {
         if (reference === hash) {
           return feedIndexAsInt;
         }
+        // eslint-disable-next-line no-throw-literal
         throw "Archive hash does not match feed hash.";
       } else if (feedIndex !== null && feedIndex !== undefined) {
         return feedIndexAsInt;
