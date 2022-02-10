@@ -43,20 +43,25 @@ export const getJsonSize = (json: any) => {
 /**
  * Converts Swarm's feedIndex to integer.
  *
- * @param feedIndex feedIndex string value e.g. 0000000000000001
+ * @param feedIndex String value of feed index e.g. 0000000000000001
  *
  * @return Converted integer value
  *
  */
-export const convertFeedIndexToInt = (feedIndex: string): number => {
-  const indexBytes = Utils.hexToBytes(feedIndex);
-  let index = 0;
-  for (let i = indexBytes.length - 1; i >= 0; i--) {
-    const byte = indexBytes[i];
-    if (byte === 0) break;
-    index += byte;
+export const convertFeedIndexToInt = (feedIndex: string) => {
+  try {
+    const indexBytes = Utils.hexToBytes(feedIndex);
+    let index = 0;
+    for (let i = indexBytes.length - 1; i >= 0; i--) {
+      const byte = indexBytes[i];
+      if (byte === 0) break;
+      index += byte;
+    }
+    return index;
+  } catch (error) {
+    console.log("error converting feedIndex to int", error);
+    throw error;
   }
-  return index;
 };
 
 /**

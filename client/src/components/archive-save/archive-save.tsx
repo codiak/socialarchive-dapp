@@ -10,9 +10,6 @@ export default function ArchiveSave() {
     dispatch,
   } = useStore();
   const { archiveSize } = pendingBackup;
-  const kiloBytes = archiveSize / 1024;
-  const megaBytes = kiloBytes / 1024;
-  const bundleSize = megaBytes < 1 ? `${Math.round(kiloBytes)} KB` : `${Math.round(megaBytes)} MB`;
 
   const [progress, setProgress] = useState(0);
 
@@ -34,32 +31,37 @@ export default function ArchiveSave() {
     color: hash && hash.length > 0 ? "green" : "#CB8554",
   };
   const copy = hash && hash.length > 0 ? "Backed up to Swarm" : "Not yet backed up to Swarm.";
-  const viewUrl = '/archive/' + hash;
+  const viewUrl = "/archive/" + hash;
   const displayHash = () => {
     return (
-        <div className="btn-row">
-            <a href={viewUrl} rel="noreferrer" className="link-button" target="_blank">
-            Open to Verify
-            </a>&nbsp;|&nbsp;
-            <a href={gatewayUrl} rel="noreferrer" className="link-button" target="_blank">
-            Swarm Hash
-            </a>
-        </div>
-    )
+      <div className="btn-row">
+        <a href={viewUrl} rel="noreferrer" className="link-button" target="_blank">
+          Open to Verify
+        </a>
+        &nbsp;|&nbsp;
+        <a href={gatewayUrl} rel="noreferrer" className="link-button" target="_blank">
+          Swarm Hash
+        </a>
+      </div>
+    );
   };
 
   return (
     <div className="archive-pending-label">
       <div style={divStyle}>
         <form onSubmit={handleSubmit}>
-          <b>Archive {previewOrBackup} ({bundleSize})</b>
+          <b>
+            Archive {previewOrBackup} ({archiveSize})
+          </b>
           <p></p>
           <p>{copy}</p>
           {/* {upload && ( */}
           <ProgressBar bgcolor={"#00695c"} completed={progress} />
           <br />
           <div className="archive-pending-action">
-            {hash && hash.length > 0 ? displayHash() : !upload ? (
+            {hash && hash.length > 0 ? (
+              displayHash()
+            ) : !upload ? (
               <div className="btn-row">
                 <input type="submit" className="btn secondary" value="Confirm" />
                 {/* TODO: | Cancel btn to clear local copy/IndexDB */}

@@ -45,6 +45,7 @@ const reducerActions = (state = initialState, action) => {
         ...state,
         loading: true,
         error: false,
+        itemsPerPage: action.itemsPerPage,
         downloadingFeeds: true,
       };
     case "FEEDS_LOADED":
@@ -160,7 +161,7 @@ const StoreProvider = ({ children }) => {
   useEffect(
     () => {
       if (state.downloadingFeeds) {
-        downloadFeedsFromSwarm(state.hash, state.progressCb);
+        downloadFeedsFromSwarm(state.itemsPerPage);
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -244,37 +245,24 @@ const StoreProvider = ({ children }) => {
     }
   };
 
-  const downloadFeedsFromSwarm = async () => {
+  const downloadFeedsFromSwarm = async (itemsPerPage) => {
     let b = new Beejs();
-    let feedIndex = await b.getFeedIndex();
-    let feeds = await b.getFeeds(feedIndex, 5);
-    if (feeds && feeds.length > 0) {
+    try {
+      // get the latest feed index
+      let feedIndex = await b.getFeedIndex();
+      // fetch the feeds
+      let feeds = await b.getFeeds(feedIndex, itemsPerPage);
       dispatch({
         type: "FEEDS_LOADED",
         payload: feeds,
       });
-    } else {
+    } catch (error) {
       dispatch({
         type: "FEEDS_DOWNLOAD_FAIL",
         error: true,
-        errorMessage: feeds.message,
+        errorMessage: error.message,
       });
     }
-
-    // // response is an exception object :)
-    // if (result.message) {
-    //   dispatch({
-    //     type: "DOWNLOAD_FAIL",
-    //     error: true,
-    //     errorMessage: result.message,
-    //   });
-    // } else {
-    //   result["hash"] = hash;
-    //   dispatch({
-    //     type: "ARCHIVE_LOADED",
-    //     payload: result ? result : {},
-    //   });
-    // }
   };
 
   return <StoreContext.Provider value={{ state, dispatch }}> {children} </StoreContext.Provider>;

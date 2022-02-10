@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useStore } from "../../utils/store";
@@ -11,10 +11,11 @@ export default function BrowsePage() {
     state: { feeds, downloadingFeeds, error, errorMessage },
     dispatch,
   } = useStore();
+  const [itemsPerPage, setItemsPerPage] = useState(3);
 
   useEffect(
     () => {
-      dispatch({ type: "GET_FEEDS_FROM_SWARM" });
+      dispatch({ type: "GET_FEEDS_FROM_SWARM", itemsPerPage });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -56,6 +57,7 @@ export default function BrowsePage() {
 export interface ArchivedAccount {
   timestamp: number;
   username: string;
+  isArchived: boolean;
   accountDisplayName: string;
   description: {
     bio: string;
@@ -65,4 +67,5 @@ export interface ArchivedAccount {
   avatarMediaUrl: string;
   swarmHash?: string;
   archiveDate?: string;
+  archiveSize?: string;
 }

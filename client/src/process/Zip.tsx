@@ -1,11 +1,12 @@
 import JSZip from "jszip";
+import { convertBytesToString } from "../utils";
 let i = 0;
 let t = 0;
 export class Zip {
   file: any;
   archiveItems: any = {};
   media: any = {};
-  archiveSize = 0;
+  archiveSize: any;
 
   constructor(file: any) {
     this.file = file;
@@ -14,7 +15,7 @@ export class Zip {
   static async unzip(file: any) {
     const zip = new Zip(file);
     await zip.internalUnzip();
-    const { archiveItems, archiveSize, media: mediaMap} = zip;
+    const { archiveItems, archiveSize, media: mediaMap } = zip;
     return { archiveSize, archiveItems, mediaMap };
   }
 
@@ -101,7 +102,7 @@ export class Zip {
   extractMedia(file: any, type: string) {
     return new Promise<any>((resolve, reject) => {
       const name = file.name.replace("data/", "").substring(file.name.lastIndexOf("/") + 1, file.name.length); // strip out folder names
-      const id = name.includes('-') ? name.substring(name.lastIndexOf('-') + 1, name.length) : '';
+      const id = name.includes("-") ? name.substring(name.lastIndexOf("-") + 1, name.length) : "";
       // TODO: handle ALL media types
       const video = type === "mp4" ? "video/mp4" : null;
       const audio = type === "mp3" ? "audio/mp3" : null;
@@ -146,7 +147,7 @@ export class Zip {
             const { id, category } = extractedFile;
 
             if (category === "media") {
-              this.media[id] = extractedFile.data
+              this.media[id] = extractedFile.data;
             } else {
               unZippedFiles = { ...unZippedFiles, ...extractedFile };
             }
@@ -162,11 +163,14 @@ export class Zip {
     await this.buildMediaMap();
     const itemsSize = new TextEncoder().encode(JSON.stringify(unZippedFiles)).length;
     const mediaSize = new TextEncoder().encode(JSON.stringify(this.media)).length;
-    this.archiveSize = itemsSize + mediaSize; // TODO: keep separate?
+    this.archiveSize = convertBytesToString(itemsSize + mediaSize); // TODO: keep separate?
   }
 
   async buildMediaMap() {
-    const { tweet: tweets, profile: { avatarMediaUrl: amu } } = this.archiveItems;
+    const {
+      tweet: tweets,
+      profile: { avatarMediaUrl: amu },
+    } = this.archiveItems;
     let mediaId = amu.substring(amu.lastIndexOf("/") + 1, amu.length);
     this.media[mediaId] = await this.mediaUrlToDataUri(amu);
 
@@ -186,7 +190,7 @@ export class Zip {
 
   async updateMediaPropertiesWithDataUri(mediaArray: any) {
     for (let mediaObj of mediaArray) {
-      const {media_url_https, video_info} = mediaObj;
+      const { media_url_https, video_info } = mediaObj;
       // extract the media id from the url
       const mediaId = media_url_https.substring(media_url_https.lastIndexOf("/") + 1, media_url_https.length);
       if (!(mediaId in this.media)) {

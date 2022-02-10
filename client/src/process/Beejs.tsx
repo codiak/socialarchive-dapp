@@ -5,6 +5,7 @@ import LZString from "lz-string";
 import { buildAxiosFetch } from "@lifeomic/axios-fetch";
 import { Buffer } from "buffer";
 import { convertFeedIndexToInt, getJsonSize, convertBytesToString, convertImageToAscii, createImageFromAscii } from "../utils";
+declare type Identifier = Bytes<32>;
 
 export class Beejs {
   private bee: Bee;
@@ -34,6 +35,7 @@ export class Beejs {
     const randomIndex = Math.floor(Math.random() * this.BEE_HOSTS.length);
     this.bee = new Bee(this.BEE_HOSTS[randomIndex]);
     const topic = this.bee.makeFeedTopic("archived-bundles");
+    console.log("private key: ", this.SA_PRIVATEKEY);
     this.feedWriter = this.bee.makeFeedWriter("sequence", topic, this.SA_PRIVATEKEY);
     this.feedReader = this.bee.makeFeedReader("sequence", topic, this.SA_ETHADDRESS);
     this.socWriter = this.bee.makeSOCWriter(this.SA_PRIVATEKEY);
@@ -60,29 +62,53 @@ export class Beejs {
     return result;
   }
 
+  /**
+   * Upload JSON archive to Swarm, add Swarm hash to archive-bundle feed topic and add profile to Single Owner Chunk
+   *
+   * @param data JSON archive that contains archive items and media
+   *
+   * @return {Promise<Reference>} Swarm hash of the uploaded archive
+   *
+   */
   async upload(data: any, progressCb: any) {
-    let { archiveItems, mediaMap } = data;
+    let { archiveItems, mediaMap, archiveSize } = data;
+    if (archiveItems === undefined) {
+      throw new Error("Archive items are undefined, aborting upload");
+    }
     // bundle that gets uploaded to swarm
     let bundle = JSON.stringify(data);
+
+    // create profile to add to SOC
     let username = archiveItems.account?.username;
     let name = archiveItems.account?.accountDisplayName;
     let isVerified = archiveItems.verified?.verified;
     let bio = archiveItems.profile.description.bio;
     const { avatarMediaUrl } = archiveItems.profile;
+
+    // get profile image from media map
     let profileMediaId = avatarMediaUrl.substring(avatarMediaUrl.lastIndexOf("/") + 1, avatarMediaUrl.length);
     let profileMediaUri = mediaMap[profileMediaId];
-    let asciiProfile = (await convertImageToAscii(profileMediaUri)) as Uint8Array;
+
+    // convert profile image to ascii
+    let asciiProfile = (await convertImageToAscii(profileMediaUri)) as [];
 
     let result = undefined;
 
     try {
       console.log("Uploading to Swarm: ", this.bee.url);
       const fetch = this.trackRequest(progressCb, true);
-      //1. upload bundle and get hash
+      // 1. upload bundle to Swarm and get hash
       // @ts-ignore
       let { reference } = await this.bee.uploadFile(this.POSTAGE_STAMP, bundle, username, { fetch });
       result = reference;
-      await this.addProfileToFeed(reference, username, name, bio, isVerified, asciiProfile);
+      console.log("Got Swarm hash: ", reference);
+      // 2. upload hash to feed and get feed index
+      await this.saveSwarmHashInFeed(reference);
+
+      let feedIndex = (await this.getFeedIndex(reference)) as number;
+
+      // // 3. upload profile, hash and feed index to a Single Owner Chunk
+      await this.saveProfileInSoc(reference, archiveSize, username, name, bio, isVerified, asciiProfile, feedIndex);
     } catch (err: any) {
       console.log("Error uploading", err);
       const { status, message } = err;
@@ -93,75 +119,144 @@ export class Beejs {
     return result;
   }
 
+  /**
+   *
+   * @param progressCb callback function to track progress
+   *
+   * @param upload boolean true if upload, false if download
+   *
+   * @return AxiosFetch function that tracks progress
+   */
   trackRequest(progressCb: any, upload: boolean) {
-    const axiosInstance = upload ? axios.create({ onUploadProgress: progressCb }) : axios.create({ onDownloadProgress: progressCb });
-    return buildAxiosFetch(axiosInstance);
+    const axiosInstance = upload ? { onUploadProgress: progressCb } : { onDownloadProgress: progressCb };
+    return buildAxiosFetch(axios.create(axiosInstance));
   }
 
-  async addProfileToFeed(hash: Reference, username: string, name: string, bio: string, isVerified: boolean, asciiProfile: Uint8Array) {
-    // build feed entry
+  /**
+   * Write Swarm hash to archive-bundle feed topic
+   *
+   * @param hash Reference to the uploaded bundle in Swarm
+   *
+   * @return number representing the feed index of the uploaded bundle
+   **/
+  async saveSwarmHashInFeed(hash: Reference) {
+    console.log("Uploading hash to feed");
+    try {
+      await this.feedWriter.upload(this.POSTAGE_STAMP, hash);
+      // console.log("Succsessfully uploaded hash to feed: ");
+    } catch (error) {
+      console.log("Error adding hash to feed", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Save bundle owner's profile to Single Owner Chunk
+   *
+   * @param hash Reference Swarm hash of the uploaded bundle
+   *
+   * @param username string username of the bundle owner
+   *
+   * @param name string account display name
+   *
+   * @param bio string account bio
+   *
+   * @param isVerified boolean account verification status
+   *
+   * @param asciiProfile ascii line array of the profile image
+   *
+   * @pararm feedIndex Number representing the feed index of the uploaded bundle
+   *
+   **/
+  async saveProfileInSoc(hash: Reference, archiveSize: string, username: string, name: string, bio: string, isVerified: boolean, asciiProfile: [], feedIndex: number) {
     const payload = {
       timestamp: new Date().getTime(),
+      archiveSize,
       username,
       accountDisplayName: name,
+      isVerified,
       description: {
         bio,
       },
       avatarMediaUrl: asciiProfile,
       swarmHash: hash,
     };
-
-    // 2. Upload feed with hash and get feed index
-    await this.feedWriter.upload(this.POSTAGE_STAMP, hash);
-    let feedIndex = (await this.getFeedIndex(hash)) as number;
-
-    // 3. Upload profile by adding feedIndex to topic
     let message = JSON.stringify(payload);
     console.log("feed payload and size: ", payload, getJsonSize(payload));
+    let compressedProfile = LZString.compressToUint8Array(message) as Uint8Array;
+    console.log("compressed feed payload size: ", convertBytesToString(compressedProfile.length));
 
-    let compress = LZString.compressToUint8Array(message);
-    console.log("compressed feed payload size: ", convertBytesToString(compress.length));
-    let socResult = await this.writeSOC(feedIndex, compress);
+    // create an identifier for SOC using feed index
+    let socId = await this.createSOCIdentifer(feedIndex);
+
+    // upload profile to SOC
+    let socResult = await this.writeSOC(socId, compressedProfile);
     console.log("saved payload in feed", socResult);
-
-    // // 4. Download the last 5 profiles
-    // let feeds = await this.getFeeds(feedIndex, 5);
-    // console.log("last 5 feed messages: ", feeds);
   }
 
-  async writeSOC(index: number, data: any) {
+  /**
+   * Write Single Owner Chunk to Swarm
+   *
+   * @param identifier Identifier
+   *
+   * @param data JSON data to be saved
+   *
+   * @returns Reference to the saved Single Owner Chunk
+   */
+  async writeSOC(identifier: Identifier, data: any) {
     try {
-      let topicBytes = await this.createTopic(index);
-      return await this.socWriter.upload(this.POSTAGE_STAMP, topicBytes, data);
+      return await this.socWriter.upload(this.POSTAGE_STAMP, identifier, data);
     } catch (error) {
+      console.log("Error writing to SOC: ", error);
       throw error;
     }
   }
 
+  /**
+   * Reads Single Owner Chunk from Swarm
+   *
+   * @param index feed index Number
+   *
+   * @returns SingleOwnerChunk - data stored in SOC
+   */
   async readSOC(index: number) {
     try {
-      let topicBytes = await this.createTopic(index);
-      return await this.socReader.download(topicBytes);
+      // convert index to identifier
+      let identifier = await this.createSOCIdentifer(index);
+      return await this.socReader.download(identifier);
     } catch (error) {
+      console.log("Error reading from SOC: ", error);
       throw error;
     }
   }
 
-  async createTopic(index: number) {
-    const topic = Buffer.alloc(32);
-    topic.writeUInt16LE(index, 0);
-
-    type Identifier = Bytes<32>;
-    const topicBytes: Identifier = Utils.hexToBytes(topic.toString("hex"));
-    return topicBytes;
+  /**
+   * Creates an Identifier from feed index to be used in SOC
+   *
+   * @param index Number of feed index
+   *
+   * @returns Bytes<32> Identifier
+   */
+  async createSOCIdentifer(index: number) {
+    const id = Buffer.alloc(32);
+    id.writeUInt16LE(index, 0);
+    const idBytes: Identifier = Utils.hexToBytes(id.toString("hex"));
+    return idBytes;
   }
 
+  /**
+   *
+   * @param hash (optional) Reference to the uploaded bundle in Swarm
+   *
+   * @returns number representing the feed index of the uploaded bundle
+   */
   async getFeedIndex(hash: Reference) {
     try {
-      console.log("Getting latest feed index");
+      console.log("Downloading latest feed");
       const result = await this.feedReader.download();
-      // console.log("result", result);
+      console.log("feed: ", result);
       let { feedIndex, reference } = result;
+      // convert feedIndex to a number
       let feedIndexAsInt = convertFeedIndexToInt(feedIndex);
       console.log("latest index: ", feedIndexAsInt);
       if (hash !== null && hash !== undefined) {
@@ -169,33 +264,48 @@ export class Beejs {
           return feedIndexAsInt;
         }
         // eslint-disable-next-line no-throw-literal
-        throw "Archive hash does not match feed hash.";
+        throw new Error("Archive hash does not match feed hash.");
       } else if (feedIndex !== null && feedIndex !== undefined) {
         return feedIndexAsInt;
       }
     } catch (error: any) {
+      console.log("Error getting feed index: ", error);
+      // const { status, message } = error;
+      // const massagedMessage = status === 404 ? "No archives found" : `${message} \n\nPlease try again.`;
+      // error.message = `Error getting archives: ${massagedMessage}`;
       throw error;
     }
   }
 
+  /**
+   * Get last n feed items from feedIndex
+   *
+   * @param feedIndex Number of starting feed index
+   *
+   * @param maxPreviousUpdates Number previous feed items to return
+   *
+   * @returns [ArchivedAccount] - feed items
+   *
+   **/
   async getFeeds(feedIndex: number, maxPreviousUpdates: number) {
-    console.log("Getting last", maxPreviousUpdates, "feeds...");
+    console.log("Get last", maxPreviousUpdates, "feeds");
     let feeds = [];
     try {
-      for (let index = feedIndex; index > 0 && feedIndex - (index - 1) <= maxPreviousUpdates; index--) {
+      // handle edge case where feedIndex is 0
+      for (let index = feedIndex; index >= 0 && feedIndex - (index - 1) <= maxPreviousUpdates; index--) {
         console.log("index:", index);
         let socReaderResult = await this.readSOC(index);
         let uncompress = LZString.decompressFromUint8Array(socReaderResult.payload()) as string;
         let parsedMessage = JSON.parse(uncompress);
         if (parsedMessage.avatarMediaUrl) {
+          // rewrites the avatarMediaUrl as a data uri
           parsedMessage.avatarMediaUrl = createImageFromAscii(parsedMessage.avatarMediaUrl);
         }
         feeds.push(parsedMessage);
       }
     } catch (error) {
-      console.log("error downloading feeds", error);
-      // @ts-ignore
-      feeds = error;
+      console.log("Error downloading feeds", error);
+      throw error;
     }
     return feeds;
   }
