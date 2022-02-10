@@ -102,13 +102,12 @@ export class Beejs {
       let { reference } = await this.bee.uploadFile(this.POSTAGE_STAMP, bundle, username, { fetch });
       result = reference;
       console.log("Got Swarm hash: ", reference);
-      // 2. upload hash to feed and get feed index
+      // 2. upload hash to feed
       await this.saveSwarmHashInFeed(reference);
-
+      // 3. download latest feed and get feed index
       let feedIndex = (await this.getFeedIndex(reference)) as number;
-
-      // // 3. upload profile, hash and feed index to a Single Owner Chunk
-      await this.saveProfileInSoc(reference, archiveSize, username, name, bio, isVerified, asciiProfile, feedIndex);
+      // 4. upload profile, hash and feed index to Single Owner Chunk
+      await this.saveProfileInSOC(reference, archiveSize, username, name, bio, isVerified, asciiProfile, feedIndex);
     } catch (err: any) {
       console.log("Error uploading", err);
       const { status, message } = err;
@@ -168,7 +167,7 @@ export class Beejs {
    * @pararm feedIndex Number representing the feed index of the uploaded bundle
    *
    **/
-  async saveProfileInSoc(hash: Reference, archiveSize: string, username: string, name: string, bio: string, isVerified: boolean, asciiProfile: [], feedIndex: number) {
+  async saveProfileInSOC(hash: Reference, archiveSize: string, username: string, name: string, bio: string, isVerified: boolean, asciiProfile: [], feedIndex: number) {
     const payload = {
       timestamp: new Date().getTime(),
       archiveSize,
@@ -291,7 +290,7 @@ export class Beejs {
     console.log("Get last", maxPreviousUpdates, "feeds");
     let feeds = [];
     try {
-      // handle edge case where feedIndex is 0
+      // handle edge case when feedIndex is 0
       for (let index = feedIndex; index >= 0 && feedIndex - (index - 1) <= maxPreviousUpdates; index--) {
         console.log("index:", index);
         let socReaderResult = await this.readSOC(index);
