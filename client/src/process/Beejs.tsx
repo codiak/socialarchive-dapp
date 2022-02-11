@@ -35,7 +35,6 @@ export class Beejs {
     const randomIndex = Math.floor(Math.random() * this.BEE_HOSTS.length);
     this.bee = new Bee(this.BEE_HOSTS[randomIndex]);
     const topic = this.bee.makeFeedTopic("archived-bundles");
-    console.log("private key: ", this.SA_PRIVATEKEY);
     this.feedWriter = this.bee.makeFeedWriter("sequence", topic, this.SA_PRIVATEKEY);
     this.feedReader = this.bee.makeFeedReader("sequence", topic, this.SA_ETHADDRESS);
     this.socWriter = this.bee.makeSOCWriter(this.SA_PRIVATEKEY);
@@ -44,6 +43,14 @@ export class Beejs {
     });
   }
 
+  /**
+   *
+   * @param reference String hash of Swarm resource
+   *
+   * @param progressCb function that will track the dpload
+   *
+   * @return JSON archive
+   */
   async download(reference: any, progressCb: any) {
     let result = undefined;
     const fetch = this.trackRequest(progressCb, false);
@@ -66,6 +73,8 @@ export class Beejs {
    * Upload JSON archive to Swarm, add Swarm hash to archive-bundle feed topic and add profile to Single Owner Chunk
    *
    * @param data JSON archive that contains archive items and media
+   *
+   * @param progressCb Functions that will track the upload
    *
    * @return {Promise<Reference>} Swarm hash of the uploaded archive
    *
@@ -127,8 +136,8 @@ export class Beejs {
    * @return AxiosFetch function that tracks progress
    */
   trackRequest(progressCb: any, upload: boolean) {
-    const axiosInstance = upload ? { onUploadProgress: progressCb } : { onDownloadProgress: progressCb };
-    return buildAxiosFetch(axios.create(axiosInstance));
+    const axiosConfig = upload ? { onUploadProgress: progressCb } : { onDownloadProgress: progressCb };
+    return buildAxiosFetch(axios.create(axiosConfig));
   }
 
   /**
@@ -286,7 +295,7 @@ export class Beejs {
    * @returns [ArchivedAccount] - feed items
    *
    **/
-  async getFeeds(feedIndex: number, maxPreviousUpdates: number) {
+  async getFeeds(feedIndex: number, maxPreviousUpdates: number, dispatch: any) {
     console.log("Get last", maxPreviousUpdates, "feeds");
     let feeds = [];
     try {
@@ -300,6 +309,12 @@ export class Beejs {
           // rewrites the avatarMediaUrl as a data uri
           parsedMessage.avatarMediaUrl = createImageFromAscii(parsedMessage.avatarMediaUrl);
         }
+
+        dispatch({
+          type: "FEED_ITEM_LOADED",
+          payload: parsedMessage,
+        });
+
         feeds.push(parsedMessage);
       }
     } catch (error) {

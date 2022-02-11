@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import UploadPage from "./components/upload-page/upload-page";
 import BrowsePage from "./components/browse-page/browse-page";

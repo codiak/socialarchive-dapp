@@ -34,9 +34,9 @@ export default function BrowsePage() {
             <h2 className="col-header">Recently Added</h2>
             {downloadingFeeds && <div>Downloading...</div>}
             {error && errorMessage.length > 0 && <div className="archive-pending-error">{errorMessage}</div>}
-            {downloadingFeeds !== undefined &&
+            {recentAccounts &&
+              recentAccounts.length > 0 &&
               !error &&
-              !downloadingFeeds &&
               recentAccounts.map((account, i) => {
                 return (
                   <a key={i} href={"/archive/" + account.swarmHash}>

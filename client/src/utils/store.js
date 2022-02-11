@@ -57,6 +57,14 @@ const reducerActions = (state = initialState, action) => {
         feeds: payload,
         downloadingFeeds: false,
       };
+    case "FEED_ITEM_LOADED":
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        feeds: [...state.feeds, payload],
+        downloadingFeeds: true,
+      };
     case "FEEDS_DOWNLOAD_FAIL":
       return {
         ...state,
@@ -116,6 +124,7 @@ const initialState = {
   error: false,
   process: false,
   upload: false,
+  feeds: [],
 };
 
 const StoreProvider = ({ children }) => {
@@ -251,7 +260,7 @@ const StoreProvider = ({ children }) => {
       // get the latest feed index
       let feedIndex = await b.getFeedIndex();
       // fetch the feeds
-      let feeds = await b.getFeeds(feedIndex, itemsPerPage);
+      let feeds = await b.getFeeds(feedIndex, itemsPerPage, dispatch);
       dispatch({
         type: "FEEDS_LOADED",
         payload: feeds,
