@@ -11,6 +11,7 @@ export default function BrowsePage() {
     state: { feeds, downloadingFeeds, error, errorMessage },
     dispatch,
   } = useStore();
+  // eslint-disable-next-line
   const [itemsPerPage, setItemsPerPage] = useState(3);
 
   useEffect(

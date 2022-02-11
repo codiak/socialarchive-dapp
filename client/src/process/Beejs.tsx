@@ -292,12 +292,9 @@ export class Beejs {
    *
    * @param maxPreviousUpdates Number previous feed items to return
    *
-   * @returns [ArchivedAccount] - feed items
-   *
    **/
   async getFeeds(feedIndex: number, maxPreviousUpdates: number, dispatch: any) {
     console.log("Get last", maxPreviousUpdates, "feeds");
-    let feeds = [];
     try {
       // handle edge case when feedIndex is 0
       for (let index = feedIndex; index >= 0 && feedIndex - (index - 1) <= maxPreviousUpdates; index--) {
@@ -314,13 +311,10 @@ export class Beejs {
           type: "FEED_ITEM_LOADED",
           payload: parsedMessage,
         });
-
-        feeds.push(parsedMessage);
       }
     } catch (error) {
       console.log("Error downloading feeds", error);
       throw error;
     }
-    return feeds;
   }
 }

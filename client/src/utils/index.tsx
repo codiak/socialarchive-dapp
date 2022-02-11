@@ -169,3 +169,17 @@ export const convertImageToAscii = (imageRef: string) => {
     image.src = imageRef;
   });
 };
+
+/**
+ * Generates a wallet and sets it in local storage, if it does not exist
+ *
+ **/
+// export const generateWallet = async () => {
+//   // const key = randomBytes(32);
+//   // const privateKey = window.localStorage.getItem("sa_private_key");
+//   // if (!privateKey) {
+//   //   localStorage.setItem("sa_private_key", Utils.bytesToHex(key));
+//   //   const wallet = new Wallet(Buffer.from(key));
+//   //   localStorage.setItem("sa_wallet_address", wallet.getAddressString());
+//   // }
+// };

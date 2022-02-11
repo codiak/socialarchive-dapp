@@ -259,10 +259,9 @@ const StoreProvider = ({ children }) => {
       // get the latest feed index
       let feedIndex = await b.getFeedIndex();
       // fetch the feeds
-      let feeds = await b.getFeeds(feedIndex, itemsPerPage, dispatch);
+      await b.getFeeds(feedIndex, itemsPerPage, dispatch);
       dispatch({
         type: "FEEDS_LOADED",
-        payload: feeds,
       });
     } catch (error) {
       dispatch({
