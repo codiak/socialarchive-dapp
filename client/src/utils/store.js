@@ -54,7 +54,6 @@ const reducerActions = (state = initialState, action) => {
         ...state,
         loading: false,
         error: false,
-        feeds: payload,
         downloadingFeeds: false,
       };
     case "FEED_ITEM_LOADED":
