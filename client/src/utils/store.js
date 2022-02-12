@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
-import { convertBytesToString } from "./index";
-import { get, set } from "idb-keyval";
+import { convertBytesToString, getFromIdb, saveToIdb } from "./index";
 import { Zip } from "../process/Zip";
 import { Beejs } from "../process/Beejs";
 
@@ -55,6 +54,15 @@ const reducerActions = (state = initialState, action) => {
         loading: false,
         error: false,
         downloadingFeeds: false,
+      };
+    case "FEEDS_LOADED_FROM_CACHE":
+      console.log("feeds: ", payload);
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        downloadingFeeds: false,
+        feeds: payload,
       };
     case "FEED_ITEM_LOADED":
       return {
@@ -133,7 +141,7 @@ const StoreProvider = ({ children }) => {
   useEffect(() => {
     const loadFromIdb = async () => {
       dispatch({ type: "LOADING" });
-      let archive = await get("archive");
+      let archive = await getFromIdb("archive");
       dispatch({
         type: "ARCHIVE_LOADED",
         payload: archive ? archive : {},
@@ -199,14 +207,6 @@ const StoreProvider = ({ children }) => {
     });
   };
 
-  const saveToIdb = async (key, value) => {
-    try {
-      await set(key, value);
-    } catch (e) {
-      console.log("Error saving to idb: ", e);
-    }
-  };
-
   const uploadToSwarm = async (pendingBackup, progressCb) => {
     dispatch({ type: "LOADING" });
 
@@ -255,14 +255,25 @@ const StoreProvider = ({ children }) => {
 
   const downloadFeedsFromSwarm = async (itemsPerPage) => {
     let b = new Beejs();
+
     try {
       // get the latest feed index
-      let feedIndex = await b.getFeedIndex();
-      // fetch the feeds
-      await b.getFeeds(feedIndex, itemsPerPage, dispatch);
-      dispatch({
-        type: "FEEDS_LOADED",
-      });
+      const feedIndex = await b.getFeedIndex();
+      // check cache
+      const feedsCache = await getFromIdb("feeds" + feedIndex);
+      if (!feedsCache) {
+        // fetch feeds
+        await b.getFeeds(feedIndex, itemsPerPage, dispatch);
+        dispatch({
+          type: "FEEDS_LOADED",
+        });
+      } else {
+        // load from the cache
+        dispatch({
+          type: "FEEDS_LOADED_FROM_CACHE",
+          payload: feedsCache,
+        });
+      }
     } catch (error) {
       dispatch({
         type: "FEEDS_DOWNLOAD_FAIL",

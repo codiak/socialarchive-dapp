@@ -4,7 +4,7 @@ import axios from "axios";
 import LZString from "lz-string";
 import { buildAxiosFetch } from "@lifeomic/axios-fetch";
 import { Buffer } from "buffer";
-import { convertFeedIndexToInt, getJsonSize, convertBytesToString, convertImageToAscii, createImageFromAscii } from "../utils";
+import { convertFeedIndexToInt, getJsonSize, convertBytesToString, convertImageToAscii, createImageFromAscii, saveToIdb, wipeIdb } from "../utils";
 declare type Identifier = Bytes<32>;
 
 export class Beejs {
@@ -295,6 +295,7 @@ export class Beejs {
    **/
   async getFeeds(feedIndex: number, maxPreviousUpdates: number, dispatch: any) {
     console.log("Get last", maxPreviousUpdates, "feeds");
+    let feeds = [];
     try {
       // handle edge case when feedIndex is 0
       for (let index = feedIndex; index >= 0 && feedIndex - (index - 1) <= maxPreviousUpdates; index--) {
@@ -306,12 +307,16 @@ export class Beejs {
           // rewrites the avatarMediaUrl as a data uri
           parsedMessage.avatarMediaUrl = createImageFromAscii(parsedMessage.avatarMediaUrl);
         }
-
+        feeds.push(parsedMessage);
         dispatch({
           type: "FEED_ITEM_LOADED",
           payload: parsedMessage,
         });
       }
+      // deletes Idb
+      await wipeIdb();
+      // world's simplest cache
+      await saveToIdb("feeds" + feedIndex, feeds);
     } catch (error) {
       console.log("Error downloading feeds", error);
       throw error;

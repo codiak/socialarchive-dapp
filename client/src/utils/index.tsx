@@ -1,4 +1,21 @@
 import { Utils } from "@ethersphere/bee-js";
+import { get, set, clear } from "idb-keyval";
+
+export const getFromIdb = async (key: string) => {
+  return await get(key);
+};
+
+export const wipeIdb = async () => {
+  return await clear();
+};
+
+export const saveToIdb = async (key: string, value: any) => {
+  try {
+    await set(key, value);
+  } catch (e) {
+    console.log("Error saving to idb: ", e);
+  }
+};
 
 /**
  * Format bytes as human-readable text.
@@ -76,8 +93,7 @@ export const createImageFromAscii = (asciiLines: []) => {
   try {
     // The canvas we are going to use to create the image
     let canvas = document.createElement("canvas");
-    let targetWidth = 713;
-    canvas.width = targetWidth;
+    canvas.width = 713;
     canvas.height = 908;
     let ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 
