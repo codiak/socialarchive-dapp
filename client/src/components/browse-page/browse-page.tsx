@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { useStore } from "../../utils/store";
+
 import AvatarCard from "../avatar-card/avatar-card";
+import { useStore } from "../../utils/store";
+import "./browse-page.css";
 
 export default function BrowsePage() {
   let { section } = useParams();
@@ -12,7 +14,7 @@ export default function BrowsePage() {
     dispatch,
   } = useStore();
   // eslint-disable-next-line
-  const [itemsPerPage, setItemsPerPage] = useState(3);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   useEffect(
     () => {
@@ -39,10 +41,17 @@ export default function BrowsePage() {
               recentAccounts.length > 0 &&
               !error &&
               recentAccounts.map((account, i) => {
+                const { swarmHash, timestamp } = account;
+                const archiveDate = new Date(timestamp).toUTCString()
                 return (
-                  <a key={i} href={"/archive/" + account.swarmHash}>
-                    <AvatarCard archivedAccount={account} isUserRow={true} />
-                  </a>
+                  <div key={i} className="archive-row">
+                    <div className="archive-timestamp">
+                      <a href={`/archive/${swarmHash}`} className="archive-row">{archiveDate}</a>
+                    </div>
+                    <div>
+                      <AvatarCard archivedAccount={account} isUserRow={true} />
+                    </div>
+                  </div>
                 );
               })}
           </>
