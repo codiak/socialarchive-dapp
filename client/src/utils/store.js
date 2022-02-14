@@ -1,11 +1,10 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
-import { convertBytesToString } from "./index";
-import { get, set } from "idb-keyval";
+import { convertBytesToString, getFromIdb, saveToIdb, getFeedsCache } from "./index";
 import { Zip } from "../process/Zip";
 import { Beejs } from "../process/Beejs";
 
 const reducerActions = (state = initialState, action) => {
-  const { type, payload } = action
+  const { type, payload } = action;
   console.log("action: ", type);
   switch (type) {
     case "PROCESS_ZIP_FILE":
@@ -37,6 +36,46 @@ const reducerActions = (state = initialState, action) => {
       return {
         ...state,
         upload: false,
+        error: true,
+        errorMessage: action.errorMessage,
+      };
+    case "GET_FEEDS_FROM_SWARM":
+      return {
+        ...state,
+        loading: true,
+        error: false,
+        itemsPerPage: action.itemsPerPage,
+        downloadingFeeds: true,
+      };
+    case "FEEDS_LOADED":
+      console.log("feeds: ", payload);
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        downloadingFeeds: false,
+      };
+    case "FEEDS_LOADED_FROM_CACHE":
+      console.log("feeds: ", payload);
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        downloadingFeeds: false,
+        feeds: payload,
+      };
+    case "FEED_ITEM_LOADED":
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        feeds: action.delta ? [payload, ...state.feeds.reverse()] : [...state.feeds, payload],
+        downloadingFeeds: true,
+      };
+    case "FEEDS_DOWNLOAD_FAIL":
+      return {
+        ...state,
+        downloadingFeeds: false,
         error: true,
         errorMessage: action.errorMessage,
       };
@@ -92,6 +131,8 @@ const initialState = {
   error: false,
   process: false,
   upload: false,
+  delta: false,
+  feeds: [],
 };
 
 const StoreProvider = ({ children }) => {
@@ -101,7 +142,7 @@ const StoreProvider = ({ children }) => {
   useEffect(() => {
     const loadFromIdb = async () => {
       dispatch({ type: "LOADING" });
-      let archive = await get("archive");
+      let archive = await getFromIdb("archive");
       dispatch({
         type: "ARCHIVE_LOADED",
         payload: archive ? archive : {},
@@ -133,7 +174,16 @@ const StoreProvider = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.download, state.hash, state.progressCb]);
 
-  /*   */
+  // get feeds from swarm
+  useEffect(
+    () => {
+      if (state.downloadingFeeds) {
+        downloadFeedsFromSwarm(state.itemsPerPage);
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [state.downloadingFeeds]
+  );
 
   const unzip = async (zipFile) => {
     dispatch({ type: "LOADING" });
@@ -156,14 +206,6 @@ const StoreProvider = ({ children }) => {
       payload: uzip,
       zipFile: zipDetails,
     });
-  };
-
-  const saveToIdb = async (key, value) => {
-    try {
-      await set(key, value);
-    } catch (e) {
-      console.log("Error saving to idb: ", e);
-    }
   };
 
   const uploadToSwarm = async (pendingBackup, progressCb) => {
@@ -192,6 +234,7 @@ const StoreProvider = ({ children }) => {
   const downloadFromSwarm = async (hash, progressCb) => {
     let b = new Beejs();
     let result = await b.download(hash, progressCb);
+    console.log("downloaded: ", result);
 
     await saveToIdb("archive", result);
 
@@ -203,10 +246,58 @@ const StoreProvider = ({ children }) => {
         errorMessage: result.message,
       });
     } else {
-      result['hash'] = hash;
+      result["hash"] = hash;
       dispatch({
         type: "ARCHIVE_LOADED",
         payload: result ? result : {},
+      });
+    }
+  };
+
+  const fetchFeeds = async (itemsPerPage, feedIndex, b, feedsCache) => {
+    await b.getFeeds(feedIndex, itemsPerPage, dispatch, feedsCache);
+    dispatch({
+      type: "FEEDS_LOADED",
+    });
+  };
+
+  const downloadFeedsFromSwarm = async (itemsPerPage) => {
+    let b = new Beejs();
+
+    try {
+      // check cache
+      // const feedsCache = await getFromIdb("feeds" + feedIndex);
+      let feedsCache = undefined;
+      let feedIndexCached = undefined;
+      let feedIndex = undefined;
+      try {
+        const { cachedFeedIndex, cachedFeeds } = await getFeedsCache();
+        feedIndexCached = parseInt(cachedFeedIndex);
+        feedsCache = cachedFeeds;
+
+        dispatch({
+          type: "FEEDS_LOADED_FROM_CACHE",
+          payload: feedsCache.reverse(),
+        });
+
+        // get the latest feed index
+        feedIndex = await b.getFeedIndex();
+        if (feedIndexCached !== feedIndex) {
+          const diff = feedIndex - feedIndexCached;
+          // if the cached feed index is different from the latest feed index, update the cache
+          await fetchFeeds(diff, feedIndex, b, feedsCache);
+        }
+      } catch (error) {
+        console.log("No cache found");
+        // could not get the latest feed index
+        feedIndex = await b.getFeedIndex();
+        fetchFeeds(itemsPerPage, feedIndex, b);
+      }
+    } catch (error) {
+      dispatch({
+        type: "FEEDS_DOWNLOAD_FAIL",
+        error: true,
+        errorMessage: error.message,
       });
     }
   };

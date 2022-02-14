@@ -1,24 +1,30 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
 import AvatarCard from "../avatar-card/avatar-card";
+import { useStore } from "../../utils/store";
+import "./browse-page.css";
 
 export default function BrowsePage() {
   let { section } = useParams();
   const page = section || "explore";
-  const recentAccounts: ArchivedAccount[] = [
-    {
-      username: "cybercody",
-      accountDisplayName: "Cody",
-      description: {
-        bio: "Programmer on Social Archive",
-      },
-      avatarMediaUrl: "https://pbs.twimg.com/profile_images/1404544885324189697/wzv9wUaO_200x200.jpg",
-      swarmHash: "abcEXAMPLE123",
-      archiveDate: "Tue Feb 23 02:21:09 +0000 2021",
+  const {
+    state: { feeds, downloadingFeeds, error, errorMessage },
+    dispatch,
+  } = useStore();
+  // eslint-disable-next-line
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+
+  useEffect(
+    () => {
+      dispatch({ type: "GET_FEEDS_FROM_SWARM", itemsPerPage });
     },
-  ];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
+  const recentAccounts: ArchivedAccount[] = feeds;
 
   return (
     <div className="container">
@@ -29,13 +35,25 @@ export default function BrowsePage() {
         {page === "explore" && (
           <>
             <h2 className="col-header">Recently Added</h2>
-            {recentAccounts.map((account, i) => {
-              return (
-                <a key={i} href={"/archive/" + account.username + "/tweets"}>
-                  <AvatarCard archivedAccount={account} isUserRow={true} />
-                </a>
-              );
-            })}
+            {downloadingFeeds && <div>Downloading...</div>}
+            {error && errorMessage.length > 0 && <div className="archive-pending-error">{errorMessage}</div>}
+            {recentAccounts &&
+              recentAccounts.length > 0 &&
+              !error &&
+              recentAccounts.map((account, i) => {
+                const { swarmHash, timestamp } = account;
+                const archiveDate = new Date(timestamp).toUTCString()
+                return (
+                  <div key={i} className="archive-row">
+                    <div className="archive-timestamp">
+                      <a href={`/archive/${swarmHash}`} className="archive-row">{archiveDate}</a>
+                    </div>
+                    <div>
+                      <AvatarCard archivedAccount={account} isUserRow={true} />
+                    </div>
+                  </div>
+                );
+              })}
           </>
         )}
       </div>
@@ -47,7 +65,9 @@ export default function BrowsePage() {
 }
 
 export interface ArchivedAccount {
+  timestamp: number;
   username: string;
+  isArchived: boolean;
   accountDisplayName: string;
   description: {
     bio: string;
@@ -57,4 +77,5 @@ export interface ArchivedAccount {
   avatarMediaUrl: string;
   swarmHash?: string;
   archiveDate?: string;
+  archiveSize?: string;
 }

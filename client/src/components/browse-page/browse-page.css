@@ -1,0 +1,9 @@
+.archive-row {
+  display: flex;
+  font-size: small;
+  align-items: center;
+  text-decoration: none;
+}
+.archive-timestamp {
+  width: 100%;
+}
