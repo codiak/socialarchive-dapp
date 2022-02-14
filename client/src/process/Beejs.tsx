@@ -293,7 +293,8 @@ export class Beejs {
    * @param maxPreviousUpdates Number previous feed items to return
    *
    **/
-  async getFeeds(feedIndex: number, maxPreviousUpdates: number, dispatch: any) {
+  async getFeeds(feedIndex: number, maxPreviousUpdates: number, dispatch: any, cachedFeeds: any) {
+    console.log("cached feeds: ", cachedFeeds);
     console.log("Get last", maxPreviousUpdates, "feeds");
     let feeds = [];
     try {
@@ -311,12 +312,12 @@ export class Beejs {
         dispatch({
           type: "FEED_ITEM_LOADED",
           payload: parsedMessage,
+          delta: cachedFeeds && cachedFeeds.length > 0 ? true : false,
         });
       }
       // deletes Idb
       await wipeIdb();
-      // world's simplest cache
-      await saveToIdb("feeds" + feedIndex, feeds);
+      await saveToIdb("feeds" + feedIndex, cachedFeeds ? cachedFeeds.concat(feeds.reverse()) : feeds.reverse());
     } catch (error) {
       console.log("Error downloading feeds", error);
       throw error;

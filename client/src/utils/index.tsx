@@ -1,5 +1,5 @@
 import { Utils } from "@ethersphere/bee-js";
-import { get, set, clear } from "idb-keyval";
+import { get, set, clear, keys } from "idb-keyval";
 
 export const getFromIdb = async (key: string) => {
   return await get(key);
@@ -14,6 +14,20 @@ export const saveToIdb = async (key: string, value: any) => {
     await set(key, value);
   } catch (e) {
     console.log("Error saving to idb: ", e);
+  }
+};
+
+export const getFeedsCache = async () => {
+  try {
+    // get all keys, filter by 'feeds', extract feed index
+    const feedName = (await keys()).filter((key) => key.toString().includes("feeds"))[0].toString();
+    const cachedFeedIndex = feedName.substring(feedName.indexOf("feeds") + 5, feedName.length);
+
+    // get cached feeds
+    let cachedFeeds = await getFromIdb(feedName);
+    return { cachedFeedIndex, cachedFeeds };
+  } catch (error) {
+    console.log("no matches: ", error);
   }
 };
 

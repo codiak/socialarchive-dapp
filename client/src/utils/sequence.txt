@@ -1,0 +1,73 @@
+title Get user profiles from Swarm
+note right of User: Retrive feeds from Swarm
+note right of User: A - Before cache
+User->Store: GET_FEEDS_FROM_SWARM (2)
+Store->Beejs: getFeedIndex 
+Beejs->Swarm: 1. feedreader download
+Swarm->Beejs: 55 (index of latest entry)
+Beejs-->Store: 55
+Store->Beejs: getFeeds (55, 2)
+note right of Beejs: fetch last *2* profiles
+Beejs->Swarm: 2. Get SOC (55)
+Swarm-->Beejs: user profile B
+Beejs->Store: FEED_ITEM_LOADED
+Store-->User: Show user profile B
+Beejs->Swarm: 3. Get SOC (54)
+Swarm-->Beejs: user profile A
+Beejs->Store: FEED_ITEM_LOADED
+Store-->User: Show user profile A
+note right of User: 3 network calls
+note right of User: B - Cache Write
+User->Store: GET_FEEDS_FROM_SWARM (2)
+Store->Beejs: getFeedIndex 
+Beejs->Swarm: 1. feedreader download
+Swarm->Beejs: 55 (index of latest entry)
+Beejs-->Store: 55
+Store->Beejs: getFeeds (55, 2)
+Beejs->Swarm: 2. Get SOC (55)
+Swarm-->Beejs: user profile B
+Beejs->Store: FEED_ITEM_LOADED
+Store-->User: Show user profile B
+Beejs->Swarm: 3. Get SOC (54)
+Swarm-->Beejs: user profile A
+Beejs->Store: FEED_ITEM_LOADED
+Store-->User: Show user profile A
+Beejs->Idb: Wipe Idb
+Beejs->Idb: Create cache feeds55:[profile B, profile A]
+note right of User: 3 network calls
+note right of User: Cache Read v1
+User->Store: GET_FEEDS_FROM_SWARM (2)
+Store->Beejs: getFeedIndex 
+Beejs->Swarm: 1. feedreader download
+note right of Beejs: swarm call before page load
+Swarm-->Beejs: 55 (index of latest entry)
+Beejs-->Store: 55
+Store->Idb: get cache (feeds55) 
+Idb-->Store: 55, [profile B, profile A]
+Store->Store: FEEDS_LOADED_FROM_CACHE
+Store-->User: Show user profiles A and B
+note right of User: Initial swarm call blocks page load, save 2 swarm calls 
+note right of User: Cache Read v2
+
+User->Store: GET_FEEDS_FROM_SWARM (2)
+Store->Idb: get keys
+Idb-->Store: keys: [55]
+Store->Idb: get feeds55
+Idb-->Store: 55, [profile B, profile A]
+Store->Store: FEEDS_LOADED_FROM_CACHE
+Store-->User: Show user profiles A and B
+Store->Beejs: get latest 
+Beejs->Swarm: 1. feedreader download
+note right of Beejs: call after page loaded
+Swarm-->Beejs: 56 (index of latest entry)
+Store->Store: cachedIndex55 !== 56; diff === 1
+Store->Beejs: getFeeds (56,1)
+note right of Store: only fetch diffs
+Beejs->Swarm: 1. Get SOC (56)
+Swarm-->Beejs: user profile C
+Beejs->Store: FEED_ITEM_LOADED
+Store-->User: Show user profile C
+Store
+Beejs->Idb: Wipe Idb
+Beejs->Idb: Create feeds56:[profile C, profile B, profile A]
+note right of User: Show cached feeds immediately, swarm calls in background 

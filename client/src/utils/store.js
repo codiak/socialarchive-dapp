@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
-import { convertBytesToString, getFromIdb, saveToIdb } from "./index";
+import { convertBytesToString, getFromIdb, saveToIdb, getFeedsCache } from "./index";
 import { Zip } from "../process/Zip";
 import { Beejs } from "../process/Beejs";
 
@@ -69,7 +69,7 @@ const reducerActions = (state = initialState, action) => {
         ...state,
         loading: false,
         error: false,
-        feeds: [...state.feeds, payload],
+        feeds: action.delta ? [payload, ...state.feeds.reverse()] : [...state.feeds, payload],
         downloadingFeeds: true,
       };
     case "FEEDS_DOWNLOAD_FAIL":
@@ -131,6 +131,7 @@ const initialState = {
   error: false,
   process: false,
   upload: false,
+  delta: false,
   feeds: [],
 };
 
@@ -253,26 +254,44 @@ const StoreProvider = ({ children }) => {
     }
   };
 
+  const fetchFeeds = async (itemsPerPage, feedIndex, b, feedsCache) => {
+    await b.getFeeds(feedIndex, itemsPerPage, dispatch, feedsCache);
+    dispatch({
+      type: "FEEDS_LOADED",
+    });
+  };
+
   const downloadFeedsFromSwarm = async (itemsPerPage) => {
     let b = new Beejs();
 
     try {
-      // get the latest feed index
-      const feedIndex = await b.getFeedIndex();
       // check cache
-      const feedsCache = await getFromIdb("feeds" + feedIndex);
-      if (!feedsCache) {
-        // fetch feeds
-        await b.getFeeds(feedIndex, itemsPerPage, dispatch);
-        dispatch({
-          type: "FEEDS_LOADED",
-        });
-      } else {
-        // load from the cache
+      // const feedsCache = await getFromIdb("feeds" + feedIndex);
+      let feedsCache = undefined;
+      let feedIndexCached = undefined;
+      let feedIndex = undefined;
+      try {
+        const { cachedFeedIndex, cachedFeeds } = await getFeedsCache();
+        feedIndexCached = parseInt(cachedFeedIndex);
+        feedsCache = cachedFeeds;
+
         dispatch({
           type: "FEEDS_LOADED_FROM_CACHE",
-          payload: feedsCache,
+          payload: feedsCache.reverse(),
         });
+
+        // get the latest feed index
+        feedIndex = await b.getFeedIndex();
+        if (feedIndexCached !== feedIndex) {
+          const diff = feedIndex - feedIndexCached;
+          // if the cached feed index is different from the latest feed index, update the cache
+          await fetchFeeds(diff, feedIndex, b, feedsCache);
+        }
+      } catch (error) {
+        console.log("No cache found");
+        // could not get the latest feed index
+        feedIndex = await b.getFeedIndex();
+        fetchFeeds(itemsPerPage, feedIndex, b);
       }
     } catch (error) {
       dispatch({
