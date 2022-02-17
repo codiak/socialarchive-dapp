@@ -256,52 +256,28 @@ const StoreProvider = ({ children }) => {
     }
   };
 
-  const fetchFeeds = async (itemsPerPage, feedIndex, b, feedsCache) => {
-    await b.getFeeds(feedIndex, itemsPerPage, dispatch, feedsCache);
-    dispatch({
-      type: "FEEDS_LOADED",
-    });
-  };
-
   const downloadFeedsFromSwarm = async (itemsPerPage) => {
     let b = new Beejs();
 
     try {
-      // check cache
-      // const feedsCache = await getFromIdb("feeds" + feedIndex);
-      let feedsCache = undefined;
-      let feedIndexCached = undefined;
-      let feedIndex = undefined;
-      try {
         const { cachedFeedIndex, cachedFeeds } = await getFeedsCache();
-        feedIndexCached = parseInt(cachedFeedIndex);
-        feedsCache = cachedFeeds;
-
         dispatch({
           type: "FEEDS_LOADED_FROM_CACHE",
-          payload: feedsCache.reverse(),
+          payload: cachedFeeds.reverse(),
         });
-
-        // get the latest feed index
-        feedIndex = await b.getFeedIndex();
-        if (feedIndexCached !== feedIndex) {
-          const diff = feedIndex - feedIndexCached;
-          // if the cached feed index is different from the latest feed index, update the cache
-          await fetchFeeds(diff, feedIndex, b, feedsCache);
-        }
+        const feedIndex = await b.getFeedIndex();
+        const numFeedsToFetch = cachedFeeds.length ? feedIndex - cachedFeedIndex : itemsPerPage;
+        await b.getFeeds(feedIndex, numFeedsToFetch, dispatch, cachedFeeds);
+        dispatch({
+          type: "FEEDS_LOADED",
+        });
       } catch (error) {
-        console.log("No cache found");
-        // could not get the latest feed index
-        feedIndex = await b.getFeedIndex();
-        fetchFeeds(itemsPerPage, feedIndex, b);
+        dispatch({
+          type: "FEEDS_DOWNLOAD_FAIL",
+          error: true,
+          errorMessage: error.message,
+        });
       }
-    } catch (error) {
-      dispatch({
-        type: "FEEDS_DOWNLOAD_FAIL",
-        error: true,
-        errorMessage: error.message,
-      });
-    }
   };
 
   return <StoreContext.Provider value={{ state, dispatch }}> {children} </StoreContext.Provider>;

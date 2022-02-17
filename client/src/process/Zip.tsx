@@ -133,8 +133,8 @@ export class Zip {
         data: "",
       };
       file.async("base64").then((content: any) => {
+        console.log("Add media: ", processedFile); // no need to log the base64
         processedFile.data = dataUrlProlog + content;
-        console.log("Add media: ", processedFile);
         resolve(processedFile);
       });
     });
@@ -232,7 +232,7 @@ export class Zip {
 
   // fetch content from media url and convert it to a data uri (base64)
   async mediaUrlToDataUri(url: string) {
-    // console.log("fetching: ", url);
+    console.log("fetching: ", url);
     const response = await fetch(url);
     const blob = await response.blob();
     return await new Promise((callback) => {
