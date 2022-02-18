@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
@@ -13,16 +13,19 @@ export default function BrowsePage() {
     state: { feeds, downloadingFeeds, error, errorMessage },
     dispatch,
   } = useStore();
-  // eslint-disable-next-line
-  const [itemsPerPage, setItemsPerPage] = useState(10);
-  const onRefreshClick = () => {
-    dispatch({ type: "GET_FEEDS_FROM_SWARM", itemsPerPage });
-  };
-
+  const [itemsPerPage] = useState(10);
+  const [isLoadInitiated, setIsLoadInitiated] = useState(false);
+  const refreshFeeds = useCallback(() => {
+      dispatch({ type: "GET_FEEDS_FROM_SWARM", itemsPerPage });
+    }, [itemsPerPage, dispatch]
+  );
   useEffect(
-    onRefreshClick,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    () => {
+      if (!isLoadInitiated) {
+        setIsLoadInitiated(true);
+        refreshFeeds();
+      }
+    }, [isLoadInitiated, refreshFeeds]
   );
 
   return (
@@ -33,12 +36,12 @@ export default function BrowsePage() {
       <div className="col">
         {page === "explore" && (
           <>
-            <h2 className="col-header" onClick={onRefreshClick}>Recently Added</h2>
+            <h2 className="col-header" onClick={refreshFeeds}>Recently Added</h2>
             {downloadingFeeds && <div>Downloading...</div>}
             {error && errorMessage.length > 0 && <div className="archive-pending-error">{errorMessage}</div>}
             {feeds.map((account, i) => {
                 const { swarmHash, timestamp } = account;
-                const archiveDate = new Date(timestamp).toUTCString()
+                const archiveDate = new Date(timestamp).toUTCString();
                 return (
                   <div key={i} className="archive-row">
                     <div className="archive-timestamp">

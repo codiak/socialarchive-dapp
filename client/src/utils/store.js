@@ -70,7 +70,6 @@ const reducerActions = (state = initialState, action) => {
         loading: false,
         error: false,
         feeds: action.delta ? [payload, ...state.feeds.reverse()] : [...state.feeds, payload],
-        downloadingFeeds: true,
       };
     case "FEEDS_DOWNLOAD_FAIL":
       return {
@@ -183,8 +182,7 @@ const StoreProvider = ({ children }) => {
         downloadFeedsFromSwarm(state.itemsPerPage);
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [state.downloadingFeeds]
+    [state.downloadingFeeds, state.itemsPerPage]
   );
 
   const unzip = async (zipFile) => {
