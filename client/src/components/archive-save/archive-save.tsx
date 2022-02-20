@@ -69,7 +69,9 @@ export default function ArchiveSave() {
             ) : (
               "Uploading..."
             )}
-            {error && errorMessage.length > 0 && <div className="archive-pending-error">{errorMessage}</div>}
+            {error && errorMessage.length > 0 && (
+              <div className="archive-pending-error">{errorMessage}</div>
+            )}
           </div>
         </form>
       </div>

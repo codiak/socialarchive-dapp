@@ -10,7 +10,14 @@ export default function ArchiveAccount(props: { backup: any }) {
   const { isVerified } = verified.verified;
   const followingCount = following.length;
   const followersCount = follower.length;
-  const accountSections = [{ title: "General Information" }, { title: "Profile" }, { title: "Connected Applications" }, { title: "Contacts" }, { title: "Sessions" }, { title: "Account Access History" }];
+  const accountSections = [
+    { title: "General Information" },
+    { title: "Profile" },
+    { title: "Connected Applications" },
+    { title: "Contacts" },
+    { title: "Sessions" },
+    { title: "Account Access History" },
+  ];
 
   const profileContent = (
     <>
@@ -97,7 +104,10 @@ export default function ArchiveAccount(props: { backup: any }) {
     <>
       <div className="row fill-message">
         Private uploaded contacts data is excluded.
-        <p>These are contacts you uploaded to find people you may know on Twitter or to personalize content.</p>
+        <p>
+          These are contacts you uploaded to find people you may know on Twitter or to personalize
+          content.
+        </p>
       </div>
     </>
   );
@@ -115,7 +125,10 @@ export default function ArchiveAccount(props: { backup: any }) {
     <>
       <div className="row fill-message">
         Access history data is excluded.
-        <p>Login history includes any apps that are connected to your account, as well as the IP address and time of access.</p>
+        <p>
+          Login history includes any apps that are connected to your account, as well as the IP
+          address and time of access.
+        </p>
       </div>
     </>
   );
@@ -125,7 +138,11 @@ export default function ArchiveAccount(props: { backup: any }) {
       <div className="tab-row">
         {accountSections.map((section, index) => {
           return (
-            <div key={index} className={"tab " + (activeTab === index ? "active" : "")} onClick={() => setActiveTab(index)}>
+            <div
+              key={index}
+              className={"tab " + (activeTab === index ? "active" : "")}
+              onClick={() => setActiveTab(index)}
+            >
               {section.title}
             </div>
           );

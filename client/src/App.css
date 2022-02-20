@@ -1,6 +1,8 @@
 @font-face {
   font-family: "Roboto Mono";
-  src: local("RobotoMono"), url("./fonts/RobotoMono-Regular.woff") format("woff"), /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */ url("./fonts/RobotoMono-Regular.ttf") format("truetype"); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
+  src: local("RobotoMono"), url("./fonts/RobotoMono-Regular.woff") format("woff"),
+    /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */ url("./fonts/RobotoMono-Regular.ttf")
+      format("truetype"); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
 }
 
 .App {
@@ -206,7 +208,7 @@ ul {
 } */
 
 ul.paginate-list {
-  list-style-type:none;
+  list-style-type: none;
   text-align: center;
   width: 100%;
   padding-inline-start: 0px;
