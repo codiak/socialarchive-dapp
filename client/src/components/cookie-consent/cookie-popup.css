@@ -1,0 +1,60 @@
+/*----- GDPR Modal -------*/
+.gdpr-modal-background-deny {
+    position: fixed;
+    display: block;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(49, 49, 49, 0.7);
+    z-index: 999999;
+    backdrop-filter: blur(10px);
+}
+
+.gdpr-body {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    top: 20%;
+    max-height: 92%;
+    padding: 0px 16px;
+    text-align: center;
+    font-size: 14px;
+    position: fixed;
+    left: 30%;
+    max-width: 40%;
+    font-weight: 400;
+    color: rgba(69, 79, 95);
+    background-color: rgba(239, 240, 243);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+        "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+        "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* background: rgba(20, 20, 20, 0.9);
+    color: #ffffff; */
+}
+
+.gdpr-body .group-action-btns {
+    display: flex;
+    flex-direction: row;
+}
+
+.gdpr-body .group-action-btns button {
+    margin: 10px;
+    padding: 10px;
+    width: 200px;
+    font-weight: 600;
+    background-color: rgba(190, 103, 38);
+    color: white;
+    line-height: 16px;
+    border-radius: 8px;
+    border: 0;
+}
+
+.gdpr-body .group-action-btns button:hover {
+    background-color: rgba(160, 103, 38);
+}
+.gdpr-body .description {
+    line-height: 24px;
+}
