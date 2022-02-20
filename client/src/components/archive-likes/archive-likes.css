@@ -1,19 +1,19 @@
 .like-link {
-    text-decoration: none;
-    color: #1DA1F2;
-    font-size: 13px;
-    margin-top: 0.5em;
+  text-decoration: none;
+  color: #1da1f2;
+  font-size: 13px;
+  margin-top: 0.5em;
 }
 
 .icon-link {
-    display: inline-block;
-    height: 0.8em;
-    width: 0.8em;
-    transform: scaleX(-1);
-    margin-left: 0.25em;
+  display: inline-block;
+  height: 0.8em;
+  width: 0.8em;
+  transform: scaleX(-1);
+  margin-left: 0.25em;
 }
 
 .default-avatar {
-    float: left;
-    margin: 0 1em 1em 0;
+  float: left;
+  margin: 0 1em 1em 0;
 }

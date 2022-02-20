@@ -12,7 +12,9 @@ const APP_TITLE = "Social Archive";
 
 function App() {
   const activeLink = (pathname: string, startsWith?: boolean) => {
-    let isActive = (startsWith && window.location.pathname.startsWith(pathname)) || window.location.pathname === pathname;
+    let isActive =
+      (startsWith && window.location.pathname.startsWith(pathname)) ||
+      window.location.pathname === pathname;
     return "menu-link " + (isActive ? "active" : "");
   };
 
@@ -25,7 +27,11 @@ function App() {
         </Helmet>
         <header className="App-header">
           <a className="header-logo-link" href="/">
-            <img className="header-logo" src={process.env.PUBLIC_URL + "/logo.png"} alt={APP_TITLE} />
+            <img
+              className="header-logo"
+              src={process.env.PUBLIC_URL + "/logo.png"}
+              alt={APP_TITLE}
+            />
           </a>
           <div className="menu">
             <a className={activeLink("/")} href="/">

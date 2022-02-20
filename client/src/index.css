@@ -1,6 +1,7 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -22,7 +23,7 @@ code {
 }
 
 .btn {
-  background: rgba(255,255,255);
+  background: rgba(255, 255, 255);
   font-family: inherit;
   font-size: 100%;
   line-height: 1.15;
@@ -70,7 +71,7 @@ button.rounded-btn,
 }
 
 .rounded-btn.secondary {
-  background: rgba(255,255,255);
+  background: rgba(255, 255, 255);
 }
 
 .rounded-btn:hover,

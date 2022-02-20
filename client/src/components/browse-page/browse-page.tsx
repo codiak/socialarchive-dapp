@@ -36,17 +36,21 @@ export default function BrowsePage() {
           <>
             <h2 className="col-header">Recently Added</h2>
             {downloadingFeeds && <div>Downloading...</div>}
-            {error && errorMessage.length > 0 && <div className="archive-pending-error">{errorMessage}</div>}
+            {error && errorMessage.length > 0 && (
+              <div className="archive-pending-error">{errorMessage}</div>
+            )}
             {recentAccounts &&
               recentAccounts.length > 0 &&
               !error &&
               recentAccounts.map((account, i) => {
                 const { swarmHash, timestamp } = account;
-                const archiveDate = new Date(timestamp).toUTCString()
+                const archiveDate = new Date(timestamp).toUTCString();
                 return (
                   <div key={i} className="archive-row">
                     <div className="archive-timestamp">
-                      <a href={`/archive/${swarmHash}`} className="archive-row">{archiveDate}</a>
+                      <a href={`/archive/${swarmHash}`} className="archive-row">
+                        {archiveDate}
+                      </a>
                     </div>
                     <div>
                       <AvatarCard archivedAccount={account} isUserRow={true} />

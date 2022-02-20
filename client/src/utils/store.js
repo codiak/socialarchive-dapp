@@ -114,7 +114,9 @@ const reducerActions = (state = initialState, action) => {
       let msg = payload;
       // format the number into a human readable format
       let formatBytes = msg.substring(msg.indexOf("an") + 3, msg.indexOf("bytes"));
-      msg = msg.replace(formatBytes + "bytes", convertBytesToString(formatBytes, 0)) + ". Please try again with a smaller file.";
+      msg =
+        msg.replace(formatBytes + "bytes", convertBytesToString(formatBytes, 0)) +
+        ". Please try again with a smaller file.";
       return { ...state, loading: false, error: true, errorMessage: msg };
     default:
       return state;

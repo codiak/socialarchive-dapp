@@ -31,11 +31,13 @@ export default function ArchiveDownload() {
       </div>
       {/* hide spinner and request user to paste swarm hash? */}
       {error && errorMessage}
-      {Object.keys(pendingBackup).length > 0 && pendingBackup['hash'] && pendingBackup['hash'] === id && (
-        <>
-          <Navigate to="/archive/pending/home" />
-        </>
-      )}
+      {Object.keys(pendingBackup).length > 0 &&
+        pendingBackup["hash"] &&
+        pendingBackup["hash"] === id && (
+          <>
+            <Navigate to="/archive/pending/home" />
+          </>
+        )}
     </div>
   );
 }
