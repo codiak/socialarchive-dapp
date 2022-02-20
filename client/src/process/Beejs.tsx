@@ -1,5 +1,5 @@
 import { Bee, Reference, Utils, FeedWriter, FeedReader, SOCWriter, SOCReader } from "@ethersphere/bee-js";
-import { Bytes } from "@ethersphere/bee-js/dist/src/utils/bytes";
+import { Bytes } from "@ethersphere/bee-js/dist/types/utils/bytes";
 import axios from "axios";
 import LZString from "lz-string";
 import { buildAxiosFetch } from "@lifeomic/axios-fetch";

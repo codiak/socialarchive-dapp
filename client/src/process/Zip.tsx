@@ -85,7 +85,7 @@ export class Zip {
           // don't need to parse or resolve if substring contains only 3 characters -> empty array;
           if (c.length > 3) {
             json = this.formatData(JSON.parse(c), fname);
-            console.log("Add: ", json);
+            // console.log("Add: ", json);
             t++;
             resolve(json);
           } else {
@@ -117,7 +117,7 @@ export class Zip {
       };
       file.async("base64").then((content: any) => {
         processedFile.data = dataUrlProlog + content;
-        console.log("Add media: ", processedFile);
+        // console.log("Add media: ", processedFile);
         resolve(processedFile);
       });
     });
@@ -126,7 +126,7 @@ export class Zip {
   async extract(zip: JSZip) {
     // let unZippedFiles: { name: string; type: string; data: {} }[] = [];
     let unZippedFiles = {} as any;
-    console.log("Building archive");
+    // console.log("Building archive");
 
     /* typcial twitter backup zip file structure
     twitter_backup.zip
@@ -157,7 +157,7 @@ export class Zip {
         // console.log("Skip: Entry === directory name: ", key);
       }
     }
-    console.log("Total entries: ", t);
+    // console.log("Total entries: ", t);
     this.archiveItems = unZippedFiles;
 
     await this.buildMediaMap();
@@ -226,7 +226,7 @@ export class Zip {
 
   async internalUnzip() {
     return JSZip.loadAsync(this.file).then(async (zip: JSZip) => {
-      console.log("Total entries in zip: ", Object.keys(zip.files).length);
+      // console.log("Total entries in zip: ", Object.keys(zip.files).length);
       return this.extract(zip);
     });
   }
