@@ -18,7 +18,9 @@ export default function ArchiveMoment(props: { moments: Moment }) {
         return <div className="tweet-card">Moment here!</div>;
       })} */}
       <div>
-        <h3>Moments</h3>
+        <div className="heading-row">
+          <h3>Moments</h3>
+        </div>
         <b>{moments.title}</b>
         <div>
           {(moments.tweets || []).map((tweet, key) => {

@@ -4,7 +4,7 @@ import TweetCard, { Tweet } from "../tweet/tweet";
 import { useSearchParams } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 30;
 
 export default function ArchiveTweets(props: { tweets: Tweet[]; account: any; profile: any }) {
   const { account, profile, tweets } = props;
@@ -53,7 +53,7 @@ export default function ArchiveTweets(props: { tweets: Tweet[]; account: any; pr
     });
   const pageCount = Math.floor(filteredTweets.length / PAGE_SIZE);
   const handlePage = ({ selected }) => {
-    setSearchParams({ page: selected + 1 });
+    setSearchParams({ page: selected + 1, sort });
     window.scrollTo(0, 0);
   };
   const cursor = (page - 1) * PAGE_SIZE;
@@ -78,7 +78,7 @@ export default function ArchiveTweets(props: { tweets: Tweet[]; account: any; pr
       <div className="tab-row text-right">
         <div
           className="btn btn-toggle"
-          onClick={() => setSearchParams({ sort: sort === "asc" ? "desc" : "asc" })}
+          onClick={() => setSearchParams({ sort: sort === "asc" ? "desc" : "asc", page: "1" })}
         >
           {sort === "asc" ? "Oldest  ⬆️" : "Newest  ⬇️"}
         </div>
@@ -97,6 +97,7 @@ export default function ArchiveTweets(props: { tweets: Tweet[]; account: any; pr
         onPageChange={handlePage}
         pageRangeDisplayed={3}
         pageCount={pageCount}
+        forcePage={page - 1}
         previousLabel="<"
         renderOnZeroPageCount={null}
       />

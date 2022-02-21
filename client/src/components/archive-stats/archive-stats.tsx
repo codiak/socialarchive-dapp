@@ -50,7 +50,7 @@ export default function ArchiveStats(props: { backup: any }) {
             <img src={iconsrc} alt={stat.title} className="icon" />
             {stat.title}
             <br />
-            <b>{stat.count}</b>
+            <b>{stat.count.toLocaleString()}</b>
             <div className="hover-show">View</div>
           </Link>
         );
