@@ -176,14 +176,11 @@ const StoreProvider = ({ children }) => {
   }, [state.download, state.hash, state.progressCb]);
 
   // get feeds from swarm
-  useEffect(
-    () => {
-      if (state.downloadingFeeds) {
-        downloadFeedsFromSwarm(state.itemsPerPage);
-      }
-    },
-    [state.downloadingFeeds, state.itemsPerPage]
-  );
+  useEffect(() => {
+    if (state.downloadingFeeds) {
+      downloadFeedsFromSwarm(state.itemsPerPage);
+    }
+  }, [state.downloadingFeeds, state.itemsPerPage]);
 
   const unzip = async (zipFile) => {
     dispatch({ type: "LOADING" });
@@ -258,24 +255,24 @@ const StoreProvider = ({ children }) => {
     let b = new Beejs();
 
     try {
-        const { cachedFeedIndex, cachedFeeds } = await getFeedsCache();
-        dispatch({
-          type: "FEEDS_LOADED_FROM_CACHE",
-          payload: cachedFeeds.reverse(),
-        });
-        const feedIndex = await b.getFeedIndex();
-        const numFeedsToFetch = cachedFeeds.length ? feedIndex - cachedFeedIndex : itemsPerPage;
-        await b.getFeeds(feedIndex, numFeedsToFetch, dispatch, cachedFeeds);
-        dispatch({
-          type: "FEEDS_LOADED",
-        });
-      } catch (error) {
-        dispatch({
-          type: "FEEDS_DOWNLOAD_FAIL",
-          error: true,
-          errorMessage: error.message,
-        });
-      }
+      const { cachedFeedIndex, cachedFeeds } = await getFeedsCache();
+      dispatch({
+        type: "FEEDS_LOADED_FROM_CACHE",
+        payload: cachedFeeds.reverse(),
+      });
+      const feedIndex = await b.getFeedIndex();
+      const numFeedsToFetch = cachedFeeds.length ? feedIndex - cachedFeedIndex : itemsPerPage;
+      await b.getFeeds(feedIndex, numFeedsToFetch, dispatch, cachedFeeds);
+      dispatch({
+        type: "FEEDS_LOADED",
+      });
+    } catch (error) {
+      dispatch({
+        type: "FEEDS_DOWNLOAD_FAIL",
+        error: true,
+        errorMessage: error.message,
+      });
+    }
   };
 
   return <StoreContext.Provider value={{ state, dispatch }}> {children} </StoreContext.Provider>;

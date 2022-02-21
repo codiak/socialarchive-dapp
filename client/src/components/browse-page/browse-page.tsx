@@ -16,17 +16,14 @@ export default function BrowsePage() {
   const [itemsPerPage] = useState(10);
   const [isLoadInitiated, setIsLoadInitiated] = useState(false);
   const refreshFeeds = useCallback(() => {
-      dispatch({ type: "GET_FEEDS_FROM_SWARM", itemsPerPage });
-    }, [itemsPerPage, dispatch]
-  );
-  useEffect(
-    () => {
-      if (!isLoadInitiated) {
-        setIsLoadInitiated(true);
-        refreshFeeds();
-      }
-    }, [isLoadInitiated, refreshFeeds]
-  );
+    dispatch({ type: "GET_FEEDS_FROM_SWARM", itemsPerPage });
+  }, [itemsPerPage, dispatch]);
+  useEffect(() => {
+    if (!isLoadInitiated) {
+      setIsLoadInitiated(true);
+      refreshFeeds();
+    }
+  }, [isLoadInitiated, refreshFeeds]);
 
   return (
     <div className="container">
@@ -36,23 +33,29 @@ export default function BrowsePage() {
       <div className="col">
         {page === "explore" && (
           <>
-            <h2 className="col-header" onClick={refreshFeeds}>Recently Added</h2>
+            <h2 className="col-header" onClick={refreshFeeds}>
+              Recently Added
+            </h2>
             {downloadingFeeds && <div>Downloading...</div>}
-            {error && errorMessage.length > 0 && <div className="archive-pending-error">{errorMessage}</div>}
+            {error && errorMessage.length > 0 && (
+              <div className="archive-pending-error">{errorMessage}</div>
+            )}
             {feeds.map((account, i) => {
-                const { swarmHash, timestamp } = account;
-                const archiveDate = new Date(timestamp).toUTCString();
-                return (
-                  <div key={i} className="archive-row">
-                    <div className="archive-timestamp">
-                      <a href={`/archive/${swarmHash}`} className="archive-row">{archiveDate}</a>
-                    </div>
-                    <div>
-                      <AvatarCard archivedAccount={account} isUserRow={true} />
-                    </div>
+              const { swarmHash, timestamp } = account;
+              const archiveDate = new Date(timestamp).toUTCString();
+              return (
+                <div key={i} className="archive-row">
+                  <div className="archive-timestamp">
+                    <a href={`/archive/${swarmHash}`} className="archive-row">
+                      {archiveDate}
+                    </a>
                   </div>
-                );
-              })}
+                  <div>
+                    <AvatarCard archivedAccount={account} isUserRow={true} />
+                  </div>
+                </div>
+              );
+            })}
           </>
         )}
       </div>
