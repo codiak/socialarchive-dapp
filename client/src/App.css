@@ -10,11 +10,13 @@
 }
 
 .header-logo {
-  height: 75px;
+  height: 50px;
+  padding-left: 0.25em;
+  padding-right: 0.25em;
 }
 
 .header-logo-link {
-  height: 75px;
+  height: 50px;
 }
 
 .header-logo-link:hover {
@@ -24,8 +26,8 @@
 .App-header {
   font-family: "Roboto Mono", monospace;
   background-color: #fff;
-  border-bottom: 1px solid #c1c1c1;
-  min-height: 100px;
+  border-bottom: 1px solid #f1f1f1;
+  min-height: 90px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -43,22 +45,27 @@
   color: #61dafb;
 }
 
+.menu {
+  padding-bottom: 7px;
+}
+
 .menu-link {
   display: inline-block;
-  color: #669fda;
+  color: #676767;
   font-size: 18px;
-  margin-left: 1.5em;
+  margin-left: 2em;
   text-decoration: none;
 }
 
 .menu-link:hover {
   border-bottom: 1px solid #669fda;
+  color: #669fda;
 }
 
 .menu-link.active {
   font-weight: bold;
-  color: #669fda;
-  border-bottom: 1px solid #669fda;
+  /* color: #669fda; */
+  border-bottom: 1px solid #676767;
 }
 
 h2.small {
