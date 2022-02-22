@@ -306,7 +306,7 @@ export class Beejs {
       console.log("Downloading latest feed");
       const result = await this.feedReader.download();
       console.log("feed: ", result);
-      let { feedIndex, reference } = result;
+      let { feedIndex } = result; // reference
       // convert feedIndex to a number
       let feedIndexAsInt = convertFeedIndexToInt(feedIndex);
       console.log("latest index: ", feedIndexAsInt);

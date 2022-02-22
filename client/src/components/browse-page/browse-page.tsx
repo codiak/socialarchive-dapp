@@ -10,7 +10,7 @@ export default function BrowsePage() {
   let { section } = useParams();
   const page = section || "explore";
   const {
-    state: { feeds, downloadingFeeds, error, errorMessage },
+    state: { feeds, downloadingFeeds }, // , error, errorMessage
     dispatch,
   } = useStore();
   const [itemsPerPage] = useState(10);
