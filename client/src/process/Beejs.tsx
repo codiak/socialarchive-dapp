@@ -7,7 +7,7 @@ import {
   SOCWriter,
   SOCReader,
 } from "@ethersphere/bee-js";
-import { Bytes } from "@ethersphere/bee-js/dist/src/utils/bytes";
+import { Bytes } from "@ethersphere/bee-js/dist/types/utils/bytes";
 import axios from "axios";
 import LZString from "lz-string";
 import { buildAxiosFetch } from "@lifeomic/axios-fetch";
@@ -33,7 +33,7 @@ export class Beejs {
   private SA_ETHADDRESS = process.env.REACT_APP_SA_ETHADDRESS as string;
   private POSTAGE_STAMP =
     "0000000000000000000000000000000000000000000000000000000000000000" as Reference;
-  private SOC_READ_TIMEOUT: number = 3000;
+  private SOC_READ_TIMEOUT: number = 20000;
 
   private BEE_HOSTS = [
     "https://bee-1.gateway.ethswarm.org",
@@ -310,13 +310,13 @@ export class Beejs {
       // convert feedIndex to a number
       let feedIndexAsInt = convertFeedIndexToInt(feedIndex);
       console.log("latest index: ", feedIndexAsInt);
-      if (hash !== null && hash !== undefined) {
-        if (reference === hash) {
-          return feedIndexAsInt;
-        }
-        // eslint-disable-next-line no-throw-literal
-        throw new Error("Archive hash does not match feed hash.");
-      } else if (feedIndex !== null && feedIndex !== undefined) {
+      // if (hash !== null && hash !== undefined) {
+      //   if (reference === hash) {
+      //     return feedIndexAsInt;
+      //   }
+      //   // eslint-disable-next-line no-throw-literal
+      //   throw new Error("Archive hash does not match feed hash.");
+      if (feedIndex !== null && feedIndex !== undefined) {
         return feedIndexAsInt;
       }
     } catch (error: any) {
@@ -348,20 +348,24 @@ export class Beejs {
           index >= 0 && feedIndex - (index - 1) <= maxPreviousUpdates;
           index--
         ) {
+          let socIndex = index - 1;
           console.log("index:", index);
-          let socReaderResult = await this.readSOC(index);
-          let uncompress = LZString.decompressFromUint8Array(socReaderResult.payload()) as string;
-          let parsedMessage = JSON.parse(uncompress);
-          if (parsedMessage.avatarMediaUrl) {
-            // rewrites the avatarMediaUrl as a data uri
-            parsedMessage.avatarMediaUrl = createImageFromAscii(parsedMessage.avatarMediaUrl);
+          console.log("socindex: ", socIndex);
+          if (socIndex !== -1) {
+            let socReaderResult = await this.readSOC(socIndex);
+            let uncompress = LZString.decompressFromUint8Array(socReaderResult.payload()) as string;
+            let parsedMessage = JSON.parse(uncompress);
+            if (parsedMessage.avatarMediaUrl) {
+              // rewrites the avatarMediaUrl as a data uri
+              parsedMessage.avatarMediaUrl = createImageFromAscii(parsedMessage.avatarMediaUrl);
+            }
+            feeds.push(parsedMessage);
+            dispatch({
+              type: "FEED_ITEM_LOADED",
+              payload: parsedMessage,
+              delta: cachedFeeds && cachedFeeds.length > 0 ? true : false,
+            });
           }
-          feeds.push(parsedMessage);
-          dispatch({
-            type: "FEED_ITEM_LOADED",
-            payload: parsedMessage,
-            delta: cachedFeeds && cachedFeeds.length > 0 ? true : false,
-          });
         }
         // deletes Idb
         await wipeIdb();

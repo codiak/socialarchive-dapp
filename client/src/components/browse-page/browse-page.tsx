@@ -37,9 +37,9 @@ export default function BrowsePage() {
               Recently Added
             </h2>
             {downloadingFeeds && <div>Downloading...</div>}
-            {error && errorMessage.length > 0 && (
+            {/* {error && errorMessage.length > 0 && (
               <div className="archive-pending-error">{errorMessage}</div>
-            )}
+            )} */}
             {feeds.map((account, i) => {
               const { swarmHash, timestamp } = account;
               const archiveDate = new Date(timestamp).toUTCString();
