@@ -1,3 +1,4 @@
+import { profileEnd } from "console";
 import JSZip from "jszip";
 import { convertBytesToString } from "../utils";
 let i = 0;
@@ -189,7 +190,7 @@ export class Zip {
       profile: { avatarMediaUrl: amu },
     } = this.archiveItems;
     let mediaId = amu.substring(amu.lastIndexOf("/") + 1, amu.length);
-    this.media[mediaId] = await this.mediaUrlToDataUri(amu);
+    this.archiveItems.profile.avatarMediaUrl = this.media[mediaId];
 
     for (let tweet of tweets) {
       /* two references of media arrays in a tweet:
