@@ -14,7 +14,9 @@ export default function ArchiveAccountList(props: { accounts: Account[]; title: 
 
   return (
     <>
-      <h2 className="list-title">{title}</h2>
+      <div className="heading-row">
+        <h3 className="list-title">{title}</h3>
+      </div>
       {pageAccounts.map((account: Account) => {
         return (
           <div className="account-card" key={account.accountId}>

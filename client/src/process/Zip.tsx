@@ -53,6 +53,9 @@ export class Zip {
 
   // clean up and rearrange for our consumption
   formatData(json: any, filename: any) {
+    // const NAME_MAP: any = {
+    //   "userListInfo.js": "list",
+    // };
     try {
       if (json.length === undefined) {
         let propName = filename.substring(0, filename.indexOf("."));
@@ -61,12 +64,24 @@ export class Zip {
       let name = Object.keys(json[0])[0];
       // console.log("format: name: ", name);
       if (
-        ["tweet.js", "like.js", "following.js", "follower.js", "mute.js", "block.js"].includes(
-          filename
-        )
+        [
+          "tweet.js",
+          "like.js",
+          "following.js",
+          "follower.js",
+          "mute.js",
+          "block.js",
+          "moment.js",
+        ].includes(filename)
       ) {
+        console.log('handling ' + filename + ' in 1');
         json = { [name]: json.map((t: any) => t[name]) };
+      } else if (["lists-created.js", "lists-member.js"].includes(filename)) {
+        // All "lists" nest information under "userListInfo"
+        name = filename.replace(".js", "");
+        json = { [name]: json.map((t: any) => t["userListInfo"]) };
       } else {
+        console.log('handling ' + filename + ' in 2');
         if (json.length > 1) {
           let plural = name + "s";
           // TODO this is a ugly hack, need to compare the various ad data files and merge them somehow using the timestamps

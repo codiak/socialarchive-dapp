@@ -3,11 +3,15 @@ import "./archive-moment.css";
 
 export default function ArchiveMoment(props: { moments: Moment }) {
   const moments = props.moments;
+  const noneCreated = !moments || !moments.title;
 
-  if (!moments) {
+  if (noneCreated) {
     return (
       <div>
-        <h3>No Moments created.</h3>
+        <div className="heading-row">
+          <h3>Moments</h3>
+        </div>
+        <div className="row fill-message">No Moments created.</div>
       </div>
     );
   }

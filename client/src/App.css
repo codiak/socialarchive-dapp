@@ -115,7 +115,9 @@ h3 {
   height: 40px;
 }
 
-.account-card {
+.account-card,
+.list-card {
+  display: block;
   padding: 1em 2em;
   font-family: Helvetica, Arial;
   border: 1px solid rgb(204, 214, 221);

@@ -25,7 +25,7 @@ export default function ArchivePage() {
   const {
     account = {},
     profile = {},
-    lists = [],
+    "lists-created": lists = [],
     tweet: tweets = [],
     like: likes = [],
     moment: moments = [],
