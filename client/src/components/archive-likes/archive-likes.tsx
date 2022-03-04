@@ -3,7 +3,6 @@ import "./archive-likes.css";
 import Paginate from "../paginate/paginate";
 import { useSearchParams } from "react-router-dom";
 
-
 export default function ArchiveLikes(props: { likes: Like[] }) {
   const likes = props.likes;
   const [searchParams] = useSearchParams();
@@ -28,7 +27,7 @@ export default function ArchiveLikes(props: { likes: Like[] }) {
               </div>
               <div className="tweet-text">
                 {like.fullText}
-                <br/>
+                <br />
                 <a className="like-link" href={like.expandedUrl} target="_blank" rel="noreferrer">
                   View on Twitter
                   <img className="icon-link" src="/icons/link.svg" alt="Open Link" />

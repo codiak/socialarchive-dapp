@@ -3,7 +3,6 @@ import Paginate from "../paginate/paginate";
 import { useSearchParams } from "react-router-dom";
 import "./archive-account-list.css";
 
-
 export default function ArchiveAccountList(props: { accounts: Account[]; title: string }) {
   const { accounts, title } = props;
   const [searchParams] = useSearchParams();

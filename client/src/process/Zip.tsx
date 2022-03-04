@@ -74,14 +74,14 @@ export class Zip {
           "moment.js",
         ].includes(filename)
       ) {
-        console.log('handling ' + filename + ' in 1');
+        console.log("handling " + filename + " in 1");
         json = { [name]: json.map((t: any) => t[name]) };
       } else if (["lists-created.js", "lists-member.js"].includes(filename)) {
         // All "lists" nest information under "userListInfo"
         name = filename.replace(".js", "");
         json = { [name]: json.map((t: any) => t["userListInfo"]) };
       } else {
-        console.log('handling ' + filename + ' in 2');
+        console.log("handling " + filename + " in 2");
         if (json.length > 1) {
           let plural = name + "s";
           // TODO this is a ugly hack, need to compare the various ad data files and merge them somehow using the timestamps

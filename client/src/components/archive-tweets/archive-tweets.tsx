@@ -4,7 +4,6 @@ import TweetCard, { Tweet } from "../tweet/tweet";
 import { useSearchParams } from "react-router-dom";
 import Paginate from "../paginate/paginate";
 
-
 export default function ArchiveTweets(props: { tweets: Tweet[]; account: any; profile: any }) {
   const { account, profile, tweets } = props;
   const [activeTab, setActiveTab] = useState(0);
