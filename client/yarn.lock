@@ -1118,12 +1118,12 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@ethersphere/bee-js@^3.2.0":
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/@ethersphere/bee-js/-/bee-js-3.2.0.tgz#521eac63676d13d21585166754d2b6d20ee9e332"
-  integrity sha512-ZVcbl8dsytx07+SxTmsKSn0X1zojR7vMb0uxQ+fGk05JHFNGBY2Qv/5AP7rI/SqGWDjHWIMB8Ww+ErURdyFXqA==
+"@ethersphere/bee-js@^3.3.1":
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/@ethersphere/bee-js/-/bee-js-3.3.1.tgz#66d36b3ecacd02ac3f8d017096afa38076578ce5"
+  integrity sha512-4XiyUD9sYZJ5Wac4/2oRKDfoUlQjea3xxMj80nqsDCUfrUTzIGwTdRbLSA7LhINbCZMP7vn9EVRq/DYe0kFGOA==
   dependencies:
-    "@types/readable-stream" "^2.3.11"
+    "@types/readable-stream" "^2.3.13"
     bufferutil "^4.0.3"
     cross-blob "^2.0.1"
     elliptic "^6.5.4"
@@ -1131,11 +1131,11 @@
     js-sha3 "^0.8.0"
     ky "^0.25.1"
     ky-universal "^0.8.2"
-    readable-stream "^3.6.0"
+    semver "^7.3.5"
     tar-js "^0.3.0"
     utf-8-validate "^5.0.8"
     web-streams-polyfill "^3.1.0"
-    ws "^7.5.0"
+    ws "^8.5.0"
 
 "@humanwhocodes/config-array@^0.9.2":
   version "0.9.2"
@@ -1921,9 +1921,9 @@
     "@types/scheduler" "*"
     csstype "^3.0.2"
 
-"@types/readable-stream@^2.3.11":
+"@types/readable-stream@^2.3.13":
   version "2.3.13"
-  resolved "https://registry.npmjs.org/@types/readable-stream/-/readable-stream-2.3.13.tgz"
+  resolved "https://registry.yarnpkg.com/@types/readable-stream/-/readable-stream-2.3.13.tgz#46451c1b87cb61010e420ac02a76cfc1b2c2089a"
   integrity sha512-4JSCx8EUzaW9Idevt+9lsRAt1lcSccoQfE+AouM1gk8sFxnnytKNIO3wTl9Dy+4m6jRJ1yXhboLHHT/LXBQiEw==
   dependencies:
     "@types/node" "*"
@@ -9527,7 +9527,7 @@ write-file-atomic@^3.0.0:
     signal-exit "^3.0.2"
     typedarray-to-buffer "^3.1.5"
 
-ws@^7.4.6, ws@^7.5.0:
+ws@^7.4.6:
   version "7.5.6"
   resolved "https://registry.npmjs.org/ws/-/ws-7.5.6.tgz"
   integrity sha512-6GLgCqo2cy2A2rjCNFlxQS6ZljG/coZfZXclldI8FB/1G3CCI36Zd8xy2HrFVACi8tfk5XrgLQEk+P0Tnz9UcA==
@@ -9536,6 +9536,11 @@ ws@^8.1.0:
   version "8.4.2"
   resolved "https://registry.npmjs.org/ws/-/ws-8.4.2.tgz"
   integrity sha512-Kbk4Nxyq7/ZWqr/tarI9yIt/+iNNFOjBXEWgTb4ydaNHBNGgvf2QHbS9fdfsndfjFlFwEd4Al+mw83YkaD10ZA==
+
+ws@^8.5.0:
+  version "8.5.0"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-8.5.0.tgz#bfb4be96600757fe5382de12c670dab984a1ed4f"
+  integrity sha512-BWX0SWVgLPzYwF8lTzEy1egjhS4S4OEAHfsO8o65WOVsrnSRGaSiUaa9e0ggGlkMTtBlmOpEXiie9RUcBO86qg==
 
 xml-name-validator@^3.0.0:
   version "3.0.0"
