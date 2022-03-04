@@ -1,22 +1,16 @@
 import React from "react";
 import "./archive-likes.css";
-import ReactPaginate from "react-paginate";
+import Paginate from "../paginate/paginate";
 import { useSearchParams } from "react-router-dom";
 
-const PAGE_SIZE = 30;
 
 export default function ArchiveLikes(props: { likes: Like[] }) {
   const likes = props.likes;
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const page: number = parseInt(searchParams.get("page")) || 1;
-  const pageCount = Math.floor(likes.length / PAGE_SIZE);
-  const cursor = (page - 1) * PAGE_SIZE;
-  const pageItems = likes.slice(cursor, cursor + PAGE_SIZE);
-
-  const handlePage = ({ selected }) => {
-    setSearchParams({ page: selected + 1 });
-    window.scrollTo(0, 0);
-  };
+  const size: number = parseInt(searchParams.get("size")) || 1;
+  const cursor = (page - 1) * size;
+  const pageLikes = likes.slice(cursor, cursor + size);
 
   return (
     <>
@@ -25,7 +19,7 @@ export default function ArchiveLikes(props: { likes: Like[] }) {
           Likes <span className="secondary-text">({likes.length.toLocaleString()})</span>
         </h3>
       </div>
-      {pageItems.map((like: any, i) => {
+      {pageLikes.map((like: any, i) => {
         return (
           <div key={i} className="tweet-card">
             <div>
@@ -41,16 +35,7 @@ export default function ArchiveLikes(props: { likes: Like[] }) {
           </div>
         );
       })}
-      <ReactPaginate
-        className="paginate-list"
-        breakLabel="..."
-        nextLabel=">"
-        onPageChange={handlePage}
-        pageRangeDisplayed={3}
-        pageCount={pageCount}
-        previousLabel="<"
-        renderOnZeroPageCount={null}
-      />
+      <Paginate itemCount={likes.length} />
     </>
   );
 }

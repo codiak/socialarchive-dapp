@@ -29,7 +29,7 @@ export default function ArchivePage() {
     tweet: tweets = [],
     like: likes = [],
     moment: moments = [],
-    page: accounts = [],
+    [page]: accounts = [],
   } = archiveItems;
   const hash = archiveItems.hash || false;
   const sections = [
