@@ -1,4 +1,5 @@
 .like-link {
+  display: block;
   text-decoration: none;
   color: #1da1f2;
   font-size: 13px;
@@ -16,4 +17,16 @@
 .default-avatar {
   float: left;
   margin: 0 1em 1em 0;
+}
+
+:root {
+  --tweet-indent: 45px;
+}
+
+.tweet-text {
+  padding: 0 0.5em;
+  font-size: 13.5px;
+  line-height: 1.2em;
+  margin-top: 0.25em;
+  margin-left: var(--tweet-indent);
 }

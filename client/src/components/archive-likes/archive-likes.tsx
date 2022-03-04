@@ -26,12 +26,15 @@ export default function ArchiveLikes(props: { likes: Like[] }) {
               <div className="default-avatar">
                 <img className="icon-avatar" src="/icons/avatar.svg" alt="Avatar" />
               </div>
-              {like.fullText}
+              <div className="tweet-text">
+                {like.fullText}
+                <br/>
+                <a className="like-link" href={like.expandedUrl} target="_blank" rel="noreferrer">
+                  View on Twitter
+                  <img className="icon-link" src="/icons/link.svg" alt="Open Link" />
+                </a>
+              </div>
             </div>
-            <a className="like-link" href={like.expandedUrl} target="_blank" rel="noreferrer">
-              View on Twitter
-              <img className="icon-link" src="/icons/link.svg" alt="Open Link" />
-            </a>
           </div>
         );
       })}
