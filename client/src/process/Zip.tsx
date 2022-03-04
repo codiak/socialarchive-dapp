@@ -191,7 +191,7 @@ export class Zip {
     let mediaId = amu.substring(amu.lastIndexOf("/") + 1, amu.length);
     this.archiveItems.profile.avatarMediaUrl = this.media[mediaId];
 
-    for (let tweet of tweets) {
+    for (let tweet of tweets || []) {
       /* two references of media arrays in a tweet:
       1. entities.media (media displayed in the tweet)
       2. extended_entities.media (media stored in the tweet)

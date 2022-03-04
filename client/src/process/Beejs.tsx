@@ -97,29 +97,20 @@ export class Beejs {
    *
    */
   async upload(data: any, progressCb: any) {
-    let { archiveItems, mediaMap, archiveSize } = data;
+    let { archiveItems, archiveSize } = data;
     if (archiveItems === undefined) {
       throw new Error("Archive items are undefined, aborting upload");
     }
     // bundle that gets uploaded to swarm
     let bundle = JSON.stringify(data);
-
     // create profile to add to SOC
     let username = archiveItems.account?.username;
     let name = archiveItems.account?.accountDisplayName;
     let isVerified = archiveItems.verified?.verified;
     let bio = archiveItems.profile.description.bio;
-    const { avatarMediaUrl } = archiveItems.profile;
-
-    // get profile image from media map
-    let profileMediaId = avatarMediaUrl.substring(
-      avatarMediaUrl.lastIndexOf("/") + 1,
-      avatarMediaUrl.length
-    );
-    let profileMediaUri = mediaMap[profileMediaId];
-
+    const avatarBlob = archiveItems.profile.avatarMediaUrl;
     // convert profile image to ascii
-    let asciiProfile = (await convertImageToAscii(profileMediaUri)) as [];
+    let asciiProfile = (await convertImageToAscii(avatarBlob)) as [];
 
     let result = undefined;
 
