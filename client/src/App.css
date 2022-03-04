@@ -116,7 +116,8 @@ h3 {
 }
 
 .account-card,
-.list-card {
+.list-card,
+.moment-card {
   display: block;
   padding: 1em 2em;
   font-family: Helvetica, Arial;
@@ -128,6 +129,10 @@ h3 {
 
 .account-card:first-of-type {
   border-top: 1px solid rgb(204, 214, 221);
+}
+
+.moment-card h4 {
+  margin-top: 0;
 }
 
 .disabled {

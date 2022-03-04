@@ -18,6 +18,7 @@
   flex-grow: 1;
   min-width: 500px;
   margin-top: -1em;
+  max-width: 60vw;
 }
 
 .metadata-col {
