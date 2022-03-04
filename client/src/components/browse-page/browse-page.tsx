@@ -50,7 +50,7 @@ export default function BrowsePage() {
                       {/* {archiveDate} */}
                       <div>
                         <AvatarCard archivedAccount={account} isUserRow={true} />
-                        { archiveDate }
+                        {archiveDate}
                       </div>
                     </a>
                   </div>

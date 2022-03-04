@@ -40,7 +40,9 @@
     "build-factory": "cd node_modules/bee-factory && yarn install && ./scripts/network.sh && ./scripts/blockchain.sh && npm run migrate:contracts && npm run supply",
     "build-factory-images": "cd node_modules/bee-factory && ./scripts/bee-docker-build.sh ./scripts/blockchain-docker-build.sh",
     "test-factory": "cd node_modules/bee-factory && ./scripts/bee.sh start --workers=4",
-    "dev": "cd node_modules/bee-factory && ./scripts/environment.sh start"
+    "dev": "cd node_modules/bee-factory && ./scripts/environment.sh start",
+    "lint": "prettier --check  \"src/**/*.tsx\"",
+    "lint-fix": "prettier --write \"src/**/*.tsx\""
   },
   "eslintConfig": {
     "extends": [

@@ -23,7 +23,7 @@ export default function AvatarCard(props: any) {
   }
 
   const mediaDataUrl = (mediaUrl) => {
-    if (mediaUrl.startsWith('data')) {
+    if (mediaUrl.startsWith("data")) {
       return mediaUrl;
     }
     const mediaId = mediaUrl.substring(mediaUrl.lastIndexOf("/") + 1, mediaUrl.length);

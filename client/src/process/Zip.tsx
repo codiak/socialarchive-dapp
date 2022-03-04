@@ -1,4 +1,3 @@
-import { profileEnd } from "console";
 import JSZip from "jszip";
 import { convertBytesToString } from "../utils";
 let i = 0;
