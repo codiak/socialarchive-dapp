@@ -53,19 +53,21 @@ function App() {
         </header>
         <StoreProvider>
           <BrowserRouter>
-            <Routes>
-              <Route path="/browse" element={<BrowsePage />}>
-                <Route path=":section" element={<BrowsePage />} />
-              </Route>
-              <Route path="/archive" element={<ArchivePage />}>
-                <Route path=":user/:section" element={<ArchivePage />} />
-              </Route>
-              <Route path="/archive/:id" element={<ArchiveDownload />} />
-              <Route path="/upload" element={<UploadPage />} />
-              <Route path="/" element={<HomePage />} />
-            </Routes>
+            <div className="main-container">
+              <Routes>
+                <Route path="/browse" element={<BrowsePage />}>
+                  <Route path=":section" element={<BrowsePage />} />
+                </Route>
+                <Route path="/archive" element={<ArchivePage />}>
+                  <Route path=":user/:section" element={<ArchivePage />} />
+                </Route>
+                <Route path="/archive/:id" element={<ArchiveDownload />} />
+                <Route path="/upload" element={<UploadPage />} />
+                <Route path="/" element={<HomePage />} />
+              </Routes>
+            </div>
+            <Footer />
           </BrowserRouter>
-          <Footer />
         </StoreProvider>
       </HelmetProvider>
     </div>

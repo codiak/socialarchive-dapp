@@ -5,11 +5,18 @@ function HomePage() {
   return (
     <div className="home-page">
       <h1>Create and Access Archived Profiles</h1>
-      <p>Twitter accounts liberated from the platform, archived on the blockchain.</p>
-      <Link to="/upload" className="btn">
-        Add Archive
-      </Link>
-      <input type="text" placeholder="Swarm hash" />
+      <div className="center-block">
+        <p>Twitter accounts liberated from the platform, archived on the blockchain.</p>
+        <div className="action-row">
+            <Link to="/upload" className="action-item btn cta-button">
+                Add Archive
+            </Link>
+            <div className="action-item input-wrap input--big input--with-btn">
+                <input type="text" placeholder="Swarm hash" />
+                <button className="cta-button">Access</button>
+            </div>
+        </div>
+      </div>
       <div className="trophy-cabinet">
         <div className="col">
           <img src="" alt="Swarm logo" />
