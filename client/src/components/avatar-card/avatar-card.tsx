@@ -1,6 +1,12 @@
 import "./avatar-card.css";
+import { useStore } from "../../utils/store";
 
 export default function AvatarCard(props: any) {
+  const {
+    state: {
+      pendingBackup: { mediaMap },
+    },
+  } = useStore();
   const { hideBio, date, tweetId, archivedAccount, archivedProfile, isUserRow } = props;
   const { username, accountDisplayName } = archivedAccount;
   let avatarMediaUrl = undefined;
@@ -16,12 +22,21 @@ export default function AvatarCard(props: any) {
     description = archivedAccount.description;
   }
 
+  const mediaDataUrl = (mediaUrl) => {
+    if (mediaUrl.startsWith('data')) {
+      return mediaUrl;
+    }
+    const mediaId = mediaUrl.substring(mediaUrl.lastIndexOf("/") + 1, mediaUrl.length);
+    const dataUrl = mediaMap[mediaId] || ""; // TODO: default back to mediaUrl
+    return dataUrl;
+  };
+
   const bio = description?.bio;
   const cardStyles = ["card", isUserRow ? "card-user-row" : ""].join(" ");
   return (
     <>
       <div className={cardStyles}>
-        <img alt="User Icon" className="avatar-img" src={avatarMediaUrl} />
+        <img alt="User Icon" className="avatar-img" src={mediaDataUrl(avatarMediaUrl || "")} />
         <div className="account-name">
           {accountDisplayName}
           <div className="account-handle">@{username}</div>

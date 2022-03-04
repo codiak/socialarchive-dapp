@@ -47,12 +47,16 @@ export default function BrowsePage() {
                 <div key={i} className="archive-row">
                   <div className="archive-timestamp">
                     <a href={`/archive/${swarmHash}`} className="archive-row">
-                      {archiveDate}
+                      {/* {archiveDate} */}
+                      <div>
+                        <AvatarCard archivedAccount={account} isUserRow={true} />
+                        { archiveDate }
+                      </div>
                     </a>
                   </div>
-                  <div>
+                  {/* <div>
                     <AvatarCard archivedAccount={account} isUserRow={true} />
-                  </div>
+                  </div> */}
                 </div>
               );
             })}
@@ -61,6 +65,7 @@ export default function BrowsePage() {
       </div>
       <div className="col">
         <h2 className="col-header">Find Account</h2>
+        <i>Coming Soon</i>
       </div>
     </div>
   );
