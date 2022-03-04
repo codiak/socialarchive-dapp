@@ -133,8 +133,8 @@ export class Zip {
         data: "",
       };
       file.async("base64").then((content: any) => {
+        console.log("Add media: ", processedFile); // no need to log the base64
         processedFile.data = dataUrlProlog + content;
-        console.log("Add media: ", processedFile);
         resolve(processedFile);
       });
     });
@@ -189,9 +189,9 @@ export class Zip {
       profile: { avatarMediaUrl: amu },
     } = this.archiveItems;
     let mediaId = amu.substring(amu.lastIndexOf("/") + 1, amu.length);
-    this.media[mediaId] = await this.mediaUrlToDataUri(amu);
+    this.archiveItems.profile.avatarMediaUrl = this.media[mediaId];
 
-    for (let tweet of tweets) {
+    for (let tweet of tweets || []) {
       /* two references of media arrays in a tweet:
       1. entities.media (media displayed in the tweet)
       2. extended_entities.media (media stored in the tweet)
@@ -232,7 +232,7 @@ export class Zip {
 
   // fetch content from media url and convert it to a data uri (base64)
   async mediaUrlToDataUri(url: string) {
-    // console.log("fetching: ", url);
+    console.log("fetching: ", url);
     const response = await fetch(url);
     const blob = await response.blob();
     return await new Promise((callback) => {

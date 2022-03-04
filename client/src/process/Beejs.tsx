@@ -7,7 +7,7 @@ import {
   SOCWriter,
   SOCReader,
 } from "@ethersphere/bee-js";
-import { Bytes } from "@ethersphere/bee-js/dist/src/utils/bytes";
+import { Bytes } from "@ethersphere/bee-js/dist/types/utils/bytes";
 import axios from "axios";
 import LZString from "lz-string";
 import { buildAxiosFetch } from "@lifeomic/axios-fetch";
@@ -33,7 +33,7 @@ export class Beejs {
   private SA_ETHADDRESS = process.env.REACT_APP_SA_ETHADDRESS as string;
   private POSTAGE_STAMP =
     "0000000000000000000000000000000000000000000000000000000000000000" as Reference;
-  private SOC_READ_TIMEOUT: number = 3000;
+  private SOC_READ_TIMEOUT: number = 20000;
 
   private BEE_HOSTS = [
     "https://bee-1.gateway.ethswarm.org",
@@ -97,29 +97,20 @@ export class Beejs {
    *
    */
   async upload(data: any, progressCb: any) {
-    let { archiveItems, mediaMap, archiveSize } = data;
+    let { archiveItems, archiveSize } = data;
     if (archiveItems === undefined) {
       throw new Error("Archive items are undefined, aborting upload");
     }
     // bundle that gets uploaded to swarm
     let bundle = JSON.stringify(data);
-
     // create profile to add to SOC
     let username = archiveItems.account?.username;
     let name = archiveItems.account?.accountDisplayName;
     let isVerified = archiveItems.verified?.verified;
     let bio = archiveItems.profile.description.bio;
-    const { avatarMediaUrl } = archiveItems.profile;
-
-    // get profile image from media map
-    let profileMediaId = avatarMediaUrl.substring(
-      avatarMediaUrl.lastIndexOf("/") + 1,
-      avatarMediaUrl.length
-    );
-    let profileMediaUri = mediaMap[profileMediaId];
-
+    const avatarBlob = archiveItems.profile.avatarMediaUrl;
     // convert profile image to ascii
-    let asciiProfile = (await convertImageToAscii(profileMediaUri)) as [];
+    let asciiProfile = (await convertImageToAscii(avatarBlob)) as [];
 
     let result = undefined;
 
@@ -306,17 +297,17 @@ export class Beejs {
       console.log("Downloading latest feed");
       const result = await this.feedReader.download();
       console.log("feed: ", result);
-      let { feedIndex, reference } = result;
+      let { feedIndex } = result; // reference
       // convert feedIndex to a number
       let feedIndexAsInt = convertFeedIndexToInt(feedIndex);
       console.log("latest index: ", feedIndexAsInt);
-      if (hash !== null && hash !== undefined) {
-        if (reference === hash) {
-          return feedIndexAsInt;
-        }
-        // eslint-disable-next-line no-throw-literal
-        throw new Error("Archive hash does not match feed hash.");
-      } else if (feedIndex !== null && feedIndex !== undefined) {
+      // if (hash !== null && hash !== undefined) {
+      //   if (reference === hash) {
+      //     return feedIndexAsInt;
+      //   }
+      //   // eslint-disable-next-line no-throw-literal
+      //   throw new Error("Archive hash does not match feed hash.");
+      if (feedIndex !== null && feedIndex !== undefined) {
         return feedIndexAsInt;
       }
     } catch (error: any) {
@@ -340,37 +331,44 @@ export class Beejs {
     console.log("cached feeds: ", cachedFeeds);
     console.log("Get last", maxPreviousUpdates, "feeds");
     let feeds = [];
-    try {
-      // handle edge case when feedIndex is 0
-      for (
-        let index = feedIndex;
-        index >= 0 && feedIndex - (index - 1) <= maxPreviousUpdates;
-        index--
-      ) {
-        console.log("index:", index);
-        let socReaderResult = await this.readSOC(index);
-        let uncompress = LZString.decompressFromUint8Array(socReaderResult.payload()) as string;
-        let parsedMessage = JSON.parse(uncompress);
-        if (parsedMessage.avatarMediaUrl) {
-          // rewrites the avatarMediaUrl as a data uri
-          parsedMessage.avatarMediaUrl = createImageFromAscii(parsedMessage.avatarMediaUrl);
+    return new Promise(async (resolve, reject) => {
+      try {
+        // handle edge case when feedIndex is 0
+        for (
+          let index = feedIndex;
+          index >= 0 && feedIndex - (index - 1) <= maxPreviousUpdates;
+          index--
+        ) {
+          let socIndex = index - 1;
+          console.log("index:", index);
+          console.log("socindex: ", socIndex);
+          if (socIndex !== -1) {
+            let socReaderResult = await this.readSOC(socIndex);
+            let uncompress = LZString.decompressFromUint8Array(socReaderResult.payload()) as string;
+            let parsedMessage = JSON.parse(uncompress);
+            if (parsedMessage.avatarMediaUrl) {
+              // rewrites the avatarMediaUrl as a data uri
+              parsedMessage.avatarMediaUrl = createImageFromAscii(parsedMessage.avatarMediaUrl);
+            }
+            feeds.push(parsedMessage);
+            dispatch({
+              type: "FEED_ITEM_LOADED",
+              payload: parsedMessage,
+              delta: cachedFeeds && cachedFeeds.length > 0 ? true : false,
+            });
+          }
         }
-        feeds.push(parsedMessage);
-        dispatch({
-          type: "FEED_ITEM_LOADED",
-          payload: parsedMessage,
-          delta: cachedFeeds && cachedFeeds.length > 0 ? true : false,
-        });
+        // deletes Idb
+        await wipeIdb();
+        await saveToIdb(
+          "feeds" + feedIndex,
+          cachedFeeds ? cachedFeeds.concat(feeds.reverse()) : feeds.reverse()
+        );
+        resolve(feeds);
+      } catch (error) {
+        console.log("Error downloading feeds", error);
+        reject(error);
       }
-      // deletes Idb
-      await wipeIdb();
-      await saveToIdb(
-        "feeds" + feedIndex,
-        cachedFeeds ? cachedFeeds.concat(feeds.reverse()) : feeds.reverse()
-      );
-    } catch (error) {
-      console.log("Error downloading feeds", error);
-      throw error;
-    }
+    });
   }
 }

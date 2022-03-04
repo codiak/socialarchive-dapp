@@ -21,13 +21,16 @@ export const getFeedsCache = async () => {
   try {
     // get all keys, filter by 'feeds', extract feed index
     const feedName = (await keys()).filter((key) => key.toString().includes("feeds"))[0].toString();
-    const cachedFeedIndex = feedName.substring(feedName.indexOf("feeds") + 5, feedName.length);
+    const cachedFeedIndex = parseInt(
+      feedName.substring(feedName.indexOf("feeds") + 5, feedName.length)
+    );
 
     // get cached feeds
     let cachedFeeds = await getFromIdb(feedName);
     return { cachedFeedIndex, cachedFeeds };
   } catch (error) {
-    console.log("no matches: ", error);
+    // console.log("no matches: ", error);
+    return { cachedFeedIndex: -1, cachedFeeds: [] };
   }
 };
 
