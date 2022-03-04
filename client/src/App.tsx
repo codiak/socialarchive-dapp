@@ -1,8 +1,10 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import HomePage from "./components/home-page/home-page";
 import UploadPage from "./components/upload-page/upload-page";
 import BrowsePage from "./components/browse-page/browse-page";
 import ArchivePage from "./components/archive-page/archive-page";
 import ArchiveDownload from "./components/archive-download/archive-download";
+import Footer from "./components/footer/footer";
 import "./App.css";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 
@@ -40,7 +42,7 @@ function App() {
             />
           </a>
           <div className="menu">
-            <a className={activeLink("/")} href="/">
+            <a className={activeLink("/upload")} href="/upload">
               Upload
             </a>
             <a className={activeLink("/browse", true)} href="/browse">
@@ -59,9 +61,11 @@ function App() {
                 <Route path=":user/:section" element={<ArchivePage />} />
               </Route>
               <Route path="/archive/:id" element={<ArchiveDownload />} />
-              <Route path="/" element={<UploadPage />} />
+              <Route path="/upload" element={<UploadPage />} />
+              <Route path="/" element={<HomePage />} />
             </Routes>
           </BrowserRouter>
+          <Footer />
         </StoreProvider>
       </HelmetProvider>
     </div>

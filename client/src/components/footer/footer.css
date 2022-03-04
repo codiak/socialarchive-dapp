@@ -1,0 +1,21 @@
+.footer {
+    text-align: center;
+    font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
+    font-size: 13px;
+    padding: 2em;
+    background: #FFF9E8;
+}
+
+.footer-links {
+    margin-bottom: 1em;
+}
+
+.footer-links a {
+    color: #121212;
+    text-decoration: none;
+}
+
+.footer-links a:visited,
+.footer-links a:active {
+    color: #121212;
+}
