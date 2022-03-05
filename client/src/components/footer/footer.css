@@ -19,3 +19,14 @@
 .footer-links a:active {
     color: #121212;
 }
+
+.footer-links a:hover,
+.footer-links a:focus {
+    border-bottom: 1px solid #669fda;
+    color: #669fda;
+}
+
+.footer-links-divider {
+    display: inline-block;
+    padding: 0 1em;
+}

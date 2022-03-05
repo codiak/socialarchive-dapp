@@ -41,15 +41,20 @@ function HomePage() {
       </div>
       <div className="divider--white"></div>
       <div className="trophy-cabinet">
-        <div className="col">
+        <a
+          href="https://www.ethswarm.org/ecosystem.html"
+          target="_blank"
+          className="col"
+          rel="noreferrer"
+        >
           <img src="/graphics/swarm-logo.png" alt="Swarm logo" />
           <div className="placard">
             Eth Swarm
             <br />
             Grant Project
           </div>
-        </div>
-        <div className="col">
+        </a>
+        <a href="https://fairdatasociety.org/" target="_blank" className="col" rel="noreferrer">
           <img className="raised" src="/graphics/fds-logo.png" alt="Fair Data Society logo" />
           <div className="placard">
             Adheres to
@@ -58,15 +63,20 @@ function HomePage() {
             <br />
             Principles
           </div>
-        </div>
-        <div className="col">
+        </a>
+        <a
+          href="https://github.com/codiak/socialarchive-dapp/"
+          target="_blank"
+          className="col"
+          rel="noreferrer"
+        >
           <img src="/graphics/gpl-logo.png" alt="GPL logo" />
           <div className="placard">
             Open Source
             <br />
             (GNU GPL3)
           </div>
-        </div>
+        </a>
       </div>
       <div className="promo-cascade">
         <div className="blockwrap">

@@ -55,9 +55,23 @@ h1 {
     font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
 }
 
-.trophy-cabinet > div {
+.trophy-cabinet a.col {
+    color: #000;
     min-width: 100px;
     flex-grow: 0.1;
+    text-decoration: none;
+    transition: transform linear 0.1s;
+}
+
+.trophy-cabinet a.col:hover,
+.trophy-cabinet a.col:focus {
+    color: #669fda;
+    transform: scale(1.025);
+}
+
+.trophy-cabinet a.col:active  {
+    color: #000;
+    text-decoration: none;
 }
 
 .trophy-cabinet img {
