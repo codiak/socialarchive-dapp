@@ -1,10 +1,26 @@
-import { Bee, Reference, Utils, FeedWriter, FeedReader, SOCWriter, SOCReader } from "@ethersphere/bee-js";
-import { Bytes } from "@ethersphere/bee-js/dist/src/utils/bytes";
+import {
+  Bee,
+  Reference,
+  Utils,
+  FeedWriter,
+  FeedReader,
+  SOCWriter,
+  SOCReader,
+} from "@ethersphere/bee-js";
+import { Bytes } from "@ethersphere/bee-js/dist/types/utils/bytes";
 import axios from "axios";
 import LZString from "lz-string";
 import { buildAxiosFetch } from "@lifeomic/axios-fetch";
 import { Buffer } from "buffer";
-import { convertFeedIndexToInt, getJsonSize, convertBytesToString, convertImageToAscii, createImageFromAscii, saveToIdb, wipeIdb } from "../utils";
+import {
+  convertFeedIndexToInt,
+  getJsonSize,
+  convertBytesToString,
+  convertImageToAscii,
+  createImageFromAscii,
+  saveToIdb,
+  wipeIdb,
+} from "../utils";
 declare type Identifier = Bytes<32>;
 
 export class Beejs {
@@ -15,8 +31,9 @@ export class Beejs {
   private socReader: SOCReader;
   private SA_PRIVATEKEY = process.env.REACT_APP_SA_PRIVATEKEY as string;
   private SA_ETHADDRESS = process.env.REACT_APP_SA_ETHADDRESS as string;
-  private POSTAGE_STAMP = "0000000000000000000000000000000000000000000000000000000000000000" as Reference;
-  private SOC_READ_TIMEOUT: number = 3000;
+  private POSTAGE_STAMP =
+    "0000000000000000000000000000000000000000000000000000000000000000" as Reference;
+  private SOC_READ_TIMEOUT: number = 20000;
 
   private BEE_HOSTS = [
     "https://bee-1.gateway.ethswarm.org",
@@ -80,26 +97,20 @@ export class Beejs {
    *
    */
   async upload(data: any, progressCb: any) {
-    let { archiveItems, mediaMap, archiveSize } = data;
+    let { archiveItems, archiveSize } = data;
     if (archiveItems === undefined) {
       throw new Error("Archive items are undefined, aborting upload");
     }
     // bundle that gets uploaded to swarm
     let bundle = JSON.stringify(data);
-
     // create profile to add to SOC
     let username = archiveItems.account?.username;
     let name = archiveItems.account?.accountDisplayName;
     let isVerified = archiveItems.verified?.verified;
     let bio = archiveItems.profile.description.bio;
-    const { avatarMediaUrl } = archiveItems.profile;
-
-    // get profile image from media map
-    let profileMediaId = avatarMediaUrl.substring(avatarMediaUrl.lastIndexOf("/") + 1, avatarMediaUrl.length);
-    let profileMediaUri = mediaMap[profileMediaId];
-
+    const avatarBlob = archiveItems.profile.avatarMediaUrl;
     // convert profile image to ascii
-    let asciiProfile = (await convertImageToAscii(profileMediaUri)) as [];
+    let asciiProfile = (await convertImageToAscii(avatarBlob)) as [];
 
     let result = undefined;
 
@@ -107,8 +118,10 @@ export class Beejs {
       console.log("Uploading to Swarm: ", this.bee.url);
       const fetch = this.trackRequest(progressCb, true);
       // 1. upload bundle to Swarm and get hash
-      // @ts-ignore
-      let { reference } = await this.bee.uploadFile(this.POSTAGE_STAMP, bundle, username, { fetch });
+      let { reference } = await this.bee.uploadFile(this.POSTAGE_STAMP, bundle, username, {
+        // @ts-ignore
+        fetch,
+      });
       result = reference;
       console.log("Got Swarm hash: ", reference);
       // 2. upload hash to feed
@@ -116,11 +129,21 @@ export class Beejs {
       // 3. download latest feed and get feed index
       let feedIndex = (await this.getFeedIndex(reference)) as number;
       // 4. upload profile, hash and feed index to Single Owner Chunk
-      await this.saveProfileInSOC(reference, archiveSize, username, name, bio, isVerified, asciiProfile, feedIndex);
+      await this.saveProfileInSOC(
+        reference,
+        archiveSize,
+        username,
+        name,
+        bio,
+        isVerified,
+        asciiProfile,
+        feedIndex
+      );
     } catch (err: any) {
       console.log("Error uploading", err);
       const { status, message } = err;
-      const massagedMessage = status === 413 ? "max file size exceeded." : `${message} \n\nPlease try again.`;
+      const massagedMessage =
+        status === 413 ? "max file size exceeded." : `${message} \n\nPlease try again.`;
       err.message = `Error during upload: ${massagedMessage}`;
       result = err;
     }
@@ -136,7 +159,9 @@ export class Beejs {
    * @return AxiosFetch function that tracks progress
    */
   trackRequest(progressCb: any, upload: boolean) {
-    const axiosConfig = upload ? { onUploadProgress: progressCb } : { onDownloadProgress: progressCb };
+    const axiosConfig = upload
+      ? { onUploadProgress: progressCb }
+      : { onDownloadProgress: progressCb };
     return buildAxiosFetch(axios.create(axiosConfig));
   }
 
@@ -176,7 +201,16 @@ export class Beejs {
    * @pararm feedIndex Number representing the feed index of the uploaded bundle
    *
    **/
-  async saveProfileInSOC(hash: Reference, archiveSize: string, username: string, name: string, bio: string, isVerified: boolean, asciiProfile: [], feedIndex: number) {
+  async saveProfileInSOC(
+    hash: Reference,
+    archiveSize: string,
+    username: string,
+    name: string,
+    bio: string,
+    isVerified: boolean,
+    asciiProfile: [],
+    feedIndex: number
+  ) {
     const payload = {
       timestamp: new Date().getTime(),
       archiveSize,
@@ -263,17 +297,17 @@ export class Beejs {
       console.log("Downloading latest feed");
       const result = await this.feedReader.download();
       console.log("feed: ", result);
-      let { feedIndex, reference } = result;
+      let { feedIndex } = result; // reference
       // convert feedIndex to a number
       let feedIndexAsInt = convertFeedIndexToInt(feedIndex);
       console.log("latest index: ", feedIndexAsInt);
-      if (hash !== null && hash !== undefined) {
-        if (reference === hash) {
-          return feedIndexAsInt;
-        }
-        // eslint-disable-next-line no-throw-literal
-        throw new Error("Archive hash does not match feed hash.");
-      } else if (feedIndex !== null && feedIndex !== undefined) {
+      // if (hash !== null && hash !== undefined) {
+      //   if (reference === hash) {
+      //     return feedIndexAsInt;
+      //   }
+      //   // eslint-disable-next-line no-throw-literal
+      //   throw new Error("Archive hash does not match feed hash.");
+      if (feedIndex !== null && feedIndex !== undefined) {
         return feedIndexAsInt;
       }
     } catch (error: any) {
@@ -297,30 +331,44 @@ export class Beejs {
     console.log("cached feeds: ", cachedFeeds);
     console.log("Get last", maxPreviousUpdates, "feeds");
     let feeds = [];
-    try {
-      // handle edge case when feedIndex is 0
-      for (let index = feedIndex; index >= 0 && feedIndex - (index - 1) <= maxPreviousUpdates; index--) {
-        console.log("index:", index);
-        let socReaderResult = await this.readSOC(index);
-        let uncompress = LZString.decompressFromUint8Array(socReaderResult.payload()) as string;
-        let parsedMessage = JSON.parse(uncompress);
-        if (parsedMessage.avatarMediaUrl) {
-          // rewrites the avatarMediaUrl as a data uri
-          parsedMessage.avatarMediaUrl = createImageFromAscii(parsedMessage.avatarMediaUrl);
+    return new Promise(async (resolve, reject) => {
+      try {
+        // handle edge case when feedIndex is 0
+        for (
+          let index = feedIndex;
+          index >= 0 && feedIndex - (index - 1) <= maxPreviousUpdates;
+          index--
+        ) {
+          let socIndex = index - 1;
+          console.log("index:", index);
+          console.log("socindex: ", socIndex);
+          if (socIndex !== -1) {
+            let socReaderResult = await this.readSOC(socIndex);
+            let uncompress = LZString.decompressFromUint8Array(socReaderResult.payload()) as string;
+            let parsedMessage = JSON.parse(uncompress);
+            if (parsedMessage.avatarMediaUrl) {
+              // rewrites the avatarMediaUrl as a data uri
+              parsedMessage.avatarMediaUrl = createImageFromAscii(parsedMessage.avatarMediaUrl);
+            }
+            feeds.push(parsedMessage);
+            dispatch({
+              type: "FEED_ITEM_LOADED",
+              payload: parsedMessage,
+              delta: cachedFeeds && cachedFeeds.length > 0 ? true : false,
+            });
+          }
         }
-        feeds.push(parsedMessage);
-        dispatch({
-          type: "FEED_ITEM_LOADED",
-          payload: parsedMessage,
-          delta: cachedFeeds && cachedFeeds.length > 0 ? true : false,
-        });
+        // deletes Idb
+        await wipeIdb();
+        await saveToIdb(
+          "feeds" + feedIndex,
+          cachedFeeds ? cachedFeeds.concat(feeds.reverse()) : feeds.reverse()
+        );
+        resolve(feeds);
+      } catch (error) {
+        console.log("Error downloading feeds", error);
+        reject(error);
       }
-      // deletes Idb
-      await wipeIdb();
-      await saveToIdb("feeds" + feedIndex, cachedFeeds ? cachedFeeds.concat(feeds.reverse()) : feeds.reverse());
-    } catch (error) {
-      console.log("Error downloading feeds", error);
-      throw error;
-    }
+    });
   }
 }

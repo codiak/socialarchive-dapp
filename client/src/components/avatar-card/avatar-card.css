@@ -1,50 +1,50 @@
 .avatar-img {
-    height: 50px;
-    width: 50px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin-right: 0.5em;
-    display: inline-block;
-    vertical-align: middle;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 0.5em;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .account-name {
-    display: inline-block;
-    font-weight: bold;
-    font-size: 12px;
-    line-height: 1.25em;
-    margin-top: 0px;
-    margin-right: 0.5em;
-    vertical-align: middle;
+  display: inline-block;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 1.25em;
+  margin-top: 0px;
+  margin-right: 0.5em;
+  vertical-align: middle;
 }
 
 .account-handle {
-    display: block;
-    font-size: 12px;
-    overflow: hidden;
-    line-height: 1.25em;
-    vertical-align: middle;
-    font-weight: normal;
-    color: #565656;
+  display: block;
+  font-size: 12px;
+  overflow: hidden;
+  line-height: 1.25em;
+  vertical-align: middle;
+  font-weight: normal;
+  color: #565656;
 }
 
 .account-bio {
-    padding: 1em 10px;
+  padding: 1em 10px;
 }
 
 .card-user-row .account-name {
-    vertical-align: top;
+  vertical-align: top;
 }
 
 .card-user-row + .account-bio {
-    font-size: 12px;
-    margin-left: 45px;
-    padding-top: 0px;
-    margin-top: -1.5em;
+  font-size: 12px;
+  margin-left: 45px;
+  padding-top: 0px;
+  margin-top: -1.5em;
 }
 
 a .card-user-row,
 a .account-bio {
-    text-decoration: none !important;
-    color: #000;
+  text-decoration: none !important;
+  color: #000;
 }

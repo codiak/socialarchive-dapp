@@ -6,7 +6,13 @@ import { Navigate } from "react-router-dom";
 function UploadPage() {
   // our faithful state management
   const {
-    state: { zipFile, pendingBackup: { archiveItems }, loading, error, errorMessage },
+    state: {
+      zipFile,
+      pendingBackup: { archiveItems },
+      loading,
+      error,
+      errorMessage,
+    },
   } = useStore();
 
   return (

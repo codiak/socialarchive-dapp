@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@ethersphere/bee-js": "^3.2.0",
+    "@ethersphere/bee-js": "^3.3.1",
     "@lifeomic/axios-fetch": "auhau/axios-fetch#feat/request-object",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -40,7 +40,9 @@
     "build-factory": "cd node_modules/bee-factory && yarn install && ./scripts/network.sh && ./scripts/blockchain.sh && npm run migrate:contracts && npm run supply",
     "build-factory-images": "cd node_modules/bee-factory && ./scripts/bee-docker-build.sh ./scripts/blockchain-docker-build.sh",
     "test-factory": "cd node_modules/bee-factory && ./scripts/bee.sh start --workers=4",
-    "dev": "cd node_modules/bee-factory && ./scripts/environment.sh start"
+    "dev": "cd node_modules/bee-factory && ./scripts/environment.sh start",
+    "lint": "prettier --check  \"src/**/*.tsx\"",
+    "lint-fix": "prettier --write \"src/**/*.tsx\""
   },
   "eslintConfig": {
     "extends": [
@@ -61,6 +63,11 @@
     ]
   },
   "devDependencies": {
-    "@types/lz-string": "^1.3.34"
+    "@types/lz-string": "^1.3.34",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint-config-prettier": "^8.4.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react-app": "^6.2.2",
+    "prettier": "2.5.1"
   }
 }

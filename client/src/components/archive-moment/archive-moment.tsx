@@ -5,9 +5,11 @@ export default function ArchiveMoment(props: { moments: Moment }) {
   const moments = props.moments;
 
   if (!moments) {
-    return <div>
-      <h3>No Moments created.</h3>
-    </div>
+    return (
+      <div>
+        <h3>No Moments created.</h3>
+      </div>
+    );
   }
 
   return (
@@ -20,11 +22,13 @@ export default function ArchiveMoment(props: { moments: Moment }) {
         <b>{moments.title}</b>
         <div>
           {(moments.tweets || []).map((tweet, key) => {
-            const t = tweet['tweet'];
-            const url = t['urls'][0];
-            return <div key={key}>
-              <a href={url['url']}>{url['display']}</a>
-            </div>
+            const t = tweet["tweet"];
+            const url = t["urls"][0];
+            return (
+              <div key={key}>
+                <a href={url["url"]}>{url["display"]}</a>
+              </div>
+            );
           })}
         </div>
       </div>

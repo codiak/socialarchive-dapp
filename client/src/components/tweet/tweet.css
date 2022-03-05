@@ -1,33 +1,33 @@
 :root {
-    --tweet-indent: 45px;
+  --tweet-indent: 45px;
 }
 
 .tweet-card {
-    padding: 1em 2em;
-    font-family: Helvetica, Arial;
-    border: 1px solid rgb(204, 214, 221);
-    border-top: none;
-    margin: 0 auto;
-    max-width: 500px;
+  padding: 1em 2em;
+  font-family: Helvetica, Arial;
+  border: 1px solid rgb(204, 214, 221);
+  border-top: none;
+  margin: 0 auto;
+  max-width: 500px;
 }
 
 .tweet-card .avatar-img {
-    width: 40px;
-    height: 40px;
-    float: left;
+  width: 40px;
+  height: 40px;
+  float: left;
 }
 
 .tweet-card .account-name,
 .tweet-card .account-handle {
-    margin: 0 0 0 0.25em;
-    line-height: 12px;
+  margin: 0 0 0 0.25em;
+  line-height: 12px;
 }
 
 .tweet-card .account-handle {
-    display: inline-block;
-    margin-top: 0;
-    margin-left: 0.5em;
-    vertical-align: bottom;
+  display: inline-block;
+  margin-top: 0;
+  margin-left: 0.5em;
+  vertical-align: bottom;
 }
 
 /* .tweet-card img {
@@ -37,83 +37,84 @@
 
 /* ReactIntense img viewer */
 .tweet-card .media-wrapper {
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    margin-left: var(--tweet-indent);
-    margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  margin-left: var(--tweet-indent);
+  margin-bottom: 10px;
 }
 .media-wrapper video {
-    max-width: 100%;
+  max-width: 100%;
 }
 .tweet-card .ri-wrapper {
-    margin: 0 -1px 0 0;
-    border: 1px solid #cdcdcd;
-    overflow: hidden;
-    flex: 1;
-    cursor: pointer !important;
+  margin: 0 -1px 0 0;
+  border: 1px solid #cdcdcd;
+  overflow: hidden;
+  flex: 1;
+  cursor: pointer !important;
 }
 .tweet-card .ri-wrapper:hover {
-    border-color: #88bcdd;
-    z-index: 1;
+  border-color: #88bcdd;
+  z-index: 1;
 }
 .tweet-card .ri-wrapper .ri-trigger {
-    margin-bottom: -6px;
-    width: 100%;
+  margin-bottom: -6px;
+  width: 100%;
 }
 .tweet-card .ri-wrapper:first-child {
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 .tweet-card .ri-wrapper:last-child {
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .tweet-text {
-    padding: 0 0.5em;
-    font-size: 13.5px;
-    line-height: 1.2em;
-    margin-top: 0.25em;
-    margin-left: var(--tweet-indent);
+  padding: 0 0.5em;
+  font-size: 13.5px;
+  line-height: 1.2em;
+  margin-top: 0.25em;
+  margin-left: var(--tweet-indent);
 }
 
 .tweet-date {
-    font-size: 12px;
-    float: right;
-    font-weight: normal;
-    color: #565656;
+  font-size: 12px;
+  float: right;
+  font-weight: normal;
+  color: #565656;
 }
 
 .tweet-date a:hover {
-    color: #1b95e0;
+  color: #1b95e0;
 }
 
-.tweet-date a, .tweet-date a:active {
-    text-decoration: none;
-    color: #565656;
+.tweet-date a,
+.tweet-date a:active {
+  text-decoration: none;
+  color: #565656;
 }
 
 .tweet-icons {
-    margin-left: 51px;
+  margin-left: 51px;
 }
 
 .tweet-icon {
-    color: #565656;
-    height: 14px;
-    width: 14px;
-    margin-right: 1em;
-    display: inline-block;
-    transform: translateY(2px);
+  color: #565656;
+  height: 14px;
+  width: 14px;
+  margin-right: 1em;
+  display: inline-block;
+  transform: translateY(2px);
 }
 
 .tweet-retweets,
 .tweet-faves {
-    color: #454545;
-    display: inline-block;
-    vertical-align: middle;
-    line-height: 14px;
-    font-size: 12px;
-    font-weight: bold;
-    margin-right: 2em;
+  color: #454545;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 14px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-right: 2em;
 }

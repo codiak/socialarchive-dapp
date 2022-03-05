@@ -15,7 +15,9 @@ import ArchiveSave from "../archive-save/archive-save";
 
 export default function ArchivePage() {
   const {
-    state: { pendingBackup: { archiveItems } },
+    state: {
+      pendingBackup: { archiveItems },
+    },
   } = useStore();
   const { user, section } = useParams();
   const page = section || "account";
@@ -72,7 +74,10 @@ export default function ArchivePage() {
           {sections.map((section, i) => {
             return (
               <div key={i}>
-                <Link to={`/archive/${user}/${section.slug}`} className={btnClasses + (page === section.slug ? "active" : "")}>
+                <Link
+                  to={`/archive/${user}/${section.slug}`}
+                  className={btnClasses + (page === section.slug ? "active" : "")}
+                >
                   {section.title}
                 </Link>
                 <br />

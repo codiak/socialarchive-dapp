@@ -70,7 +70,6 @@ const reducerActions = (state = initialState, action) => {
         loading: false,
         error: false,
         feeds: action.delta ? [payload, ...state.feeds.reverse()] : [...state.feeds, payload],
-        downloadingFeeds: true,
       };
     case "FEEDS_DOWNLOAD_FAIL":
       return {
@@ -114,7 +113,9 @@ const reducerActions = (state = initialState, action) => {
       let msg = payload;
       // format the number into a human readable format
       let formatBytes = msg.substring(msg.indexOf("an") + 3, msg.indexOf("bytes"));
-      msg = msg.replace(formatBytes + "bytes", convertBytesToString(formatBytes, 0)) + ". Please try again with a smaller file.";
+      msg =
+        msg.replace(formatBytes + "bytes", convertBytesToString(formatBytes, 0)) +
+        ". Please try again with a smaller file.";
       return { ...state, loading: false, error: true, errorMessage: msg };
     default:
       return state;
@@ -175,15 +176,11 @@ const StoreProvider = ({ children }) => {
   }, [state.download, state.hash, state.progressCb]);
 
   // get feeds from swarm
-  useEffect(
-    () => {
-      if (state.downloadingFeeds) {
-        downloadFeedsFromSwarm(state.itemsPerPage);
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [state.downloadingFeeds]
-  );
+  useEffect(() => {
+    if (state.downloadingFeeds) {
+      downloadFeedsFromSwarm(state.itemsPerPage);
+    }
+  }, [state.downloadingFeeds, state.itemsPerPage]);
 
   const unzip = async (zipFile) => {
     dispatch({ type: "LOADING" });
@@ -254,45 +251,21 @@ const StoreProvider = ({ children }) => {
     }
   };
 
-  const fetchFeeds = async (itemsPerPage, feedIndex, b, feedsCache) => {
-    await b.getFeeds(feedIndex, itemsPerPage, dispatch, feedsCache);
-    dispatch({
-      type: "FEEDS_LOADED",
-    });
-  };
-
   const downloadFeedsFromSwarm = async (itemsPerPage) => {
     let b = new Beejs();
 
     try {
-      // check cache
-      // const feedsCache = await getFromIdb("feeds" + feedIndex);
-      let feedsCache = undefined;
-      let feedIndexCached = undefined;
-      let feedIndex = undefined;
-      try {
-        const { cachedFeedIndex, cachedFeeds } = await getFeedsCache();
-        feedIndexCached = parseInt(cachedFeedIndex);
-        feedsCache = cachedFeeds;
-
-        dispatch({
-          type: "FEEDS_LOADED_FROM_CACHE",
-          payload: feedsCache.reverse(),
-        });
-
-        // get the latest feed index
-        feedIndex = await b.getFeedIndex();
-        if (feedIndexCached !== feedIndex) {
-          const diff = feedIndex - feedIndexCached;
-          // if the cached feed index is different from the latest feed index, update the cache
-          await fetchFeeds(diff, feedIndex, b, feedsCache);
-        }
-      } catch (error) {
-        console.log("No cache found");
-        // could not get the latest feed index
-        feedIndex = await b.getFeedIndex();
-        fetchFeeds(itemsPerPage, feedIndex, b);
-      }
+      const { cachedFeedIndex, cachedFeeds } = await getFeedsCache();
+      dispatch({
+        type: "FEEDS_LOADED_FROM_CACHE",
+        payload: cachedFeeds.reverse(),
+      });
+      const feedIndex = await b.getFeedIndex();
+      const numFeedsToFetch = cachedFeeds.length ? feedIndex - cachedFeedIndex : itemsPerPage;
+      await b.getFeeds(feedIndex, numFeedsToFetch, dispatch, cachedFeeds);
+      dispatch({
+        type: "FEEDS_LOADED",
+      });
     } catch (error) {
       dispatch({
         type: "FEEDS_DOWNLOAD_FAIL",

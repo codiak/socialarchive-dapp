@@ -31,9 +31,17 @@ export class Zip {
         // console.log("file name: ", file.name);
         // console.log("Skip: no data: ", file.name, e);
       }
-    } else if (file.name.endsWith(".mp4") || file.name.endsWith(".jpg") || file.name.endsWith(".mp3") || file.name.endsWith(".png")) {
+    } else if (
+      file.name.endsWith(".mp4") ||
+      file.name.endsWith(".jpg") ||
+      file.name.endsWith(".mp3") ||
+      file.name.endsWith(".png")
+    ) {
       try {
-        extractedFile = await this.extractMedia(file, file.name.substring(file.name.lastIndexOf(".") + 1, file.name.length));
+        extractedFile = await this.extractMedia(
+          file,
+          file.name.substring(file.name.lastIndexOf(".") + 1, file.name.length)
+        );
       } catch (e) {
         // console.log("Skip: no media data: ", file.name, e);
       }
@@ -52,7 +60,11 @@ export class Zip {
       }
       let name = Object.keys(json[0])[0];
       // console.log("format: name: ", name);
-      if (["tweet.js", "like.js", "following.js", "follower.js", "mute.js", "block.js"].includes(filename)) {
+      if (
+        ["tweet.js", "like.js", "following.js", "follower.js", "mute.js", "block.js"].includes(
+          filename
+        )
+      ) {
         json = { [name]: json.map((t: any) => t[name]) };
       } else {
         if (json.length > 1) {
@@ -101,13 +113,18 @@ export class Zip {
 
   extractMedia(file: any, type: string) {
     return new Promise<any>((resolve, reject) => {
-      const name = file.name.replace("data/", "").substring(file.name.lastIndexOf("/") + 1, file.name.length); // strip out folder names
+      const name = file.name
+        .replace("data/", "")
+        .substring(file.name.lastIndexOf("/") + 1, file.name.length); // strip out folder names
       const id = name.includes("-") ? name.substring(name.lastIndexOf("-") + 1, name.length) : "";
       // TODO: handle ALL media types
       const video = type === "mp4" ? "video/mp4" : null;
       const audio = type === "mp3" ? "audio/mp3" : null;
       const image = type !== "mp4" && type !== "mp3" ? "image/" + type : null;
-      const dataUrlProlog = "data:" + (video !== null ? video : image !== null ? image : audio !== null ? audio : null) + ";base64,";
+      const dataUrlProlog =
+        "data:" +
+        (video !== null ? video : image !== null ? image : audio !== null ? audio : null) +
+        ";base64,";
       const processedFile = {
         name,
         id,
@@ -116,8 +133,8 @@ export class Zip {
         data: "",
       };
       file.async("base64").then((content: any) => {
+        console.log("Add media: ", processedFile); // no need to log the base64
         processedFile.data = dataUrlProlog + content;
-        console.log("Add media: ", processedFile);
         resolve(processedFile);
       });
     });
@@ -172,9 +189,9 @@ export class Zip {
       profile: { avatarMediaUrl: amu },
     } = this.archiveItems;
     let mediaId = amu.substring(amu.lastIndexOf("/") + 1, amu.length);
-    this.media[mediaId] = await this.mediaUrlToDataUri(amu);
+    this.archiveItems.profile.avatarMediaUrl = this.media[mediaId];
 
-    for (let tweet of tweets) {
+    for (let tweet of tweets || []) {
       /* two references of media arrays in a tweet:
       1. entities.media (media displayed in the tweet)
       2. extended_entities.media (media stored in the tweet)
@@ -192,7 +209,10 @@ export class Zip {
     for (let mediaObj of mediaArray) {
       const { media_url_https, video_info } = mediaObj;
       // extract the media id from the url
-      const mediaId = media_url_https.substring(media_url_https.lastIndexOf("/") + 1, media_url_https.length);
+      const mediaId = media_url_https.substring(
+        media_url_https.lastIndexOf("/") + 1,
+        media_url_https.length
+      );
       if (!(mediaId in this.media)) {
         this.media[mediaId] = await this.mediaUrlToDataUri(media_url_https);
       }
@@ -212,7 +232,7 @@ export class Zip {
 
   // fetch content from media url and convert it to a data uri (base64)
   async mediaUrlToDataUri(url: string) {
-    // console.log("fetching: ", url);
+    console.log("fetching: ", url);
     const response = await fetch(url);
     const blob = await response.blob();
     return await new Promise((callback) => {
