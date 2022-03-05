@@ -1,7 +1,26 @@
+import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./home-page.css";
 
 function HomePage() {
+  const textInput = useRef(null);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const openHash = (hash) => {
+    // Example Social Archive Swarm hash:
+    // d1989fe8a9d0d229b5c8366d93f82653e5f9f4ed5eaf8c4c18d15c09e5229fe0
+    const HASH_REGEX = /^[a-f0-9]{64}$/;
+    // Validate
+    console.log(hash);
+    if (HASH_REGEX.test(hash)) {
+      navigate("/archive/" + hash);
+    } else {
+      setError("The hash provided is invalid, please try again.");
+    }
+  };
+
   return (
     <div className="home-page">
       <h1>Archive Your Social Media</h1>
@@ -12,9 +31,12 @@ function HomePage() {
             Add Archive
           </Link>
           <div className="action-item input-wrap input--big input--with-btn">
-            <input type="text" placeholder="Swarm hash" />
-            <button className="cta-button">Access</button>
+            <input type="text" ref={textInput} placeholder="Swarm hash" />
+            <button onClick={() => openHash(textInput.current.value)} className="cta-button">
+              Access
+            </button>
           </div>
+          {error && <p className="text-warn">{error}</p>}
         </div>
       </div>
       <div className="divider--white"></div>

@@ -154,6 +154,10 @@ h3 {
   text-align: right;
 }
 
+.text-warn {
+  color: #b3481e;
+}
+
 button.tab,
 .tab {
   display: inline-block;

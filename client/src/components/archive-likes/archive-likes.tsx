@@ -1,6 +1,5 @@
 import React from "react";
 import "./archive-likes.css";
-// import { Link } from 'react-router-dom';
 
 export default function ArchiveLikes(props: { likes: Like[] }) {
   const likes = props.likes;
