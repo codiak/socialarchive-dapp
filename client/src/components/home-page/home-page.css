@@ -1,6 +1,6 @@
 .home-page {
     min-height: 1000px;
-    background: linear-gradient(#F1CA5E, #FFFFFF);
+    background: linear-gradient(#F1CA5E, #FFFFFF 800px);
     padding-top: 2em;
 }
 
@@ -27,6 +27,7 @@ h1 {
     font-family: 'Quando', Georgia, Cambria;
     text-align: center;
     font-weight: 400;
+    font-size: 27px;
 }
 
 .center-block {
@@ -36,10 +37,107 @@ h1 {
 }
 
 .action-row {
-
+    margin-bottom: 2em;
 }
 
 .action-row .action-item {
     margin: 1em 1.5em;
     display: inline-block;
+}
+
+.trophy-cabinet {
+    display: flex;
+    justify-content: center;
+    padding: 2em 0;
+    text-align: center;
+    font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
+}
+
+.trophy-cabinet > div {
+    min-width: 100px;
+    flex-grow: 0.1;
+}
+
+.trophy-cabinet img {
+    height: auto;
+    width: 100px;
+    mix-blend-mode: multiply;
+    display: inline-block;
+    margin: 1em auto;
+}
+
+.trophy-cabinet img.raised {
+    margin-top: 0.5em;
+}
+
+.promo-cascade {
+    min-height: 900px;
+    position: relative;
+    background-image: url("../../../public/graphics/hexagon-texture.png");
+    background-repeat: no-repeat;
+    background-size: 900px auto;
+    background-position: 100% 0%;
+    margin-top: -100px;
+    padding-top: 100px;
+}
+
+.promo-cascade h2 {
+    font-family: 'Quando', Georgia, Cambria;
+    font-size: 34px;
+    font-weight: 400;
+    margin-top: 0px;
+    line-height: 1.2em;
+}
+
+.promo-cascade p {
+    font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
+    font-size: 18px;
+    margin-bottom: 0px;
+}
+
+.promo-cascade .highlight {
+    background-color: #F2D37A;
+}
+
+.promo-cascade [class*="block-"] {
+    z-index: 1;
+    display: block;
+    width: 40vw;
+    min-width: 500px;
+}
+
+.blockwrap {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    flex-flow: column;
+    padding-bottom: 100px;
+}
+
+.block-1 {
+    margin-left: 70px;
+    margin-bottom: 100px;
+}
+
+.block-1 p {
+    margin-left: 70px;
+}
+
+.block-2 {
+    margin: 0px 70px 100px auto;
+}
+
+.block-3 {
+    margin-left: 70px;
+}
+
+.block-3 h2 {
+    margin-left: 70px;
+}
+
+.bg-texture {
+    z-index: 0;
+    width: 80vw;
+    position: absolute;
+    right: 0;
 }

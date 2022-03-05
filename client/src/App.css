@@ -256,6 +256,7 @@ ul.paginate-list {
 
 input::placeholder {
   font-style: italic;
+  color: #cdcdcd;
 }
 
 .input-wrap {
@@ -267,7 +268,7 @@ input::placeholder {
   font-weight: 500;
   font-size: 19px;
   padding: 0.65em 1em;
-  border: 1px solid #cdcdcd;
+  border: 1px solid #9a9a9a;
   border-radius: 3px;
   box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
 }
@@ -299,4 +300,12 @@ input::placeholder {
 .input--with-btn.input--big button:hover,
 .input--with-btn.input--big button:focus {
   box-shadow: none;
+}
+
+.divider--white {
+  max-width: 1000px;
+  width: 75%;
+  margin: 1em auto;
+  background: #ffffff;
+  height: 3px;
 }

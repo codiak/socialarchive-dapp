@@ -17,46 +17,49 @@ function HomePage() {
             </div>
         </div>
       </div>
+      <div className="divider--white"></div>
       <div className="trophy-cabinet">
         <div className="col">
-          <img src="" alt="Swarm logo" />
-          <div className="placard">Eth Swarm Grant Project</div>
+          <img src="/graphics/swarm-logo.png" alt="Swarm logo" />
+          <div className="placard">Eth Swarm<br/>Grant Project</div>
         </div>
         <div className="col">
-          <img src="" alt="Fair Data Society logo" />
-          <div className="placard">Adheres to Fair Data Society Principles</div>
+          <img className="raised" src="/graphics/fds-logo.png" alt="Fair Data Society logo" />
+          <div className="placard">Adheres to<br/>Fair Data Society<br/>Principles</div>
         </div>
         <div className="col">
-          <img src="" alt="GPL logo" />
-          <div className="placard">Open Source (GNU GPL3)</div>
+          <img src="/graphics/gpl-logo.png" alt="GPL logo" />
+          <div className="placard">Open Source<br/>(GNU GPL3)</div>
         </div>
       </div>
       <div className="promo-cascade">
-        <div className="block-1">
-          <h2>Reclaim your Digital Identity</h2>
-          <p>
-            Social Archive frees your social media personalities being held in data silos under
-            monopoly rule.
-          </p>
-          <p>
-            Store your own data, and take back sovereignty to keep from and/or integrate with other
-            services as you wish.
-          </p>
-        </div>
-        <div className="block-2">
-          <h2>Free Your Data</h2>
-          <p>
-            In a new age of corporate censorship powers, we want to restore the original
-            decentralized promise of the internet. We can no longer trust the handful of data
-            maintainers
-          </p>
-        </div>
-        <div className="block-3">
-          <h2>Decentralized on Swarm</h2>
-          <p>
-            To keep archives completely decentralized, and outside of censorship powers,
-            SocialArchive uses Swarm to store your social data.
-          </p>
+        <div className="blockwrap">
+            <div className="block-1">
+            <h2>Reclaim your<br/>Digital Identity</h2>
+            <p>
+                Social Archive frees your social media personalities being held in data silos under
+                monopoly rule.
+            </p>
+            <p>
+                <span className="highlight">Store your own data</span>, and take back sovereignty to keep from and/or integrate with other
+                services as you wish.
+            </p>
+            </div>
+            <div className="block-2">
+            <h2>Free Your Data</h2>
+            <p>
+                In a new age of corporate censorship powers, we want to restore the original
+                decentralized <span className="highlight">promise of the internet</span>. We can no longer trust the handful of data
+                maintainers.
+            </p>
+            </div>
+            <div className="block-3">
+            <h2>Decentralized on Swarm</h2>
+            <p>
+                To keep archives <span className="highlight">decentralized and accessible</span>, and outside of censorship powers,
+                SocialArchive uses Swarm to store your social data.
+            </p>
+            </div>
         </div>
       </div>
     </div>
