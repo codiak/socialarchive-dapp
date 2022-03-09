@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import "./archive-tweets.css";
 import TweetCard, { Tweet } from "../tweet/tweet";
 import { useSearchParams } from "react-router-dom";
-import ReactPaginate from "react-paginate";
-
-const PAGE_SIZE = 20;
+import Paginate from "../paginate/paginate";
 
 export default function ArchiveTweets(props: { tweets: Tweet[]; account: any; profile: any }) {
   const { account, profile, tweets } = props;
@@ -12,6 +10,7 @@ export default function ArchiveTweets(props: { tweets: Tweet[]; account: any; pr
   const [searchParams, setSearchParams] = useSearchParams();
   const sort = searchParams.get("sort");
   const page: number = parseInt(searchParams.get("page")) || 1;
+  const size: number = parseInt(searchParams.get("size")) || 1;
   const tweetFilters = [
     { title: "Tweets", exclude: ["in_reply_to_status_id", "retweeted"] },
     { title: "Replies", include: ["in_reply_to_status_id"] },
@@ -51,13 +50,8 @@ export default function ArchiveTweets(props: { tweets: Tweet[]; account: any; pr
       }
       return date_b - date_a;
     });
-  const pageCount = Math.floor(filteredTweets.length / PAGE_SIZE);
-  const handlePage = ({ selected }) => {
-    setSearchParams({ page: selected + 1 });
-    window.scrollTo(0, 0);
-  };
-  const cursor = (page - 1) * PAGE_SIZE;
-  const pageItems = filteredTweets.slice(cursor, cursor + PAGE_SIZE);
+  const cursor = (page - 1) * size;
+  const pageTweets = filteredTweets.slice(cursor, cursor + size);
 
   return (
     <>
@@ -78,7 +72,7 @@ export default function ArchiveTweets(props: { tweets: Tweet[]; account: any; pr
       <div className="tab-row text-right">
         <div
           className="btn btn-toggle"
-          onClick={() => setSearchParams({ sort: sort === "asc" ? "desc" : "asc" })}
+          onClick={() => setSearchParams({ sort: sort === "asc" ? "desc" : "asc", page: "1" })}
         >
           {sort === "asc" ? "Oldest  ⬆️" : "Newest  ⬇️"}
         </div>
@@ -86,20 +80,11 @@ export default function ArchiveTweets(props: { tweets: Tweet[]; account: any; pr
       {filteredTweets.length === 0 && (
         <div className="row fill-message">User does not have any archived {title}.</div>
       )}
-      {pageItems.map((tweet: Tweet, i) => {
+      {pageTweets.map((tweet: Tweet, i) => {
         // @ts-ignore
         return <TweetCard key={i} tweet={tweet} account={account} profile={profile} />;
       })}
-      <ReactPaginate
-        className="paginate-list"
-        breakLabel="..."
-        nextLabel=">"
-        onPageChange={handlePage}
-        pageRangeDisplayed={3}
-        pageCount={pageCount}
-        previousLabel="<"
-        renderOnZeroPageCount={null}
-      />
+      <Paginate itemCount={filteredTweets.length} />
     </>
   );
 }
