@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import "./archive-stats.css";
 
 export default function ArchiveStats(props: { backup: any }) {
-  const { tweet, like, list, blocking, moment, muting } = props.backup;
+  const { tweet, like, "lists-created": lists, blocking, moment, muting } = props.backup;
   const { user } = useParams();
   const quickStats = [
     {
@@ -28,8 +28,8 @@ export default function ArchiveStats(props: { backup: any }) {
     },
     {
       title: "Lists",
-      icon: "list",
-      count: list ? list.length : 0,
+      icon: "lists",
+      count: lists ? lists.length : 0,
     },
     {
       title: "Moments",
@@ -50,7 +50,7 @@ export default function ArchiveStats(props: { backup: any }) {
             <img src={iconsrc} alt={stat.title} className="icon" />
             {stat.title}
             <br />
-            <b>{stat.count}</b>
+            <b>{stat.count.toLocaleString()}</b>
             <div className="hover-show">View</div>
           </Link>
         );
