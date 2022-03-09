@@ -36,15 +36,15 @@ export class Beejs {
   private SOC_READ_TIMEOUT: number = 20000;
 
   private BEE_HOSTS = [
-    "https://bee-1.gateway.ethswarm.org",
-    "https://bee-2.gateway.ethswarm.org",
-    "https://bee-3.gateway.ethswarm.org",
-    "https://bee-4.gateway.ethswarm.org",
-    "https://bee-5.gateway.ethswarm.org",
-    "https://bee-6.gateway.ethswarm.org",
-    "https://bee-7.gateway.ethswarm.org",
-    "https://bee-8.gateway.ethswarm.org",
-    "https://bee-9.gateway.ethswarm.org",
+    "https://gateway-proxy-bee-1-0.gateway.ethswarm.org",
+    "https://gateway-proxy-bee-2-0.gateway.ethswarm.org",
+    "https://gateway-proxy-bee-3-0.gateway.ethswarm.org",
+    "https://gateway-proxy-bee-4-0.gateway.ethswarm.org",
+    "https://gateway-proxy-bee-5-0.gateway.ethswarm.org",
+    "https://gateway-proxy-bee-6-0.gateway.ethswarm.org",
+    "https://gateway-proxy-bee-7-0.gateway.ethswarm.org",
+    "https://gateway-proxy-bee-8-0.gateway.ethswarm.org",
+    "https://gateway-proxy-bee-9-0.gateway.ethswarm.org",
     // "https://bee-10.gateway.ethswarm.org", // this one has cors policy enabled
   ];
 
