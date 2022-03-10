@@ -19,36 +19,50 @@ export class Zip {
     return { archiveSize, archiveItems, mediaMap };
   }
 
-  async extractFile(file: any) {
-    let extractedFile = undefined;
+  static inclusionList = [
+    "account-timezone",
+    "account",
+    "block",
+    "follower",
+    "following",
+    "like",
+    "lists-created",
+    "lists-member",
+    "lists-subscribed",
+    "moment",
+    "mute",
+    "profile",
+    "tweet",
+    "verified",
+  ];
 
-    // all js files are json :)
-    if (file.name.endsWith(".js")) {
-      // console.log("Extracting json file: ", file.name);
-      try {
-        extractedFile = await this.extractJson(file);
-      } catch (e) {
-        // console.log("file name: ", file.name);
-        // console.log("Skip: no data: ", file.name, e);
-      }
-    } else if (
-      file.name.endsWith(".mp4") ||
-      file.name.endsWith(".jpg") ||
-      file.name.endsWith(".mp3") ||
-      file.name.endsWith(".png")
-    ) {
-      try {
-        extractedFile = await this.extractMedia(
-          file,
-          file.name.substring(file.name.lastIndexOf(".") + 1, file.name.length)
-        );
-      } catch (e) {
-        // console.log("Skip: no media data: ", file.name, e);
-      }
-    } else {
-      // console.log("Skip: ", file);
+  async extractFile(file: any) {
+    const { name } = file;
+    const isMedia =
+      name.endsWith(".mp4") ||
+      name.endsWith(".jpg") ||
+      name.endsWith(".mp3") ||
+      name.endsWith(".png");
+    const isWhitelisted = () => {
+      const inclusionListPos = Zip.inclusionList.findIndex(
+        (includedName) => name === `data/${includedName}.js`
+      );
+      return inclusionListPos >= 0;
+    };
+
+    if (!(isMedia || isWhitelisted())) {
+      return undefined;
     }
-    return extractedFile;
+    // console.log("Extracting json file: ", file.name);
+    try {
+      const extractedFile = isMedia
+        ? await this.extractMedia(file, name.substring(name.lastIndexOf(".") + 1, name.length))
+        : await this.extractJson(file);
+      return extractedFile;
+    } catch (e) {
+      // console.log("file name: ", file.name);
+      // console.log("Skip: no data: ", file.name, e);
+    }
   }
 
   // clean up and rearrange for our consumption
