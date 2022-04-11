@@ -4,7 +4,7 @@ import React from "react";
 const CookiePopup = ({ dispatch }) => (
   <div className="gdpr-modal-background-deny">
     <div className="gdpr-body">
-      <div className="gdpr-tdescription">
+      <div className="gdpr-description">
         <p>
           We use cookies and other technologies for various reasons including personalization and
           analytics. For the best user experience please click ACCEPT to allow cookies. If you
@@ -18,10 +18,10 @@ const CookiePopup = ({ dispatch }) => (
       </div>
       <div className="group-action-btns">
         <button className="accept-cookies-btn" onClick={() => dispatch({ type: "acceptCurrent" })}>
-          ACCEPT
+          Accept
         </button>
         <button className="deny-cookies-btn" onClick={() => dispatch({ type: "declineAll" })}>
-          DECLINE
+          Decline
         </button>
       </div>
     </div>

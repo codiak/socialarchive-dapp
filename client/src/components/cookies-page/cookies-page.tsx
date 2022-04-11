@@ -13,7 +13,7 @@ export const CookiesPage = () => {
       <h4>Information We Collect</h4>
       <p>
         Aside from the material uploaded to Swarm by the user, we collect website analytics for the
-        purpose of marketing.
+        purpose of improving performance of our website.
       </p>
       <h4>Lawful Usage</h4>
       <p>We only process information where we have a lawful basis for doing so which includes:</p>
