@@ -106,6 +106,10 @@ export class Zip {
           json = { [plural]: json };
         } else {
           json = json[0] !== undefined ? json[0] : json;
+          if (name === "account") {
+            // TODO nuther hack, need to revisit overall formatting/redaction design
+            delete json[name]["email"];
+          }
         }
       }
       return json;
