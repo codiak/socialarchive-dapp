@@ -7,9 +7,8 @@ const CookiePopup = ({ dispatch }) => (
       <div className="gdpr-description">
         <p>
           We use cookies and other technologies for various reasons including personalization and
-          analytics. For the best user experience please click ACCEPT to allow cookies. If you
-          refuse to accept cookies you will still be able to access the site, but some functionality
-          may be degraded. For more information, please review our{" "}
+          analytics. Click ACCEPT to allow cookies or DECLINE to refuse all cookies. For information
+          about how we use cookies, please refer to our{" "}
           <a href="/cookies" className="privacy-link">
             cookies policy
           </a>

@@ -12,15 +12,17 @@ export const CookiesPage = () => {
       <h3>Privacy & Cookies Policy</h3>
       <h4>Information We Collect</h4>
       <p>
-        Aside from the material uploaded to Swarm by the user, we collect website analytics for the
-        purpose of improving performance of our website.
+        Aside from the material uploaded to Swarm by the user, we collect website analytics
+        including what browser and operating system you are using, where you are visiting from, and
+        your page views while on the site.
       </p>
       <h4>Lawful Usage</h4>
       <p>We only process information where we have a lawful basis for doing so which includes:</p>
       <ul>
         <li>
           User consent - This is where you (the "user") has given us permission to process
-          information for a given purpose such as uploading social media to Swarm.
+          information for a given purpose such as uploading social media to Swarm or consent to use
+          cookies.
         </li>
         <li>
           Business purposes - This is where we have a legitimate reason to collect informaton about
@@ -28,11 +30,6 @@ export const CookiesPage = () => {
           continue to provide our services.
         </li>
       </ul>
-      <h4>Retention</h4>
-      <p>
-        Aside from cookies stored on your machine and information transmitted to Swarm, we retain no
-        information beyond site analytics.
-      </p>
       <h4>Questions</h4>
       <p>
         If you have any questions pertaining to privacy on this site, you can send an e-mail to{" "}
@@ -43,8 +40,8 @@ export const CookiesPage = () => {
       <h4>Cookies</h4>
       <p>
         Social Archive uses cookies and related technologies to collect information about you. This
-        information is collected for the purposes of analytics and personalization. For information
-        about how cookies are managed by various browsers see{" "}
+        information is collected for the purposes of analytics and website performance. For
+        information about how cookies are managed by various browsers see{" "}
         <div className="emphasis">Manage Cookies</div> below.
       </p>
       <p>
@@ -52,19 +49,11 @@ export const CookiesPage = () => {
         to operate as designed. "First-party" cookies are cookies that are set by the operator of
         this website. "Third-party" cookies are cookies that are set by this site's partners.
       </p>
-      <h4>Types of Cookies Used</h4>
-      <ul>
-        <li>
-          Analytics - At present the only type of cookie that we currently use are cookies for the
-          purpose of traffic analysis.{" "}
-        </li>
-      </ul>
-      <p></p>
       <h4>Manage Cookies</h4>
       <p>
         You can control which cookies are allowed on your device, but be aware that if you do
         disable cookies you may impact the functioning of the site as intended. Some cookies are
-        essential for basic operations.
+        essential for enhanced operations.
       </p>
       <p>
         All modern web browsers allow changes to your cookie settings. These settings can be

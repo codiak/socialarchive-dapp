@@ -62,20 +62,4 @@ const CookieConsentProvider = ({ children }) => {
   );
 };
 
-function useCookieConsentState() {
-  const context = useContext(CookieConsentStateContext);
-  if (context === undefined) {
-    throw new Error("useCookieConsentState must be used within CookieProvider");
-  }
-  return context;
-}
-
-function useCookieConsentDispatch() {
-  const context = useContext(CookieConsentDispatchContext);
-  if (context === undefined) {
-    throw new Error("useCookieConsentDispatch must be used within CookieProvider");
-  }
-  return context;
-}
-
-export { CookieConsentProvider, useCookieConsentState, useCookieConsentDispatch };
+export { CookieConsentProvider };
