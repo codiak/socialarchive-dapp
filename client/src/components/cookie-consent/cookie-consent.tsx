@@ -1,5 +1,5 @@
 /* https://gist.github.com/daankauwenberg/bf0daf4d4a9a157a078ba4ec4559e3ab */
-import React, { createContext, useReducer, useEffect, useState, useContext } from "react";
+import React, { createContext, useReducer, useEffect, useState } from "react";
 import CookiePopup from "./cookie-popup";
 
 const COOKIE_NAME = "gdpr";
