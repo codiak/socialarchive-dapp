@@ -217,12 +217,12 @@ export class Zip {
   }
 
   async buildMediaMap() {
-    const {
-      tweet: tweets,
-      profile: { avatarMediaUrl: amu },
-    } = this.archiveItems;
-    let mediaId = amu.substring(amu.lastIndexOf("/") + 1, amu.length);
-    this.archiveItems.profile.avatarMediaUrl = this.media[mediaId];
+    const { tweet: tweets, profile } = this.archiveItems;
+    const amu = profile ? profile.avatarMediaUrl : "";
+    if (amu) {
+      let mediaId = amu.substring(amu.lastIndexOf("/") + 1, amu.length);
+      this.archiveItems.profile.avatarMediaUrl = this.media[mediaId];
+    }
 
     for (let tweet of tweets || []) {
       /* two references of media arrays in a tweet:
