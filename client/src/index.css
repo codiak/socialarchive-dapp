@@ -22,7 +22,9 @@ code {
   text-align: right;
 }
 
+button.btn,
 .btn {
+  display:inline-block;
   background: rgba(255, 255, 255);
   font-family: inherit;
   font-size: 100%;
@@ -30,7 +32,6 @@ code {
   margin: 0;
   overflow: visible;
   text-transform: none;
-  -webkit-appearance: button;
   border: none;
   text-decoration: none;
   color: #14171a;
@@ -39,6 +40,7 @@ code {
   padding: 0.5em 0.75em;
   border-radius: 3px;
   cursor: pointer;
+  -webkit-appearance: none;
 }
 
 .btn.btn-toggle {
@@ -50,6 +52,15 @@ code {
 .btn-toggle:hover,
 .btn-toggle:active {
   color: #1b95e0;
+}
+
+.btn.primary {
+  background-color: #fd964a;
+  color: white;
+}
+
+.btn.primary:hover {
+  background-color: #ff9e59;
 }
 
 .btn.secondary {
