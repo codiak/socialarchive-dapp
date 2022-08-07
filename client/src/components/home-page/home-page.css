@@ -5,6 +5,8 @@
     font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
 }
 
+a.cta-button,
+button.cta-button,
 .cta-button {
     background: #FD964A;
     border: 1px solid #FDD18E;

@@ -16,10 +16,10 @@ const CookiePopup = ({ dispatch }) => (
         </p>
       </div>
       <div className="group-action-btns">
-        <button className="accept-cookies-btn" onClick={() => dispatch({ type: "acceptCurrent" })}>
+        <button className="btn primary" onClick={() => dispatch({ type: "acceptCurrent" })}>
           Accept
         </button>
-        <button className="deny-cookies-btn" onClick={() => dispatch({ type: "declineAll" })}>
+        <button className="btn secondary" onClick={() => dispatch({ type: "declineAll" })}>
           Decline
         </button>
       </div>
