@@ -32,6 +32,7 @@ export default function ArchivePage() {
     [page]: accounts = [],
   } = archiveItems;
   const hash = archiveItems.hash || false;
+  const isPreview = user === "pending" && !hash;
   const sections = [
     {
       slug: "home",
@@ -67,32 +68,42 @@ export default function ArchivePage() {
           <title>Social Archive</title>
         </Helmet>
       </HelmetProvider>
-      {user === "pending" && !hash && <ArchiveSave />}
+      {isPreview && <ArchiveSave />}
       <div className="left-col">
-        <AvatarCard archivedAccount={account} archivedProfile={profile} />
-        <div className="btn-stack">
-          {sections.map((section, i) => {
-            return (
-              <div key={i}>
-                <Link
-                  to={`/archive/${user}/${section.slug}`}
-                  className={btnClasses + (page === section.slug ? "active" : "")}
-                >
-                  {section.title}
-                </Link>
-                <br />
-              </div>
-            );
-          })}
-          <p className="button-section-help-text">Private data excluded:</p>
-          {disabledSections.map((title, i) => {
-            return (
-              <div key={i}>
-                <div className={btnClasses + "disabled"}>{title}</div>
-                <br />
-              </div>
-            );
-          })}
+        <div className="archive-view-mode">
+          <img
+            src={`/icons/icon-${isPreview ? "preview" : "access"}.svg`}
+            alt="Status Icon"
+            className="sticker"
+          />
+          {isPreview ? "Previewing Archive" : "Archive on Swarm"}
+        </div>
+        <div className="archive-nav-card">
+          <AvatarCard archivedAccount={account} archivedProfile={profile} />
+          <div className="btn-stack">
+            {sections.map((section, i) => {
+              return (
+                <div key={i}>
+                  <Link
+                    to={`/archive/${user}/${section.slug}`}
+                    className={btnClasses + (page === section.slug ? "active" : "")}
+                  >
+                    {section.title}
+                  </Link>
+                  <br />
+                </div>
+              );
+            })}
+            <p className="button-section-help-text">Private data excluded:</p>
+            {disabledSections.map((title, i) => {
+              return (
+                <div key={i}>
+                  <div className={btnClasses + "disabled"}>{title}</div>
+                  <br />
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
       <div className="feed-col">

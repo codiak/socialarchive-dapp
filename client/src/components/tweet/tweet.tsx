@@ -44,7 +44,6 @@ export default function TweetCard(props: { tweet: Tweet; account: any; profile: 
         archivedAccount={account}
         archivedProfile={profile}
       />
-      {/* <span className="tweet-date">{date}</span> */}
       <p className="tweet-text">{full_text}</p>
       <div className="media-wrapper">
         {videoUrl ? (
