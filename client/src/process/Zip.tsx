@@ -217,8 +217,8 @@ export class Zip {
   }
 
   async buildMediaMap() {
-    const { tweet: tweets, profile } = this.archiveItems;
-    const amu = profile.avatarMediaUrl || "";
+    const { tweet: tweets, profile = { avatarMediaUrl: "" } } = this.archiveItems;
+    const amu = profile.avatarMediaUrl;
     if (amu) {
       let mediaId = amu.substring(amu.lastIndexOf("/") + 1, amu.length);
       this.archiveItems.profile.avatarMediaUrl = this.media[mediaId];
