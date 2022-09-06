@@ -42,7 +42,7 @@ export default function AvatarCard(props: any) {
           <div className="account-handle">@{username}</div>
           {date && (
             <div className="tweet-date">
-              &nbsp;•
+              &nbsp;•&nbsp;
               <a
                 href={"https://twitter.com/" + username + "/status/" + tweetId}
                 target="_blank"

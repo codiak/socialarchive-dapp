@@ -11,7 +11,7 @@
   height: 100%;
   width: 400px;
   color: #14171a;
-  padding-right: 1em;
+  padding-right: 2em;
 }
 
 .feed-col {
@@ -50,11 +50,29 @@
   font-size: smaller;
 }
 
+.archive-view-mode {
+  position: relative;
+  font-family: "Quando";
+  font-size: 21px;
+  margin: 1em 0 0.75em;
+  color: #545454;
+}
+
+.archive-view-mode .sticker {
+  display: inline-block;
+  height: 1.5em;
+  width: 1.5em;
+  vertical-align: bottom;
+  margin-right: 0.5em;
+  margin-bottom: -2px;
+}
+
 .account-info .row {
-  border: 1px solid rgb(204, 214, 221);
+  border: 1px solid #f1f1f1;
   border-top: none;
   padding: 1em;
   font-size: 13px;
+  word-wrap: break-word;
 }
 
 .account-info h3 {
@@ -65,4 +83,16 @@
 .account-home,
 .account-info {
   position: relative;
+}
+
+.archive-nav-card {
+  border: 1.5px solid #FDF3D7;
+  border-radius: 10px;
+  padding: 1em;
+}
+
+.avatar-preview {
+  width: 75px;
+  height: auto;
+  margin: 0.5em;
 }

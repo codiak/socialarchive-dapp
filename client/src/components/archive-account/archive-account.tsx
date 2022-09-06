@@ -54,7 +54,11 @@ export default function ArchiveAccount(props: { backup: any }) {
       </div>
       <div className="row">
         <h3>Avatar image</h3>
-        {avatarMediaUrl || "No data"}
+        {avatarMediaUrl ? (
+          <img src={avatarMediaUrl} alt="Avatar" className="avatar-preview" />
+        ) : (
+          "No data"
+        )}
       </div>
       <div className="row">
         <h3>Header image</h3>
