@@ -35,7 +35,7 @@ export default function ArchiveDownload() {
         pendingBackup["hash"] &&
         pendingBackup["hash"] === id && (
           <>
-            <Navigate to="/archive/pending/home" />
+            <Navigate to={"/archive/" + id + "/home"} />
           </>
         )}
     </div>

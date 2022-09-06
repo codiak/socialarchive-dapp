@@ -4,7 +4,7 @@ let i = 0;
 let t = 0;
 export class Zip {
   file: any;
-  archiveItems: any = {};
+  archiveItems: ArchiveItems;
   media: any = {};
   archiveSize: any;
 
@@ -217,12 +217,12 @@ export class Zip {
   }
 
   async buildMediaMap() {
-    const {
-      tweet: tweets,
-      profile: { avatarMediaUrl: amu },
-    } = this.archiveItems;
-    let mediaId = amu.substring(amu.lastIndexOf("/") + 1, amu.length);
-    this.archiveItems.profile.avatarMediaUrl = this.media[mediaId];
+    const { tweet: tweets, profile = { avatarMediaUrl: "" } } = this.archiveItems;
+    const amu = profile.avatarMediaUrl;
+    if (amu) {
+      let mediaId = amu.substring(amu.lastIndexOf("/") + 1, amu.length);
+      this.archiveItems.profile.avatarMediaUrl = this.media[mediaId];
+    }
 
     for (let tweet of tweets || []) {
       /* two references of media arrays in a tweet:
@@ -283,4 +283,11 @@ export class Zip {
       return this.extract(zip);
     });
   }
+}
+
+interface ArchiveItems {
+  tweet: any[];
+  profile: {
+    avatarMediaUrl: string;
+  };
 }

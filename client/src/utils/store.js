@@ -186,11 +186,12 @@ const StoreProvider = ({ children }) => {
     dispatch({ type: "LOADING" });
     let file = zipFile;
     let uzip = await Zip.unzip(file);
+    let date = file.lastModifiedDate || file.lastModified;
     let zipDetails = {
       name: file.name,
       size: convertBytesToString(file.size),
       type: file.type,
-      lastModifiedDate: file.lastModifiedDate.toString(),
+      lastModifiedDate: date.toString(),
     };
 
     // if unzip does not return any files, it means that the file is not a real twitter backup file
