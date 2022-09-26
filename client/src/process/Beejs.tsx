@@ -35,18 +35,22 @@ export class Beejs {
     "0000000000000000000000000000000000000000000000000000000000000000" as Reference;
   private SOC_READ_TIMEOUT: number = 20000;
 
-  private BEE_HOSTS = [
-    "https://gateway-proxy-bee-1-0.gateway.ethswarm.org",
-    "https://gateway-proxy-bee-2-0.gateway.ethswarm.org",
-    "https://gateway-proxy-bee-3-0.gateway.ethswarm.org",
-    "https://gateway-proxy-bee-4-0.gateway.ethswarm.org",
-    "https://gateway-proxy-bee-5-0.gateway.ethswarm.org",
-    "https://gateway-proxy-bee-6-0.gateway.ethswarm.org",
-    "https://gateway-proxy-bee-7-0.gateway.ethswarm.org",
-    "https://gateway-proxy-bee-8-0.gateway.ethswarm.org",
-    "https://gateway-proxy-bee-9-0.gateway.ethswarm.org",
-    // "https://bee-10.gateway.ethswarm.org", // this one has cors policy enabled
-  ];
+  private BEE_HOSTS = ["https://gateway.fairdatasociety.org"];
+
+  // private BEE_HOSTS = ["http://52.5.113.239:1633"];
+
+  // private BEE_HOSTS = [
+  //   "https://gateway-proxy-bee-1-0.gateway.ethswarm.org",
+  //   "https://gateway-proxy-bee-2-0.gateway.ethswarm.org",
+  //   "https://gateway-proxy-bee-3-0.gateway.ethswarm.org",
+  //   "https://gateway-proxy-bee-4-0.gateway.ethswarm.org",
+  //   "https://gateway-proxy-bee-5-0.gateway.ethswarm.org",
+  //   "https://gateway-proxy-bee-6-0.gateway.ethswarm.org",
+  //   "https://gateway-proxy-bee-7-0.gateway.ethswarm.org",
+  //   "https://gateway-proxy-bee-8-0.gateway.ethswarm.org",
+  //   "https://gateway-proxy-bee-9-0.gateway.ethswarm.org",
+  //   // "https://bee-10.gateway.ethswarm.org", // this one has cors policy enabled
+  // ];
 
   constructor() {
     const randomIndex = Math.floor(Math.random() * this.BEE_HOSTS.length);
