@@ -32,7 +32,7 @@ export default function TweetCard(props: { tweet: Tweet; account: any; profile: 
       .filter((m) => m.type === "photo")
       .map((photo, index) => {
         const { media_url_https } = photo;
-        return <img key={index} src={mediaDataUrl(media_url_https)} />;
+        return <img key={index} alt="" src={mediaDataUrl(media_url_https)} />;
       });
   };
   return (
