@@ -2,7 +2,8 @@ import React from "react";
 import "./tweet.css";
 import AvatarCard from "../avatar-card/avatar-card";
 // @ts-ignore
-// import ReactIntense from "react-intense"; // TODO: causes string ref warning
+import ReactIntense from "react-intense"; // TODO: causes string ref warning
+
 import { useStore } from "../../utils/store";
 
 const SHORT_VIDEO_MAX_MILLIS = 6000;
@@ -32,7 +33,7 @@ export default function TweetCard(props: { tweet: Tweet; account: any; profile: 
       .filter((m) => m.type === "photo")
       .map((photo, index) => {
         const { media_url_https } = photo;
-        return <img key={index} alt="" src={mediaDataUrl(media_url_https)} />;
+        return <ReactIntense key={index} src={mediaDataUrl(media_url_https)} />;
       });
   };
   return (
