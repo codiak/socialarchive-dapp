@@ -2,16 +2,18 @@ import "./archive-save.css";
 import "../../data/archive.tsx";
 import { useState } from "react";
 import { useStore } from "../../utils/store";
+
 import ProgressBar from "../progressbar/progressbar";
 
 export default function ArchiveSave() {
   const {
-    state: { pendingBackup, hash, upload, gatewayUrl, error, errorMessage },
+    state: { privateUpload, pendingBackup, hash, upload, gatewayUrl, error, errorMessage },
     dispatch,
   } = useStore();
   const { archiveSize } = pendingBackup;
 
   const [progress, setProgress] = useState(0);
+
 
   const logProgress = (input: any) => {
     const { loaded, total } = input;
@@ -55,6 +57,10 @@ export default function ArchiveSave() {
           </b>
           <p></p>
           <p>{copy}</p>
+
+          {privateUpload && <p>This archive will be uploaded privately</p>}
+          {!privateUpload && <p>This archive will be public</p>}
+
           {/* {upload && ( */}
           <ProgressBar bgcolor={"#00695c"} completed={progress} />
           <br />

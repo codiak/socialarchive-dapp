@@ -4,6 +4,7 @@ import UploadPage from "./components/upload-page/upload-page";
 import BrowsePage from "./components/browse-page/browse-page";
 import ArchivePage from "./components/archive-page/archive-page";
 import CookiesPage from "./components/cookies-page/cookies-page";
+import Authentication from "./components/auth/auth";
 import ArchiveDownload from "./components/archive-download/archive-download";
 import Footer from "./components/footer/footer";
 import "./App.css";
@@ -51,6 +52,7 @@ function App() {
               <a className={activeLink("/browse", true)} href="/browse">
                 Browse
               </a>
+              <Authentication />
             </div>
             <title>{APP_TITLE}</title>
           </header>

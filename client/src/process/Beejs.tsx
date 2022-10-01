@@ -21,6 +21,9 @@ import {
   saveToIdb,
   wipeIdb,
 } from "../utils";
+
+import * as authModule from '../components/auth/authModule.js';
+
 declare type Identifier = Bytes<32>;
 
 export class Beejs {
@@ -78,11 +81,15 @@ export class Beejs {
     try {
       // @ts-ignore
       let bundle = await this.bee.downloadFile(reference, undefined, { fetch });
+      console.log("bundle data:", bundle.data);
       result = bundle.data.json();
+      console.log("result after downloading archive:",result);
+
     } catch (e) {
       console.log("error downloading", e);
       result = e;
     }
+
     return result;
   }
 
@@ -96,13 +103,14 @@ export class Beejs {
    * @return {Promise<Reference>} Swarm hash of the uploaded archive
    *
    */
-  async upload(data: any, progressCb: any) {
+  async upload(data: any, progressCb: any, privateUpload: boolean) {
     let { archiveItems, archiveSize } = data;
     if (archiveItems === undefined) {
       throw new Error("Archive items are undefined, aborting upload");
     }
     // bundle that gets uploaded to swarm
     let bundle = JSON.stringify(data);
+
     // create profile to add to SOC
     let username = archiveItems.account?.username;
     let name = archiveItems.account?.accountDisplayName;
@@ -111,6 +119,12 @@ export class Beejs {
     const avatarBlob = archiveItems.profile.avatarMediaUrl;
     // convert profile image to ascii
     let asciiProfile = (await convertImageToAscii(avatarBlob)) as [];
+
+    if(privateUpload) {
+      bundle = await authModule.encrypt(bundle);
+      bundle = JSON.stringify({cipher: bundle});
+      username = await authModule.encrypt(archiveItems.account?.username);
+    }
 
     let result = undefined;
 
@@ -128,17 +142,19 @@ export class Beejs {
       await this.saveSwarmHashInFeed(reference);
       // 3. download latest feed and get feed index
       let feedIndex = (await this.getFeedIndex(reference)) as number;
-      // 4. upload profile, hash and feed index to Single Owner Chunk
-      await this.saveProfileInSOC(
-        reference,
-        archiveSize,
-        username,
-        name,
-        bio,
-        isVerified,
-        asciiProfile,
-        feedIndex
-      );
+      if(!privateUpload) {
+        // 4. upload profile, hash and feed index to Single Owner Chunk
+        await this.saveProfileInSOC(
+          reference,
+          archiveSize,
+          username,
+          name,
+          bio,
+          isVerified,
+          asciiProfile,
+          feedIndex
+        );
+      }
     } catch (err: any) {
       console.log("Error uploading", err);
       const { status, message } = err;

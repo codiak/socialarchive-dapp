@@ -2,11 +2,22 @@ import { createContext, useContext, useEffect, useReducer } from "react";
 import { convertBytesToString, getFromIdb, saveToIdb, getFeedsCache } from "./index";
 import { Zip } from "../process/Zip";
 import { Beejs } from "../process/Beejs";
+import * as authModule from '../components/auth/authModule.js';
 
 const reducerActions = (state = initialState, action) => {
   const { type, payload } = action;
   console.log("action: ", type);
   switch (type) {
+    case "PRIVATE_UPLOAD_FALSE":
+      return {
+        ...state,
+        privateUpload: false
+      }
+    case "PRIVATE_UPLOAD":
+      return {
+        ...state,
+        privateUpload: true
+      }
     case "PROCESS_ZIP_FILE":
       return {
         ...state,
@@ -128,6 +139,7 @@ const initialState = {
   pendingBackup: { archiveItems: {}, mediaMap: {} },
   pendingBackupSize: 0,
   zipFile: undefined,
+  privateUpload: false,
   loading: false,
   error: false,
   process: false,
@@ -144,6 +156,8 @@ const StoreProvider = ({ children }) => {
     const loadFromIdb = async () => {
       dispatch({ type: "LOADING" });
       let archive = await getFromIdb("archive");
+      console.log('gotten from idb', archive);
+
       dispatch({
         type: "ARCHIVE_LOADED",
         payload: archive ? archive : {},
@@ -163,7 +177,7 @@ const StoreProvider = ({ children }) => {
   // upload file to swarm,
   useEffect(() => {
     if (state.upload) {
-      uploadToSwarm(state.pendingBackup, state.progressCb);
+      uploadToSwarm(state.pendingBackup, state.progressCb, state.privateUpload);
     }
   }, [state.upload, state.pendingBackup, state.progressCb]);
 
@@ -206,11 +220,12 @@ const StoreProvider = ({ children }) => {
     });
   };
 
-  const uploadToSwarm = async (pendingBackup, progressCb) => {
+  const uploadToSwarm = async (pendingBackup, progressCb, privateUpload=false) => {
     dispatch({ type: "LOADING" });
 
     let b = new Beejs();
-    let result = await b.upload(pendingBackup, progressCb);
+
+    let result = await b.upload(pendingBackup, progressCb, privateUpload);
     console.log("hash", result);
 
     // response is an exception object :)
@@ -234,6 +249,15 @@ const StoreProvider = ({ children }) => {
     let result = await b.download(hash, progressCb);
     console.log("downloaded: ", result);
 
+    if(result.cipher) {
+      let decrypted = await authModule.decrypt(result.cipher);
+      console.log('decrypted:', decrypted);
+      decrypted = JSON.parse(decrypted);
+      delete result.cipher;
+      result = {...result, ...decrypted};
+    }
+
+    console.log('SAVING TO IDB');
     await saveToIdb("archive", result);
 
     // response is an exception object :)

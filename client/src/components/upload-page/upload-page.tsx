@@ -1,18 +1,22 @@
 import { useStore } from "../../utils/store";
 import Dropzone from "./DropZone";
 import "./dropzone.css";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate  } from "react-router-dom";
 
 function UploadPage() {
+  const navigate = useNavigate();
+
   // our faithful state management
   const {
     state: {
+      privateUpload,
       zipFile,
       pendingBackup: { archiveItems },
       loading,
       error,
       errorMessage,
     },
+    dispatch
   } = useStore();
 
   return (
@@ -32,7 +36,18 @@ function UploadPage() {
               Size: {zipFile.size}
             </>
           ) : (
-            <Navigate to="/archive/pending/home" />
+            <>
+              <p>This archive is public. would you like to make it private?</p>
+              <label className='checkbox-group'>
+                <input className='checkbox-group--checkbox' type='checkbox'
+                  onClick={() => privateUpload ? dispatch({type: "PRIVATE_UPLOAD_FALSE"}) : dispatch({type: "PRIVATE_UPLOAD"}) } />
+                <span className='checkbox-group--label'>
+                  Yes. Make my archive private
+                </span>
+              </label>
+
+              <button className='btn primary' onClick={() => navigate("/archive/pending/home")}>Continue</button>
+            </>
           )}
         </>
       )}

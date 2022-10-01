@@ -17,11 +17,14 @@ export default function ArchivePage() {
   const {
     state: {
       pendingBackup: { archiveItems },
+      privateUpload
     },
   } = useStore();
   const { user, section } = useParams();
   const page = section || "account";
   const btnClasses = "btn rounded-btn ";
+
+  if(archiveItems) {
   const {
     account = {},
     profile = {},
@@ -76,7 +79,7 @@ export default function ArchivePage() {
             alt="Status Icon"
             className="sticker"
           />
-          {isPreview ? "Previewing Archive" : "Archive on Swarm"}
+          {isPreview ? (privateUpload) ? "Previewing Archive (Private)" : "Previewing Archive" : "Archive on Swarm"}
         </div>
         <div className="archive-nav-card">
           <AvatarCard archivedAccount={account} archivedProfile={profile} />
@@ -153,4 +156,13 @@ export default function ArchivePage() {
       <div className="metadata-col">{/* Metadata */}</div>
     </div>
   );
+  } else {
+    return (
+      <>
+      <div className="container">
+        <p>Archive not found</p>
+      </div>
+      </>
+    );
+  }
 }
