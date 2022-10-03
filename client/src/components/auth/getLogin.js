@@ -15,21 +15,24 @@ export function init(accessToken) {
         return Promise.resolve(true)
     else if(glInstance.isInitInProgress) {
         console.log("INIT IN PROGRESS");
-        let maxWaitTime = 3000 // in ms;
+        let maxWaitTime = 6000 // in ms;
 
         return new Promise((resolve, reject) => {
             const timerId = "timer" + Object.keys(timers).length;
 
-            timers[timerId] = setTimeout(() => {
+            timers[timerId] = setInterval(() => {
                 console.log('new timer', timerId);
                 maxWaitTime = maxWaitTime - 500;
                 if(glInstance.isReady()) {
-                    console.log('IS DONE');
-                    clearTimeout(timers[timerId]);
+                    console.log('TIMER CANCELLED');
+                    clearInterval(timers[timerId]);
                     return resolve(true);
                 } else if(maxWaitTime < 500) {
-                    clearTimeout(timers[timerId]);
+                    clearInterval(timers[timerId]);
+                    console.log('TIMER DONE. FAILING');
                     return reject(false);
+                } else {
+                    console.log("instance is not ready, and we still have time");
                 }
             }, 500)
         });

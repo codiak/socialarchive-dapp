@@ -1,7 +1,7 @@
 import * as original from '../../../../src/components/auth/getLogin.js';
 import sinon from 'sinon';
 
-export let login = function() {
+export let init = function() {
     return true;
     // return original.login();
 }
@@ -14,8 +14,9 @@ export let getAppAddresses = original.getAppAddresses;
 export function __stub(fnName, fn) {
     console.log("stubbing", fnName);
     switch(fnName) {
+        case 'init':
         case 'login':
-            login = fn;
+            init = fn;
             break;
         case 'logout':
             logout = fn;
@@ -27,7 +28,7 @@ export function __stub(fnName, fn) {
             getAppAddresses = fn;
             break;
         default:
-            login = fn;
+            init = fn;
             logout = fn;
             userInfo = fn;
             getAppAddresses = fn;
