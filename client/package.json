@@ -49,8 +49,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "build-factory": "cd node_modules/bee-factory && yarn install && ./scripts/network.sh && ./scripts/blockchain.sh && npm run migrate:contracts && npm run supply",
