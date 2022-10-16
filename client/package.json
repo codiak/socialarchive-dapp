@@ -49,10 +49,10 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
     "test": "react-app-rewired test",
-    "eject": "react-scripts eject",
+    "eject": "react-app-rewired eject",
     "build-factory": "cd node_modules/bee-factory && yarn install && ./scripts/network.sh && ./scripts/blockchain.sh && npm run migrate:contracts && npm run supply",
     "build-factory-images": "cd node_modules/bee-factory && ./scripts/bee-docker-build.sh ./scripts/blockchain-docker-build.sh",
     "test-factory": "cd node_modules/bee-factory && ./scripts/bee.sh start --workers=4",
