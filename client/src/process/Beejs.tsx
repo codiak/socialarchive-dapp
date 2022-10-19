@@ -6,8 +6,8 @@ import {
   FeedReader,
   SOCWriter,
   SOCReader,
-} from "@ethersphere/bee-js";
-import { Bytes } from "@ethersphere/bee-js/dist/types/utils/bytes";
+} from "@fairdatasociety/bee-js";
+import { Bytes } from "@fairdatasociety/bee-js/dist/types/utils/bytes";
 import axios from "axios";
 import LZString from "lz-string";
 import { buildAxiosFetch } from "@lifeomic/axios-fetch";
@@ -35,22 +35,10 @@ export class Beejs {
     "0000000000000000000000000000000000000000000000000000000000000000" as Reference;
   private SOC_READ_TIMEOUT: number = 20000;
 
-  private BEE_HOSTS = [
-    "https://gateway-proxy-bee-1-0.gateway.ethswarm.org",
-    "https://gateway-proxy-bee-2-0.gateway.ethswarm.org",
-    "https://gateway-proxy-bee-3-0.gateway.ethswarm.org",
-    "https://gateway-proxy-bee-4-0.gateway.ethswarm.org",
-    "https://gateway-proxy-bee-5-0.gateway.ethswarm.org",
-    "https://gateway-proxy-bee-6-0.gateway.ethswarm.org",
-    "https://gateway-proxy-bee-7-0.gateway.ethswarm.org",
-    "https://gateway-proxy-bee-8-0.gateway.ethswarm.org",
-    "https://gateway-proxy-bee-9-0.gateway.ethswarm.org",
-    // "https://bee-10.gateway.ethswarm.org", // this one has cors policy enabled
-  ];
+  private BEE_HOST = "https://gateway.fairdatasociety.org";
 
   constructor() {
-    const randomIndex = Math.floor(Math.random() * this.BEE_HOSTS.length);
-    this.bee = new Bee(this.BEE_HOSTS[randomIndex]);
+    this.bee = new Bee(this.BEE_HOST);
     const topic = this.bee.makeFeedTopic("archived-bundles");
     this.feedWriter = this.bee.makeFeedWriter("sequence", topic, this.SA_PRIVATEKEY);
     this.feedReader = this.bee.makeFeedReader("sequence", topic, this.SA_ETHADDRESS);
