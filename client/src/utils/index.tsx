@@ -1,4 +1,4 @@
-import { Utils } from "@ethersphere/bee-js";
+import { Utils } from "@fairdatasociety/bee-js";
 import { get, set, clear, keys } from "idb-keyval";
 
 export const getFromIdb = async (key: string) => {

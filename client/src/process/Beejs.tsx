@@ -6,8 +6,8 @@ import {
   FeedReader,
   SOCWriter,
   SOCReader,
-} from "@ethersphere/bee-js";
-import { Bytes } from "@ethersphere/bee-js/dist/types/utils/bytes";
+} from "@fairdatasociety/bee-js";
+import { Bytes } from "@fairdatasociety/bee-js/dist/types/utils/bytes";
 import axios from "axios";
 import LZString from "lz-string";
 import { buildAxiosFetch } from "@lifeomic/axios-fetch";

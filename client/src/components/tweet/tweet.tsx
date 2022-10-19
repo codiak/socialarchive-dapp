@@ -1,8 +1,7 @@
 import React from "react";
 import "./tweet.css";
 import AvatarCard from "../avatar-card/avatar-card";
-// @ts-ignore
-import ReactIntense from "react-intense"; // TODO: causes string ref warning
+import ReactIntense from "react-intense";
 
 import { useStore } from "../../utils/store";
 
