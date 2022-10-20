@@ -30,7 +30,9 @@ const DropZone = ({ zipFile, loading }: any) => {
   // options for dropzone, disable mutliple files, accept only zip files and set max size to 1GB
   const { getRootProps, getInputProps } = useDropzone({
     multiple: false,
-    accept: ZIP_MIME_TYPE,
+    accept: {
+      "application/zip": [".zip"],
+    },
     onDrop: onDrop,
     maxSize: 1e9, // 1GB
     onDropRejected: onDropRejected,
