@@ -1,4 +1,4 @@
-import 'https://getlogin.org/api/last.js';
+import './dependencies/getlogin-last.js';
 import ethcrypto from 'eth-crypto';
 
 const glInstance = new window._getLoginApi();
