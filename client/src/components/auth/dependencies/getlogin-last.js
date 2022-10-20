@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 export class GetLoginApi {
     constructor() {
         this.appId = null;
