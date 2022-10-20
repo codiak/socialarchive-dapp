@@ -18,7 +18,19 @@ function unsetAccessToken() {
 }
 
 export function getKeys() {
-  return gl.getAppAddresses()
+  let pk = localStorage.getItem('session_pk'),
+    keys = {};
+
+  if(pk && pk.trim() != "" && typeof pk == 'string') {
+      keys.privateKey = pk;
+      keys.publicKey = ethcrypto.publicKeyByPrivateKey(pk);
+      keys.address = ethcrypto.publicKey.toAddress(keys.publicKey);
+  } else {
+    localStorage.removeItem('session_pk');
+    keys = ethcrypto.createIdentity();
+  }
+  // return gl.getAppAddresses()
+  return Promise.resolve(keys);
 }
 
 /**
@@ -37,7 +49,7 @@ export function setAccessToken(token: String) {
   console.log('setting access token', token);
   // let encryptedToken = ethcrypto.encryptWithPublicKey(token);
 
-  return gl.getAppAddresses()
+  return getKeys()
     .then(appAddresses => {
       const key = appAddresses.publicKey;
       localStorage.setItem('session_pk', appAddresses.privateKey);
