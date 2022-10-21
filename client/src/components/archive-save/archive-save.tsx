@@ -14,7 +14,6 @@ export default function ArchiveSave() {
 
   const [progress, setProgress] = useState(0);
 
-
   const logProgress = (input: any) => {
     const { loaded, total } = input;
     const percent = Math.floor((loaded / total) * 100);

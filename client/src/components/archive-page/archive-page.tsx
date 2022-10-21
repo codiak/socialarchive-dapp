@@ -17,151 +17,155 @@ export default function ArchivePage() {
   const {
     state: {
       pendingBackup: { archiveItems },
-      privateUpload
+      privateUpload,
     },
   } = useStore();
   const { user, section } = useParams();
   const page = section || "account";
   const btnClasses = "btn rounded-btn ";
 
-  if(archiveItems) {
-  const {
-    account = {},
-    profile = {},
-    "lists-created": lists = [],
-    tweet: tweets = [],
-    like: likes = [],
-    moment: moments = [],
-    [page]: accounts = [],
-  } = archiveItems;
-  const hash = archiveItems.hash || false;
-  const isPreview = user === "pending" && !hash;
-  const sections = [
-    {
-      slug: "home",
-      title: "Home",
-    },
-    {
-      slug: "account",
-      title: "Account",
-    },
-    {
-      slug: "tweets",
-      title: "Tweets",
-    },
-    {
-      slug: "like",
-      title: "Likes",
-    },
-    {
-      slug: "lists",
-      title: "Lists",
-    },
-    {
-      slug: "moment",
-      title: "Moments",
-    },
-  ];
-  const disabledSections = ["Direct Messages", "Safety", "Personalization", "Ads"];
+  if (archiveItems) {
+    const {
+      account = {},
+      profile = {},
+      "lists-created": lists = [],
+      tweet: tweets = [],
+      like: likes = [],
+      moment: moments = [],
+      [page]: accounts = [],
+    } = archiveItems;
+    const hash = archiveItems.hash || false;
+    const isPreview = user === "pending" && !hash;
+    const sections = [
+      {
+        slug: "home",
+        title: "Home",
+      },
+      {
+        slug: "account",
+        title: "Account",
+      },
+      {
+        slug: "tweets",
+        title: "Tweets",
+      },
+      {
+        slug: "like",
+        title: "Likes",
+      },
+      {
+        slug: "lists",
+        title: "Lists",
+      },
+      {
+        slug: "moment",
+        title: "Moments",
+      },
+    ];
+    const disabledSections = ["Direct Messages", "Safety", "Personalization", "Ads"];
 
-  return (
-    <div className="container">
-      <HelmetProvider>
-        <Helmet>
-          <title>Social Archive</title>
-        </Helmet>
-      </HelmetProvider>
-      {isPreview && <ArchiveSave />}
-      <div className="left-col">
-        <div className="archive-view-mode">
-          <img
-            src={`/icons/icon-${isPreview ? "preview" : "access"}.svg`}
-            alt="Status Icon"
-            className="sticker"
-          />
-          {isPreview ? (privateUpload) ? "Previewing Archive (Private)" : "Previewing Archive" : "Archive on Swarm"}
-        </div>
-        <div className="archive-nav-card">
-          <AvatarCard archivedAccount={account} archivedProfile={profile} />
-          <div className="btn-stack">
-            {sections.map((section, i) => {
-              return (
-                <div key={i}>
-                  <Link
-                    to={`/archive/${user}/${section.slug}`}
-                    className={btnClasses + (page === section.slug ? "active" : "")}
-                  >
-                    {section.title}
-                  </Link>
-                  <br />
-                </div>
-              );
-            })}
-            <p className="button-section-help-text">Private data excluded:</p>
-            {disabledSections.map((title, i) => {
-              return (
-                <div key={i}>
-                  <div className={btnClasses + "disabled"}>{title}</div>
-                  <br />
-                </div>
-              );
-            })}
+    return (
+      <div className="container">
+        <HelmetProvider>
+          <Helmet>
+            <title>Social Archive</title>
+          </Helmet>
+        </HelmetProvider>
+        {isPreview && <ArchiveSave />}
+        <div className="left-col">
+          <div className="archive-view-mode">
+            <img
+              src={`/icons/icon-${isPreview ? "preview" : "access"}.svg`}
+              alt="Status Icon"
+              className="sticker"
+            />
+            {isPreview
+              ? privateUpload
+                ? "Previewing Archive (Private)"
+                : "Previewing Archive"
+              : "Archive on Swarm"}
+          </div>
+          <div className="archive-nav-card">
+            <AvatarCard archivedAccount={account} archivedProfile={profile} />
+            <div className="btn-stack">
+              {sections.map((section, i) => {
+                return (
+                  <div key={i}>
+                    <Link
+                      to={`/archive/${user}/${section.slug}`}
+                      className={btnClasses + (page === section.slug ? "active" : "")}
+                    >
+                      {section.title}
+                    </Link>
+                    <br />
+                  </div>
+                );
+              })}
+              <p className="button-section-help-text">Private data excluded:</p>
+              {disabledSections.map((title, i) => {
+                return (
+                  <div key={i}>
+                    <div className={btnClasses + "disabled"}>{title}</div>
+                    <br />
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
+        <div className="feed-col">
+          {/***** Home/Stats Content ******/}
+          {page === "home" && (
+            <div className="account-home">
+              <ArchiveStats backup={archiveItems}></ArchiveStats>
+            </div>
+          )}
+          {/***** Account Content ******/}
+          {page === "account" && (
+            <div className="account-info">
+              <ArchiveAccount backup={archiveItems}></ArchiveAccount>
+            </div>
+          )}
+          {/***** Tweet Timeline ******/}
+          {page === "tweets" && (
+            <div className="account-tweets">
+              <ArchiveTweets tweets={tweets} account={account} profile={profile}></ArchiveTweets>
+            </div>
+          )}
+          {/***** Likes List ******/}
+          {page === "like" && (
+            <div className="account-likes">
+              <ArchiveLikes likes={likes}></ArchiveLikes>
+            </div>
+          )}
+          {/***** Lists List ******/}
+          {page === "lists" && (
+            <div className="account-lists">
+              <ArchiveLists lists={lists}></ArchiveLists>
+            </div>
+          )}
+          {/***** Moments ******/}
+          {page === "moment" && (
+            <div className="account-moment">
+              <ArchiveMoment moments={moments}></ArchiveMoment>
+            </div>
+          )}
+          {/***** Catch all account listing ******/}
+          {["muting", "blocking", "following", "follower"].includes(page) && (
+            <div className="account-block">
+              <ArchiveAccountList accounts={accounts} title={page}></ArchiveAccountList>
+            </div>
+          )}
+        </div>
+        <div className="metadata-col">{/* Metadata */}</div>
       </div>
-      <div className="feed-col">
-        {/***** Home/Stats Content ******/}
-        {page === "home" && (
-          <div className="account-home">
-            <ArchiveStats backup={archiveItems}></ArchiveStats>
-          </div>
-        )}
-        {/***** Account Content ******/}
-        {page === "account" && (
-          <div className="account-info">
-            <ArchiveAccount backup={archiveItems}></ArchiveAccount>
-          </div>
-        )}
-        {/***** Tweet Timeline ******/}
-        {page === "tweets" && (
-          <div className="account-tweets">
-            <ArchiveTweets tweets={tweets} account={account} profile={profile}></ArchiveTweets>
-          </div>
-        )}
-        {/***** Likes List ******/}
-        {page === "like" && (
-          <div className="account-likes">
-            <ArchiveLikes likes={likes}></ArchiveLikes>
-          </div>
-        )}
-        {/***** Lists List ******/}
-        {page === "lists" && (
-          <div className="account-lists">
-            <ArchiveLists lists={lists}></ArchiveLists>
-          </div>
-        )}
-        {/***** Moments ******/}
-        {page === "moment" && (
-          <div className="account-moment">
-            <ArchiveMoment moments={moments}></ArchiveMoment>
-          </div>
-        )}
-        {/***** Catch all account listing ******/}
-        {["muting", "blocking", "following", "follower"].includes(page) && (
-          <div className="account-block">
-            <ArchiveAccountList accounts={accounts} title={page}></ArchiveAccountList>
-          </div>
-        )}
-      </div>
-      <div className="metadata-col">{/* Metadata */}</div>
-    </div>
-  );
+    );
   } else {
     return (
       <>
-      <div className="container">
-        <p>Archive not found</p>
-      </div>
+        <div className="container">
+          <p>Archive not found</p>
+        </div>
       </>
     );
   }

@@ -2,8 +2,6 @@ import { Utils } from "@fairdatasociety/bee-js";
 import { get, set, clear, keys } from "idb-keyval";
 
 export const getFromIdb = async (key: string) => {
-  console.log('searching for key', key);
-  console.log('idb keys:', await keys());
   return await get(key);
 };
 
