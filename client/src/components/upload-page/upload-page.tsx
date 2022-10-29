@@ -2,6 +2,7 @@ import { useStore } from "../../utils/store";
 import Dropzone from "./DropZone";
 import "./dropzone.css";
 import { useNavigate } from "react-router-dom";
+import { isLoggedIn } from "../auth/authModule.js";
 
 function UploadPage() {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ function UploadPage() {
               <br />
               Size: {zipFile.size}
             </>
-          ) : (
+          ) : isLoggedIn() === true ? (
             <>
               <p>This archive is public. would you like to make it private?</p>
               <label className="checkbox-group">
@@ -55,11 +56,22 @@ function UploadPage() {
                 Continue
               </button>
             </>
+          ) : (
+            <>
+              <p>
+                This archive will be uploaded publicly. Login if you would like to make it private.
+              </p>
+
+              <button className="btn primary" onClick={() => navigate("/archive/pending/home")}>
+                Continue
+              </button>
+            </>
           )}
         </>
       )}
       <div>
         <h3>Need your Twitter archive?</h3>
+
         <div className="step-wrap">
           <div className="step-block">
             <p>1. Access Twitter settings</p>

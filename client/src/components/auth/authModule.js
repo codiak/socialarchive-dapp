@@ -15,6 +15,7 @@ export function setUserID(userID) {
 
 function unsetAccessToken() {
   localStorage.removeItem("access_token");
+  localStorage.removeItem("session_pk");
 }
 
 export function getKeys() {
@@ -70,26 +71,32 @@ export function login() {
     if (params.get("access_token")) {
       return Promise.resolve(params.get("access_token"));
     } else return getAccessToken();
-  })().then((accessToken) => {
-    console.log("Logging in with access token ", accessToken);
-    if (accessToken) {
-      return gl.init(accessToken).then((res) => {
-        if (res) {
-          return (() => {
-            if (params.get("access_token")) {
-              return setAccessToken(params.get("access_token"));
-            } else return Promise.resolve(true);
-          })()
-            .then(() => wipeIdb())
-            .then(() => {
-              console.log("LOGIN DONE");
-              isLoggedIn(true);
-              return gl.userInfo();
-            });
-        } else return false;
-      });
-    }
-  });
+  })()
+    .then((accessToken) => {
+      console.log("Logging in with access token ", accessToken);
+      if (accessToken) {
+        return gl.init(accessToken).then((res) => {
+          if (res) {
+            return (() => {
+              if (params.get("access_token")) {
+                return setAccessToken(params.get("access_token"));
+              } else return Promise.resolve(true);
+            })()
+              .then(() => wipeIdb())
+              .then(() => {
+                console.log("LOGIN DONE");
+                isLoggedIn(true);
+                return gl.userInfo();
+              });
+          } else return false;
+        });
+      }
+    })
+    .catch((e) => {
+      console.log("error loading this thingie", e);
+      isLoggedIn(false);
+      return e;
+    });
 }
 
 export function encrypt(data) {
@@ -123,14 +130,23 @@ export function decrypt(data) {
 }
 
 export function isLoggedIn(val = null) {
-  if (val === null) return window.localStorage.getItem("isLoggedIn");
-  else window.localStorage.setItem("isLoggedIn", val);
+  if (val === null) {
+    const isLoggedInVal = window.localStorage.getItem("isLoggedIn");
+
+    if (isLoggedInVal === "true") return true;
+    else return false;
+  } else {
+    let storageVal = window.localStorage.setItem("isLoggedIn", val);
+    if (storageVal === "true") return true;
+    else return false;
+  }
 }
 
 export function logout() {
   return gl
     .logout()
     .then(() => {
+      isLoggedIn(false);
       unsetAccessToken();
       return wipeIdb();
     })
