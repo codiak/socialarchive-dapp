@@ -78,6 +78,7 @@ module.exports = function(config) {
             'karma-babel-preprocessor',
             'karma-sourcemap-loader',
             'karma-chrome-launcher',
+            'karma-mocha-reporter',
         ],
         preprocessors: {
             'tests/tests.webpack.js': [ 'webpack', 'sourcemap' ], //preprocess with webpack and our sourcemap loader
@@ -85,7 +86,7 @@ module.exports = function(config) {
             'tests/system.tests/tests.webpack.js': [ 'webpack', 'sourcemap' ],
         },
         // reporters: [ 'dots' ], //report results in this format
-        reporters: ['progress'],
+        reporters: ['mocha'],
 
         webpack: webpackConfig,
         webpackServer: {

@@ -56,7 +56,7 @@ describe("Authentication module: unit tests", function() {
             });
     });
 
-    it('Login: do not save access token if gl login fails', function() {
+    it('Login: throw if getlogin login fails', function() {
         glMock.__stub('login', sinon.fake.rejects('App currently not allowed by user'));
         glMock.__stub('userInfo', sinon.fake.resolves(mockUserData()));
         const token = faker.random.alphaNumeric(25);
@@ -64,9 +64,21 @@ describe("Authentication module: unit tests", function() {
         window.location.hash = `access_token=${token}`;
 
         return expect(login()).to.be.rejected
+    });
+
+    it('Login: do not save access token if GetLogin.login() fails', function() {
+        glMock.__stub('login', sinon.fake.rejects('App currently not allowed by user'));
+        glMock.__stub('userInfo', sinon.fake.resolves(mockUserData()));
+        const token = faker.random.alphaNumeric(25);
+
+        window.location.hash = `access_token=${token}`;
+
+        return login()
+            .catch(() => true)
             .then(() => {
                 const storedToken = window.localStorage.getItem('access_token');
                 expect(storedToken).to.be.null;
+                expect( window.localStorage.getItem('session_pk')).to.be.null;
             });
     });
 });
