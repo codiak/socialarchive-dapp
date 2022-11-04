@@ -52,9 +52,9 @@
     "build-factory": "cd node_modules/bee-factory && yarn install && ./scripts/network.sh && ./scripts/blockchain.sh && npm run migrate:contracts && npm run supply",
     "build-factory-images": "cd node_modules/bee-factory && ./scripts/bee-docker-build.sh ./scripts/blockchain-docker-build.sh",
     "test-factory": "cd node_modules/bee-factory && ./scripts/bee.sh start --workers=4",
-    "test-karma:system": ". ./.env.test.local && TESTS=system; NODE_ENV=development karma start --port 3000",
-    "test-karma:network": ". ./.env.test.local && NODE_ENV=development; TESTS=network karma start --port 3000",
-    "test-karma": "NODE_ENV=development && yarn run test-network && yarn run test-system",
+    "test-karma:system": ". ./.env.test.local && TESTS=system NODE_ENV=development karma start --port 3000",
+    "test-karma:network": ". ./.env.test.local && TESTS=network NODE_ENV=development karma start --port 3000",
+    "test-karma": "NODE_ENV=development && yarn run test-karma:network && yarn run test-karma:system",
     "dev": "cd node_modules/bee-factory && ./scripts/environment.sh start",
     "lint": "prettier --check  \"src/**/*.tsx\"",
     "lint-fix": "prettier --write \"src/**/*.tsx\""

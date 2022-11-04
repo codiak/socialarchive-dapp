@@ -9,9 +9,6 @@ module.exports = function(config) {
         const { target, stats, mode, bail, devtool, entry, output, infrastructureLogging,
             resolve, module, plugins, } = webpackConfigFile("development");
 
-        console.log("module rules:", module.rules);
-        console.log("module rules1:", module.rules[1].oneOf, module.rules[1].oneOf[3]);
-
         module.rules = module.rules.map(rule => {
             if(rule.oneOf) {
                 rule.oneOf = rule.oneOf.map(oneOf => {
@@ -27,7 +24,6 @@ module.exports = function(config) {
             return rule;
         });
 
-        console.log("NEW! module rules 1:", module.rules[1].oneOf);
         webpackConfig = webpackPolyfillConfigFile({
             cache: false,
             module,
@@ -50,9 +46,6 @@ module.exports = function(config) {
         webpackConfig.resolve.alias['@components'] = path.resolve(__dirname, 'src/mocks/components/');
         webpackConfig.cache = false;
     }
-
-    console.log("webpack:", webpackConfig);
-    console.log("plugins:", webpackConfig.plugins);
 
     const files = [];
 
@@ -87,6 +80,9 @@ module.exports = function(config) {
         },
         // reporters: [ 'dots' ], //report results in this format
         reporters: ['mocha'],
+        mochaReporter: {
+            showDiff: true,
+        },
 
         webpack: webpackConfig,
         webpackServer: {

@@ -2,6 +2,8 @@ import * as gl from "@auth/getLogin.js";
 import ethcrypto from "eth-crypto";
 import { wipeIdb } from "../../utils/index";
 
+import { getKeys as getClientKeys, encrypt as clientEncrypt, decrypt as clientDecrypt, store as storeToClient, retrieve as retrieveFromClient } from "@auth/clientEncrypt.js";
+
 export function getAuthUrl() {
   const currentUri = window.location.origin;
   const appID = process.env.REACT_APP_GL_APP_ID;
@@ -18,49 +20,42 @@ function unsetAccessToken() {
   localStorage.removeItem("session_pk");
 }
 
+/**
+ * Returns Public, Private key and Address received from GetLogin
+ * These keys are encrypted and decrypted using the client keys.
+ */
 export function getKeys() {
-  let pk = localStorage.getItem("session_pk"),
-    keys = {};
+  const clientKeys = getClientKeys();
 
-  if (pk && pk.trim() !== "" && typeof pk == "string") {
-    keys.privateKey = pk;
-    keys.publicKey = ethcrypto.publicKeyByPrivateKey(pk);
-    keys.address = ethcrypto.publicKey.toAddress(keys.publicKey);
-  } else {
-    localStorage.removeItem("session_pk");
-    keys = ethcrypto.createIdentity();
-  }
-  // return gl.getAppAddresses()
-  return Promise.resolve(keys);
+  return retrieveFromClient("session_pk")
+    .then(res => {
+      if(res) {
+        console.log("res:", res);
+
+        const privateKey = res;
+        const publicKey = ethcrypto.publicKeyByPrivateKey(privateKey);
+
+        return {
+          privateKey,
+          publicKey
+        }
+      } else return null
+    });
+}
+
+export function getAccessToken() {
+  return retrieveFromClient("access_token");
 }
 
 /**
  * Encrypt access token and save to localStorage
  */
-export function getAccessToken() {
-  const key = localStorage.getItem("session_pk");
-  const encryptedText = localStorage.getItem("access_token");
-
-  if (key && encryptedText) {
-    return ethcrypto.decryptWithPrivateKey(key, JSON.parse(encryptedText));
-  } else return Promise.resolve(false);
+export function setAccessToken(token: String) {
+  return storeToClient("access_token", token);
 }
 
-export function setAccessToken(token: String) {
-  console.log("setting access token", token);
-  // let encryptedToken = ethcrypto.encryptWithPublicKey(token);
-
-  return getKeys()
-    .then((appAddresses) => {
-      const key = appAddresses.publicKey;
-      localStorage.setItem("session_pk", appAddresses.privateKey);
-      return ethcrypto.encryptWithPublicKey(key, token);
-    })
-    .then((res) => {
-      // const encryptedToken = res.ciphertext;
-
-      localStorage.setItem("access_token", JSON.stringify(res));
-    });
+export function setSessionPK(privateKey: String) {
+  return storeToClient("session_pk", privateKey);
 }
 
 export function login() {
@@ -69,20 +64,21 @@ export function login() {
 
   return (() => {
     if (params.get("access_token")) {
-      return Promise.resolve(params.get("access_token"));
+      const tk = params.get("access_token");
+      console.log("setting access token");
+      return setAccessToken(tk)
+        .then(() => tk);
     } else return getAccessToken();
   })()
     .then((accessToken) => {
       console.log("Logging in with access token ", accessToken);
       if (accessToken) {
         return gl.init(accessToken).then((res) => {
+          console.log("init done");
           if (res) {
-            return (() => {
-              if (params.get("access_token")) {
-                return setAccessToken(params.get("access_token"));
-              } else return Promise.resolve(true);
-            })()
-              .then(() => wipeIdb())
+            return wipeIdb()
+              .then(() => gl.getAppAddresses())
+              .then(({privateKey}) => setSessionPK(privateKey))
               .then(() => {
                 console.log("LOGIN DONE");
                 isLoggedIn(true);
@@ -90,15 +86,20 @@ export function login() {
               });
           } else return false;
         });
-      }
+      } else return false;
     })
     .catch((e) => {
-      console.log("error loading this thingie", e);
+      console.log("error logging in", e);
       isLoggedIn(false);
-      return e;
+      throw e;
     });
 }
 
+/**
+ * This function will encrypt any data passed to it, using the
+ * GetLogin.eth user session keys.
+ * @param {any} data  Data to be encrypted
+ */
 export function encrypt(data) {
   return login()
     .then(() => getKeys())
@@ -109,6 +110,11 @@ export function encrypt(data) {
     .then((cipher) => ethcrypto.cipher.stringify(cipher));
 }
 
+/**
+ * This function will decrypt any data passed to it, using the
+ * GetLogin.eth user session keys.
+ * @param {String} data  Data to be decrypted.
+ */
 export function decrypt(data) {
   if (data && typeof data == "string") {
     console.log("DECRYPT");
@@ -143,6 +149,8 @@ export function isLoggedIn(val = null) {
 }
 
 export function logout() {
+  window.localStorage.clear();
+
   return gl
     .logout()
     .then(() => {
@@ -151,6 +159,6 @@ export function logout() {
       return wipeIdb();
     })
     .then(() => {
-      window.location.reload();
+        window.location.reload();
     });
 }

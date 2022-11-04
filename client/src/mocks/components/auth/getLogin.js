@@ -8,11 +8,9 @@ export let init = function() {
 
 export let logout = original.logout;
 export let userInfo = original.userInfo;
-
 export let getAppAddresses = original.getAppAddresses;
 
 export function __stub(fnName, fn) {
-    console.log("stubbing", fnName);
     switch(fnName) {
         case 'init':
         case 'login':

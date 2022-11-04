@@ -15,7 +15,8 @@ export default function Authentication() {
         }
         setLoggedIn(true);
       } else setLoggedIn(false);
-    });
+    })
+    .catch((e) => setLoggedIn(false));
   }, []);
 
   if (_isLoggedIn && username) {

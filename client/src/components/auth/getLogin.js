@@ -6,6 +6,7 @@ let timers = {};
 
 export function init(accessToken) {
   const APP_ID = process.env.REACT_APP_GL_APP_ID;
+    console.log("app id:", APP_ID);
 
   console.log("gl instance:", glInstance);
   console.log("is gl instance ready?", glInstance.isReady());
@@ -23,7 +24,7 @@ export function init(accessToken) {
         console.log("new timer", timerId);
         maxWaitTime = maxWaitTime - 500;
         if (glInstance.isReady()) {
-          console.log("TIMER CANCELLED");
+          console.log("Instance ready.\nTIMER CANCELLED");
           clearInterval(timers[timerId]);
           return resolve(true);
         } else if (maxWaitTime < 500) {
@@ -58,6 +59,7 @@ export function userInfo() {
 
 export function getAppAddresses() {
   return glInstance.getSessionPrivateKey().then((res) => {
+      console.log("app keys:", res);
     const privateKey = res;
     const publicKey = ethcrypto.publicKeyByPrivateKey(privateKey);
 
