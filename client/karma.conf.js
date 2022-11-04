@@ -58,8 +58,6 @@ module.exports = function(config) {
         files.push('tests/tests.webpack.js')
     }
 
-    console.log("files:", files);
-
     config.set({
         browsers: [ 'Chrome' ], //run in Chrome
         singleRun: false,

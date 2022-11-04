@@ -12,7 +12,7 @@ import ethcrypto from "eth-crypto";
 chai.use(chaiaspromised);
 const { expect } = chai;
 
-describe.only("Authentication module: unit tests", function() {
+describe("Authentication module: unit tests", function() {
     beforeEach(() => {
         window.localStorage.clear();
         window.location.hash = '';
@@ -123,7 +123,6 @@ describe.only("Authentication module: unit tests", function() {
             "6e00401e15dd25e18654382b9a02928a6ffb70c7e451b086a81a80d3cb0d947802f9bd38ea940026aa7af29e05aff77aa302c587dbfafd3902c3ab1bf55a2396");
 
         // Set cipher
-            console.log("Stringified cipher:", ethcrypto.cipher.stringify({iv:"689e3d8fd499e0bcc0f8f4cd7fdde64d","ephemPublicKey":"04a51651d05240a0d26f0e3581fa7ee2031b9f18645ff3c365cae514dccc526d06a5df2ddaf782981ff800bf4d230e3dffa4bc69647a3bacee2df9809f05e6def2","ciphertext":"de4974120c5a49dee322fc01c988ba8e495c8ebf72efdccf1ca071907fe8fa55","mac":"3a28936e642792e2e9c7684788b504c93a297969916956442b0e6eac87d56a16"}))
         window.localStorage.setItem("access_token",
             ethcrypto.cipher.stringify({iv:"689e3d8fd499e0bcc0f8f4cd7fdde64d","ephemPublicKey":"04a51651d05240a0d26f0e3581fa7ee2031b9f18645ff3c365cae514dccc526d06a5df2ddaf782981ff800bf4d230e3dffa4bc69647a3bacee2df9809f05e6def2","ciphertext":"de4974120c5a49dee322fc01c988ba8e495c8ebf72efdccf1ca071907fe8fa55","mac":"3a28936e642792e2e9c7684788b504c93a297969916956442b0e6eac87d56a16"})
         );

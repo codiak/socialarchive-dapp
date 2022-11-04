@@ -4,7 +4,9 @@ import chai from 'chai';
 import chaiaspromised from 'chai-as-promised';
 import * as glMock from '../../../src/mocks/components/auth/getLogin.js';
 import * as cEncryptMock from '../../../src/mocks/components/auth/clientEncrypt.js';
-import { login, logout, encrypt, decrypt } from '../../../src/components/auth/authModule.js';
+import { login, logout, encrypt, decrypt, setAccessToken, getAccessToken } from '../../../src/components/auth/authModule.js';
+
+import ethcrypto from "eth-crypto";
 
 import { mockUserData } from "../../helpers";
 
@@ -17,12 +19,14 @@ describe("Login and encrypt", function() {
     beforeEach(() => {
         window.localStorage.clear();
         window.location.hash = '';
+
+        glMock.__stub('login', sinon.fake.resolves(true));
+        glMock.__stub('userInfo', sinon.fake.resolves(mockUserData()));
+        glMock.__stub('getAppAddresses', sinon.fake.resolves(ethcrypto.createIdentity()));
     });
 
-    it.only("Login should save access token, and session private key to local storage", function() {
-        glMock.__stub('init', sinon.fake.resolves(true));
-        glMock.__stub('userInfo', sinon.fake.resolves(mockUserData()));
-        glMock.__stub('getAppAddresses', sinon.fake.resolves(true));
+    it("Login should save access token, and session private key to local storage", function() {
+        glMock.__stub('getAppAddresses', sinon.fake.resolves(ethcrypto.createIdentity()));
 
         // Set url to one with auth token
         const token = faker.random.alphaNumeric(25);
@@ -35,17 +39,12 @@ describe("Login and encrypt", function() {
             });
     });
 
-    it('Should be able to decrypt encrypted access_token with client private key', function() {
+    it('Should be able to set and retrieve access token', function() {
         const token = faker.random.alphaNumeric(25);
-        const clientKeys = ethcrypto.createIdentity();
-        cEncryptMock.__stub("getKeys", { privateKey: clientKeys.privateKey, publicKey: clientKeys.publicKey });
-        // getClientKeys();
 
         return setAccessToken(token)
             .then(() => {
-                const cipher = window.localStorage.getItem('access_token_cipher');
-
-                return ethcrypto.decryptWithPrivateKey(clientKeys.privateKey, JSON.parse(cipher))
+                return getAccessToken()
             }).then(res => expect(res).to.equal(token));
     });
     
@@ -69,9 +68,6 @@ describe("Login and encrypt", function() {
     });
 
     it("Encrypt data and decrypt", function() {
-        glMock.__stub('login', sinon.fake.resolves(true));
-        glMock.__stub('userInfo', sinon.fake.resolves(mockUserData()));
-
         // Set url to one with auth token
         const token = faker.random.alphaNumeric(25);
         window.location.hash = `access_token=${token}`;
@@ -80,32 +76,25 @@ describe("Login and encrypt", function() {
 
         return login()
             .then(() => encrypt(data))
-            .then(res => {
-                console.log("encrypted data:", res);
-                return decrypt(data)
+            .then(cipherString => {
+                return decrypt(cipherString)
             }).then(res => {
                 expect(res).to.equal(data);
             });
     });
 
-    it("After login, 'client_keys' should be saved in local storage", function() {
-        glMock.__stub('login', sinon.fake.resolves(true));
-        glMock.__stub('userInfo', sinon.fake.resolves(mockUserData()));
-
-        // Set url to one with auth token
+    it("After login, 'session_pk' and 'access_token' should be saved in local storage", function() {
         const token = faker.random.alphaNumeric(25);
         window.location.hash = `access_token=${token}`;
+        window.localStorage.clear();
+
+        expect(window.localStorage.getItem("session_pk")).to.null;
+        expect(window.localStorage.getItem("access_token")).to.null;
 
         return login()
             .then(() => {
-                const pk = window.localStorage.getItem("client_pk");
-                const pubk = window.localStorage.getItem("client_pubk");
-
-                expect(pk).to.be.a('string');
-                expect(pk).to.match(/^0x[\w\d]+$/);
-
-                expect(pubk).to.be.a('string');
-                expect(pubk).to.match(/^[\w\d]+$/);
+                expect(window.localStorage.getItem("session_pk")).to.be.a("string");
+                expect(window.localStorage.getItem("access_token")).to.be.a("string");
             });
     });
 
@@ -128,7 +117,7 @@ describe("Login and encrypt", function() {
                 console.log("local storage:", ls);
                 console.log("access otgken:", token);
 
-                expect(ls).to.have.keys("isLoggedIn", "access_token_cipher", "session_pk_cipher", "client_pk", "client_pubk");
+                expect(ls).to.have.keys("isLoggedIn", "access_token", "session_pk", "client_pk", "client_pubk");
             });
     });
 });

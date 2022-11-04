@@ -46,7 +46,6 @@ export function getKeys() {
 export function encrypt(data) {
   const keys = getKeys();
   const {publicKey} = keys;
-  // const {publicKey} = getKeys();
 
   return ethcrypto.encryptWithPublicKey(publicKey, data)
     .then((cipher) => ethcrypto.cipher.stringify(cipher));

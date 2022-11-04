@@ -30,8 +30,6 @@ export function getKeys() {
   return retrieveFromClient("session_pk")
     .then(res => {
       if(res) {
-        console.log("res:", res);
-
         const privateKey = res;
         const publicKey = ethcrypto.publicKeyByPrivateKey(privateKey);
 
@@ -116,23 +114,35 @@ export function encrypt(data) {
  * @param {String} data  Data to be decrypted.
  */
 export function decrypt(data) {
-  if (data && typeof data == "string") {
-    console.log("DECRYPT");
-    return login()
-      .then(() => {
-        console.log("FINISHED LOGIN");
+  if (!data)
+    throw new Error("No data");
 
-        return ethcrypto.cipher.parse(data);
-      })
-      .then((encryptObj) => {
-        if (!encryptObj.ciphertext) return encryptObj;
+  if (typeof data != "object") {
+    try {
+      data = JSON.parse(data);
+    } catch (e) {
+      console.log("Data is not JSON");
+    }
 
-        return getKeys().then(({ privateKey }) => {
-          if (privateKey) return ethcrypto.decryptWithPrivateKey(privateKey, encryptObj);
-          else return false;
-        });
+    if (typeof data != "object") {
+      data = ethcrypto.cipher.parse(data);
+    }
+  }
+
+  console.log("LOGIN");
+  return login()
+    .then(() => {
+      console.log("FINISHED LOGIN");
+      return ethcrypto.cipher.parse(data);
+    })
+    .then((encryptObj) => {
+      if (!encryptObj.ciphertext) return encryptObj;
+
+      return getKeys().then(({ privateKey }) => {
+        if (privateKey) return ethcrypto.decryptWithPrivateKey(privateKey, encryptObj);
+        else return false;
       });
-  } else return Promise.resolve(data);
+    });
 }
 
 export function isLoggedIn(val = null) {
