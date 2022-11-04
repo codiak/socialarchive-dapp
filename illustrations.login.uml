@@ -1,0 +1,16 @@
+@startuml
+
+title Logging in to Social Archive with GetLogin.eth
+
+database LocalStorage as ls
+participant Browser as client
+participant "SocialArchive Website" as soca
+participant GetLogin.eth as gl
+
+client -> soca : Logs in to SocialArchive.info
+soca -> gl : Requests authentication from GetLogin
+gl -> soca : Returns access token and session private key
+soca -> ls : Creates new crypto identity with EthCrypto and saves to local storage
+soca -> ls : Encrypts private key received from GetLogin using crypto identity and saves to local storage
+
+@enduml

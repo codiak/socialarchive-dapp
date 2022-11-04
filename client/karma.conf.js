@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const webpackConfigFile = require('./node_modules/react-scripts/config/webpack.config.js');
 const webpackPolyfillConfigFile = require('./config-overrides.js');
+const fs = require('fs');
 
 module.exports = function(config) {
     let webpackConfig = {};
@@ -73,6 +74,12 @@ module.exports = function(config) {
             'karma-chrome-launcher',
             'karma-mocha-reporter',
         ],
+
+        protocol: 'https',
+        httpsServerOptions: {
+            key: fs.readFileSync(__dirname + '/localhost.key'),
+            cert: fs.readFileSync(__dirname + '/localhost.crt'),
+        },
         preprocessors: {
             'tests/tests.webpack.js': [ 'webpack', 'sourcemap' ], //preprocess with webpack and our sourcemap loader
             'tests/network.tests/tests.webpack.js': [ 'webpack', 'sourcemap' ],

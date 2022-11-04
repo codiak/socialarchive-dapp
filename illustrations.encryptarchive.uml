@@ -1,0 +1,19 @@
+@startuml
+
+title Uploading Twitter Bundle to swarm
+
+database LocalStorage as ls
+participant Client as client
+participant "SocialArchive Website" as soca
+participant Swarm as swarm
+
+client -> soca : Is logged in to SocialArchive.info
+client -> soca : Uploads Twitter archive zip on upload page
+client -> soca : Sets private upload
+soca -> ls : Retrieves EthCrypto identity that was created during login
+soca -> ls : Retrieves encrypted GetLogin private key
+soca <- soca : Decrypts GetLogin private key using EthCrypto private key
+soca <- soca : Encrypts twitter bundle data, username using GetLogin private key
+soca -> swarm : Upload encrypted data to swarm
+
+@enduml
