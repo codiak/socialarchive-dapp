@@ -2,7 +2,7 @@ import * as gl from "@auth/getLogin.js";
 import ethcrypto from "eth-crypto";
 import { wipeIdb } from "../../utils/index";
 
-import { getKeys as getClientKeys, encrypt as clientEncrypt, decrypt as clientDecrypt, store as storeToClient, retrieve as retrieveFromClient } from "@auth/clientEncrypt.js";
+import { store as storeToClient, retrieve as retrieveFromClient } from "@auth/clientEncrypt.js";
 
 export function getAuthUrl() {
   const currentUri = window.location.origin;
@@ -25,20 +25,17 @@ function unsetAccessToken() {
  * These keys are encrypted and decrypted using the client keys.
  */
 export function getKeys() {
-  const clientKeys = getClientKeys();
+  return retrieveFromClient("session_pk").then((res) => {
+    if (res) {
+      const privateKey = res;
+      const publicKey = ethcrypto.publicKeyByPrivateKey(privateKey);
 
-  return retrieveFromClient("session_pk")
-    .then(res => {
-      if(res) {
-        const privateKey = res;
-        const publicKey = ethcrypto.publicKeyByPrivateKey(privateKey);
-
-        return {
-          privateKey,
-          publicKey
-        }
-      } else return null
-    });
+      return {
+        privateKey,
+        publicKey,
+      };
+    } else return null;
+  });
 }
 
 export function getAccessToken() {
@@ -64,8 +61,8 @@ export function login() {
     if (params.get("access_token")) {
       const tk = params.get("access_token");
       console.log("setting access token");
-      return setAccessToken(tk)
-        .then(() => tk);
+
+      return setAccessToken(tk).then(() => tk);
     } else return getAccessToken();
   })()
     .then((accessToken) => {
@@ -76,7 +73,7 @@ export function login() {
           if (res) {
             return wipeIdb()
               .then(() => gl.getAppAddresses())
-              .then(({privateKey}) => setSessionPK(privateKey))
+              .then(({ privateKey }) => setSessionPK(privateKey))
               .then(() => {
                 console.log("LOGIN DONE");
                 isLoggedIn(true);
@@ -114,8 +111,7 @@ export function encrypt(data) {
  * @param {String} data  Data to be decrypted.
  */
 export function decrypt(data) {
-  if (!data)
-    throw new Error("No data");
+  if (!data) throw new Error("No data");
 
   if (typeof data != "object") {
     try {
@@ -169,6 +165,6 @@ export function logout() {
       return wipeIdb();
     })
     .then(() => {
-        window.location.reload();
+      window.location.reload();
     });
 }

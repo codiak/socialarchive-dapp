@@ -8,15 +8,16 @@ export default function Authentication() {
   const [_isLoggedIn, setLoggedIn] = useState(null);
 
   useEffect(() => {
-    login().then((res) => {
-      if (res) {
-        if (res.username) {
-          setUsername(res.username);
-        }
-        setLoggedIn(true);
-      } else setLoggedIn(false);
-    })
-    .catch((e) => setLoggedIn(false));
+    login()
+      .then((res) => {
+        if (res) {
+          if (res.username) {
+            setUsername(res.username);
+          }
+          setLoggedIn(true);
+        } else setLoggedIn(false);
+      })
+      .catch((e) => setLoggedIn(false));
   }, []);
 
   if (_isLoggedIn && username) {

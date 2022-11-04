@@ -45,9 +45,10 @@ export function getKeys() {
  */
 export function encrypt(data) {
   const keys = getKeys();
-  const {publicKey} = keys;
+  const { publicKey } = keys;
 
-  return ethcrypto.encryptWithPublicKey(publicKey, data)
+  return ethcrypto
+    .encryptWithPublicKey(publicKey, data)
     .then((cipher) => ethcrypto.cipher.stringify(cipher));
 }
 
@@ -61,18 +62,16 @@ export function encrypt(data) {
  */
 export function decrypt(data) {
   const { privateKey } = getKeys();
+  let encryptObj;
 
   if (data && typeof data == "string") {
-    const encryptObj = ethcrypto.cipher.parse(data);
-
-    if (!encryptObj.ciphertext) return encryptObj;
-
-    const { privateKey } =  getKeys();
-
-    if (privateKey) return ethcrypto.decryptWithPrivateKey(privateKey, encryptObj);
-    else return Promise.resolve(false);
-
+    encryptObj = ethcrypto.cipher.parse(data);
   } else return Promise.reject(new Error("Bad cipher"));
+
+  if (!encryptObj.ciphertext) return encryptObj;
+
+  if (privateKey) return ethcrypto.decryptWithPrivateKey(privateKey, encryptObj);
+  else return Promise.resolve(false);
 }
 
 /**
@@ -81,23 +80,18 @@ export function decrypt(data) {
  * @param {any} data - The data that will be stored
  */
 export function store(name: String, data) {
-  if(typeof data == 'object')
-    data = JSON.stringify(data);
+  if (typeof data == "object") data = JSON.stringify(data);
 
-  return encrypt(data)
-    .then(res => {
-      window.localStorage.setItem(name, res)
+  return encrypt(data).then((res) => {
+    window.localStorage.setItem(name, res);
 
-      return true;
-    });
+    return true;
+  });
 }
 
 export function retrieve(name: String) {
   const cipher = window.localStorage.getItem(name);
 
-  if(!cipher)
-    return Promise.resolve(null);
-
-  else
-    return decrypt(cipher);
+  if (!cipher) return Promise.resolve(null);
+  else return decrypt(cipher);
 }

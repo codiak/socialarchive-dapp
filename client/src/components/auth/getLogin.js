@@ -6,7 +6,6 @@ let timers = {};
 
 export function init(accessToken) {
   const APP_ID = process.env.REACT_APP_GL_APP_ID;
-    console.log("app id:", APP_ID);
 
   console.log("gl instance:", glInstance);
   console.log("is gl instance ready?", glInstance.isReady());
@@ -59,7 +58,6 @@ export function userInfo() {
 
 export function getAppAddresses() {
   return glInstance.getSessionPrivateKey().then((res) => {
-      console.log("app keys:", res);
     const privateKey = res;
     const publicKey = ethcrypto.publicKeyByPrivateKey(privateKey);
 
