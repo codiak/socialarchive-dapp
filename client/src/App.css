@@ -56,11 +56,18 @@
   color: #61dafb;
 }
 
+.link {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
 .menu {
   padding-bottom: 7px;
 }
 
 .menu-link {
+  cursor: pointer;
   display: inline-block;
   color: #545454;
   font-size: 18px;
@@ -77,6 +84,14 @@
   font-weight: bold;
   /* color: #669fda; */
   border-bottom: 1px solid #545454;
+}
+
+.auth {
+    position: relative;
+    display: inline-block;
+}
+.menu--user-menu {
+    position: absolute;
 }
 
 h2.small {
@@ -330,6 +345,14 @@ input::placeholder {
 .input--with-btn.input--big button:hover,
 .input--with-btn.input--big button:focus {
   box-shadow: none;
+}
+
+.checkbox-group {
+    display: block;
+    margin-bottom: 1em;
+}
+.checkbox-group--label {
+    margin-left: 1em;
 }
 
 .divider--white {
