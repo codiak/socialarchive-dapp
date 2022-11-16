@@ -92,6 +92,12 @@
 }
 .menu--user-menu {
     position: absolute;
+    background: white;
+    padding: 0 1em 0.5em 0;
+    border-radius: 5px;
+    box-shadow: 1px 8px 5px rgb(0 0 0 / 10%);
+    right: 0;
+    top: calc(100% + 10px);
 }
 
 h2.small {
