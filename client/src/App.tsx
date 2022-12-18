@@ -5,6 +5,7 @@ import BrowsePage from "./components/browse-page/browse-page";
 import ArchivePage from "./components/archive-page/archive-page";
 import CookiesPage from "./components/cookies-page/cookies-page";
 import Authentication from "./components/auth/auth";
+import SearchBox from "./components/search/search";
 import ArchiveDownload from "./components/archive-download/archive-download";
 import Footer from "./components/footer/footer";
 import "./App.css";
@@ -20,7 +21,7 @@ function App() {
     let isActive =
       (startsWith && window.location.pathname.startsWith(pathname)) ||
       window.location.pathname === pathname;
-    return "menu-link " + (isActive ? "active" : "");
+    return "menu-link menu-item " + (isActive ? "active" : "");
   };
 
   return (
@@ -53,6 +54,8 @@ function App() {
                 Browse
               </a>
               <Authentication />
+
+              <SearchBox />
             </div>
             <title>{APP_TITLE}</title>
           </header>

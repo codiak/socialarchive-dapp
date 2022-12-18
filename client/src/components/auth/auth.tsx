@@ -24,7 +24,7 @@ export default function Authentication() {
     return (
       <>
         <div className="auth">
-          <span className="menu-link" onClick={() => setShowMenu(!showMenu)}>
+          <span className="menu-item menu-link" onClick={() => setShowMenu(!showMenu)}>
             @{username}
           </span>
 

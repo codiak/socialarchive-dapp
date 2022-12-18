@@ -66,12 +66,15 @@
   padding-bottom: 7px;
 }
 
+.menu-item {
+  display: inline-block;
+  margin-left: 2em;
+}
+
 .menu-link {
   cursor: pointer;
-  display: inline-block;
   color: #545454;
   font-size: 18px;
-  margin-left: 2em;
   text-decoration: none;
 }
 
