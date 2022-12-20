@@ -12,10 +12,10 @@ module.exports = function override(config) {
   });
 
   config.resolve.fallback = fallback;
-  config.resolve.alias['@process'] = path.resolve(__dirname, 'src/process/');
 
   config.resolve.alias['@components'] = path.resolve(__dirname, 'src/components/');
   config.resolve.alias['@auth'] = path.resolve(__dirname, 'src/components/auth/');
+  config.resolve.alias['@process'] = path.resolve(__dirname, 'src/process/');
 
   config.plugins = (config.plugins || []).concat([
     new webpack.ProvidePlugin({
