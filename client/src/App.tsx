@@ -6,6 +6,7 @@ import ArchivePage from "./components/archive-page/archive-page";
 import CookiesPage from "./components/cookies-page/cookies-page";
 import Authentication from "./components/auth/auth";
 import SearchBox from "./components/search/search";
+import SearchPage from "./components/search/search-page";
 import ArchiveDownload from "./components/archive-download/archive-download";
 import Footer from "./components/footer/footer";
 import "./App.css";
@@ -73,6 +74,7 @@ function App() {
                   <Route path="/upload" element={<UploadPage />} />
                   <Route path="/" element={<HomePage />} />
                   <Route path="/cookies" element={<CookiesPage />} />
+                  <Route path="/search" element={<SearchPage />} />
                 </Routes>
               </div>
               <Footer />
