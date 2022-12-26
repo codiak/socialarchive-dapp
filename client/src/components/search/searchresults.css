@@ -1,0 +1,11 @@
+.search-page {
+    padding: 2rem;
+}
+
+.search-page__subtitle {
+    color: grey;
+}
+
+.search_result {
+    padding-bottom: 2rem;
+}

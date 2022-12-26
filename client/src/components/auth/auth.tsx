@@ -40,7 +40,7 @@ export default function Authentication() {
     );
   } else if (_isLoggedIn === false) {
     return (
-      <a className="menu-link" href={getAuthUrl()}>
+      <a className="menu-link menu-item" href={getAuthUrl()}>
         Login
       </a>
     );
