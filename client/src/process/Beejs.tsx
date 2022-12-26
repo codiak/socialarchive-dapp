@@ -179,12 +179,11 @@ export class Beejs {
     let db = {};
 
     try {
-      const { reference:oldReference } = await this.feedReader.download();
+      const { reference: oldReference } = await this.feedReader.download();
       const uintData = await this.bee.downloadData(oldReference);
       const oldFeed = uintData.json();
 
-      if(typeof oldFeed == "object" && oldFeed != null && !Array.isArray(oldFeed))
-        db = oldFeed;
+      if (typeof oldFeed == "object" && oldFeed != null && !Array.isArray(oldFeed)) db = oldFeed;
 
       db[key] = hash;
 
@@ -310,12 +309,13 @@ export class Beejs {
    * @returns number representing the feed index of the uploaded bundle
    */
   async getFeed() {
-    return this.feedReader.download()
-      .then(res => {
+    return this.feedReader
+      .download()
+      .then((res) => {
         const { reference } = res;
-        return this.bee.downloadData(reference)
+        return this.bee.downloadData(reference);
       })
-      .then(res => res.json());
+      .then((res) => res.json());
   }
 
   /**
