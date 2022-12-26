@@ -6,6 +6,13 @@
     color: grey;
 }
 
-.search_result {
+.search-result-list {
+    padding-left: 0.5rem;
+}
+.search-result {
     padding-bottom: 2rem;
+    margin: 1rem 0;
+}
+.search-result__title {
+    margin: 0 0 0.5rem 0;
 }

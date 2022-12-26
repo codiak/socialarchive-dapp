@@ -23,13 +23,15 @@ export default function SearchResults({ searchString = "", results = null }) {
         <>
           <p className="search-page__subtitle">{resultArray.length} results</p>
 
-          {resultArray.map((result) => (
-            <div key={result.name + result.hash} className="search-result">
-              <a href={"/archive/" + result.hash}>
-                <p>{result.name}</p>
-              </a>
-            </div>
-          ))}
+          <div className="search-result-list">
+            {resultArray.map((result) => (
+              <div key={result.name + result.hash} className="search-result">
+                <a href={"/archive/" + result.hash}>
+                  <p className="search-result__title">{result.name}</p>
+                </a>
+              </div>
+            ))}
+          </div>
         </>
       ) : (
         <p className="search-page__subtitle">Loading...</p>
