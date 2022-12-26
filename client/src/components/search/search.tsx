@@ -1,7 +1,5 @@
-import { useState, useEffect } from "react";
-import { Navigate } from "react-router-dom";
+import { useState } from "react";
 
-// export default function SearchBox({ navigation: {navigate} }) {
 export default function SearchBox() {
   const [searchString, setSearchString] = useState("");
 

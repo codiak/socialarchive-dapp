@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export default function ({ searchString = "", results = null }) {
+export default function SearchResults({ searchString = "", results = null }) {
   const [resultArray, setResultArray] = useState([]);
 
   useEffect(() => {
