@@ -72,6 +72,25 @@ button.btn,
   background: rgb(203, 133, 84);
 }
 
+.btn.btn-small {
+  font-size: 0.9rem;
+  line-height: 1.25em;
+  margin: 2px;
+  padding: 0.45em 0.5em;
+}
+
+.input--with-btn__wrap {
+  position: relative;
+}
+
+.input--with-btn__wrap .btn {
+  position: absolute;
+  right: 1px;
+  top: calc(4px + .25em);
+  height: calc(2em);
+  line-height: 1em;
+}
+
 button.rounded-btn,
 .rounded-btn {
   display: inline-block;
@@ -103,6 +122,18 @@ button.rounded-btn,
   margin-bottom: 0.25em;
 }
 
+input, .input {
+    padding: 0.65em 1em;
+    border: 1px solid #9a9a9a;
+    border-radius: 3px;
+}
+
+input:focus, .input:focus {
+  outline: none;
+  border-color: #FD964A;
+  box-shadow: 0px 0px 5px #FD964A60;
+}
+
 .dropzone {
   text-align: center;
   padding: 30px;
@@ -112,3 +143,4 @@ button.rounded-btn,
   cursor: pointer;
   margin-bottom: 20px;
 }
+
