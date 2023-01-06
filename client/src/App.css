@@ -63,15 +63,24 @@
 }
 
 .menu {
-  padding-bottom: 7px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.menu-item {
+  margin-left: 2em;
+}
+
+.menu-item--right {
+  margin-left: auto;
+  margin-right: 1em;
 }
 
 .menu-link {
   cursor: pointer;
-  display: inline-block;
   color: #545454;
   font-size: 18px;
-  margin-left: 2em;
   text-decoration: none;
 }
 
@@ -330,7 +339,7 @@ input::placeholder {
   box-shadow: 0px 0px 30px #FD964A77;
 }
 
-.input--with-btn input {
+.input--with-btn__wrap input {
   padding-right: 80px;
 }
 
@@ -338,7 +347,7 @@ input::placeholder {
 
 }
 
-.input--with-btn.input--big button {
+.input--with-btn__wrap.input--big button {
   position: absolute;
   top: 4px;
   right: 4px;
@@ -348,8 +357,8 @@ input::placeholder {
   cursor: pointer;
 }
 
-.input--with-btn.input--big button:hover,
-.input--with-btn.input--big button:focus {
+.input--with-btn__wrap.input--big button:hover,
+.input--with-btn__wrap.input--big button:focus {
   box-shadow: none;
 }
 

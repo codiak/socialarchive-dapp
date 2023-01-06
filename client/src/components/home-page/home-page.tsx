@@ -30,7 +30,7 @@ function HomePage() {
           <Link to="/upload" className="action-item btn cta-button">
             Add Archive
           </Link>
-          <div className="action-item input-wrap input--big input--with-btn">
+          <div className="action-item input-wrap input--big input--with-btn__wrap">
             <input type="text" ref={textInput} placeholder="Swarm hash" />
             <button onClick={() => openHash(textInput.current.value)} className="cta-button">
               Access

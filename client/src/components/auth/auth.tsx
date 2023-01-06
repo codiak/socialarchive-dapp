@@ -24,7 +24,7 @@ export default function Authentication() {
     return (
       <>
         <div className="auth">
-          <span className="menu-link" onClick={() => setShowMenu(!showMenu)}>
+          <span className="menu-item menu-link" onClick={() => setShowMenu(!showMenu)}>
             @{username}
           </span>
 
@@ -40,7 +40,7 @@ export default function Authentication() {
     );
   } else if (_isLoggedIn === false) {
     return (
-      <a className="menu-link" href={getAuthUrl()}>
+      <a className="menu-link menu-item" href={getAuthUrl()}>
         Login
       </a>
     );

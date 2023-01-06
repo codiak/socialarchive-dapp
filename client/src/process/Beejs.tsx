@@ -38,7 +38,8 @@ export class Beejs {
     "0000000000000000000000000000000000000000000000000000000000000000" as Reference;
   private SOC_READ_TIMEOUT: number = 20000;
 
-  private BEE_HOST = "https://gateway.fairdatasociety.org";
+  private BEE_HOST = process.env.REACT_APP_BEE_HOST;
+  // private BEE_HOST = "https://gateway.fairdatasociety.org";
 
   constructor() {
     this.bee = new Bee(this.BEE_HOST);
@@ -123,9 +124,8 @@ export class Beejs {
         fetch,
       });
       result = reference;
-      console.log("Got Swarm hash: ", reference);
       // 2. upload hash to feed
-      await this.saveSwarmHashInFeed(reference);
+      await this.saveSwarmHashInFeed(username, reference);
       // 3. download latest feed and get feed index
       let feedIndex = (await this.getFeedIndex(reference)) as number;
       if (!privateUpload) {
@@ -174,11 +174,25 @@ export class Beejs {
    *
    * @return number representing the feed index of the uploaded bundle
    **/
-  async saveSwarmHashInFeed(hash: Reference) {
+  async saveSwarmHashInFeed(key: string, hash: Reference) {
     console.log("Uploading hash to feed");
+    let db = {};
+
     try {
-      await this.feedWriter.upload(this.POSTAGE_STAMP, hash);
+      const { reference: oldReference } = await this.feedReader.download();
+      const uintData = await this.bee.downloadData(oldReference);
+      const oldFeed = uintData.json();
+
+      if (typeof oldFeed == "object" && oldFeed != null && !Array.isArray(oldFeed)) db = oldFeed;
+
+      db[key] = hash;
+
+      // const reference = await this.bee.uploadData(db);
+      const { reference } = await this.bee.uploadData(this.POSTAGE_STAMP, JSON.stringify(db));
+      // await this.getFeeds(1, 100, (jsonStore) => db = jsonStore)
+      await this.feedWriter.upload(this.POSTAGE_STAMP, reference);
       // console.log("Succsessfully uploaded hash to feed: ");
+      return true;
     } catch (error) {
       console.log("Error adding hash to feed", error);
       throw error;
@@ -286,6 +300,22 @@ export class Beejs {
     id.writeUInt16LE(index, 0);
     const idBytes: Identifier = Utils.hexToBytes(id.toString("hex"));
     return idBytes;
+  }
+
+  /**
+   *
+   * @param hash (optional) Reference to the uploaded bundle in Swarm
+   *
+   * @returns number representing the feed index of the uploaded bundle
+   */
+  async getFeed() {
+    return this.feedReader
+      .download()
+      .then((res) => {
+        const { reference } = res;
+        return this.bee.downloadData(reference);
+      })
+      .then((res) => res.json());
   }
 
   /**

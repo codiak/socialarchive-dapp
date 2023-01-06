@@ -42,6 +42,8 @@ module.exports = function(config) {
             // plugins: [plugins[0], plugins[1], plugins[3], new RewirePlugin()]
         });
 
+        webpackConfig.resolve.alias['@process'] = path.resolve(__dirname, 'src/mocks/process/');
+
         webpackConfig.resolve.alias['@auth2'] = path.resolve(__dirname, 'src/mocks/components/auth/');
         webpackConfig.resolve.alias['@auth'] = path.resolve(__dirname, 'src/mocks/components/auth/');
         webpackConfig.resolve.alias['@components'] = path.resolve(__dirname, 'src/mocks/components/');

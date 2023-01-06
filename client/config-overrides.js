@@ -12,8 +12,10 @@ module.exports = function override(config) {
   });
 
   config.resolve.fallback = fallback;
+
   config.resolve.alias['@components'] = path.resolve(__dirname, 'src/components/');
   config.resolve.alias['@auth'] = path.resolve(__dirname, 'src/components/auth/');
+  config.resolve.alias['@process'] = path.resolve(__dirname, 'src/process/');
 
   config.plugins = (config.plugins || []).concat([
     new webpack.ProvidePlugin({
@@ -21,6 +23,13 @@ module.exports = function override(config) {
       Buffer: ["buffer", "Buffer"],
     }),
   ]);
+  config.resolve.extensions.push(".tsx");
+  config.module.rules.push({
+    test: /\.tsx/,
+    resolve: {
+      fullySpecified: false,
+    },
+  });
   config.resolve.extensions.push(".mjs");
   config.module.rules.push({
     test: /\.m?js/,
