@@ -38,8 +38,7 @@ export class Beejs {
     "0000000000000000000000000000000000000000000000000000000000000000" as Reference;
   private SOC_READ_TIMEOUT: number = 20000;
 
-  private BEE_HOST = process.env.REACT_APP_BEE_HOST;
-  // private BEE_HOST = "https://gateway.fairdatasociety.org";
+  private BEE_HOST = process.env.REACT_APP_BEE_HOST || "https://gateway.fairdatasociety.org";
 
   constructor() {
     this.bee = new Bee(this.BEE_HOST);

@@ -15,7 +15,7 @@ export default function SearchBox() {
 
   return (
     <>
-      <div className="search-box menu-item menu-item--right input--with-btn__wrap">
+      <div className="search-box menu-item">
         <input
           type="text"
           placeholder="username"
@@ -23,9 +23,7 @@ export default function SearchBox() {
           onChange={(e) => setSearchString(e.target.value)}
           onKeyDown={keydownHandler}
         />
-        <button className="btn btn-small primary" onClick={loadSearchResults}>
-          Search
-        </button>
+        <input type="submit" value="Search" onClick={loadSearchResults} />
       </div>
     </>
   );
