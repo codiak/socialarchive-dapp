@@ -180,7 +180,13 @@ export class Beejs {
     try {
       const { reference: oldReference } = await this.feedReader.download();
       const uintData = await this.bee.downloadData(oldReference);
-      const oldFeed = uintData.json();
+      let oldFeed;
+
+      try {
+        oldFeed = uintData.json();
+      } catch(e) {
+        oldFeed = {};
+      }
 
       if (typeof oldFeed == "object" && oldFeed != null && !Array.isArray(oldFeed)) db = oldFeed;
 
