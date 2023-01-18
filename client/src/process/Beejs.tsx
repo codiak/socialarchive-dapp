@@ -184,7 +184,7 @@ export class Beejs {
 
       try {
         oldFeed = uintData.json();
-      } catch(e) {
+      } catch (e) {
         oldFeed = {};
       }
 
