@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { Beejs } from "../../process/Beejs";
 
 import AvatarCard from "../avatar-card/avatar-card";
 import { useStore } from "../../utils/store";
@@ -15,6 +16,7 @@ export default function BrowsePage() {
   } = useStore();
   const [itemsPerPage] = useState(10);
   const [isLoadInitiated, setIsLoadInitiated] = useState(false);
+  const [twitterArchives, setTwitterArchives] = useState({});
   const refreshFeeds = useCallback(() => {
     dispatch({ type: "GET_FEEDS_FROM_SWARM", itemsPerPage });
   }, [itemsPerPage, dispatch]);
@@ -24,6 +26,17 @@ export default function BrowsePage() {
       refreshFeeds();
     }
   }, [isLoadInitiated, refreshFeeds]);
+
+  useEffect(() => {
+    console.log("Browse page\n creating bee");
+    const bee = new Beejs();
+
+    console.log("Getting feed for browse page");
+    bee.getFeed().then((res) => {
+      console.log("feed:", res);
+      setTwitterArchives(res);
+    });
+  }, []);
 
   return (
     <div className="container">
@@ -36,6 +49,13 @@ export default function BrowsePage() {
             <h2 className="col-header" onClick={refreshFeeds}>
               Recently Added
             </h2>
+            {Object.keys(twitterArchives).map((username) => {
+              return (
+                <p>
+                  <a href={"/archive/" + twitterArchives[username]}>{username}</a>
+                </p>
+              );
+            })}
             {downloadingFeeds && <div>Downloading...</div>}
             {/* {error && errorMessage.length > 0 && (
               <div className="archive-pending-error">{errorMessage}</div>
